@@ -1,0 +1,16 @@
+services:
+  app:
+    container_name: meru-frontend
+    build:
+      context: ./
+      dockerfile: dockerfile
+    ports:
+      - '80:80'
+    networks:
+      - backend
+      - tunnel
+
+networks:
+    backend:
+    tunnel:
+      external: true

@@ -1,0 +1,17 @@
+name: frontend-docker-compose-workflow
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+
+      
+      - name: Build App
+        run: docker compose up --force-recreate --build --detach
