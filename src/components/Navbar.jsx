@@ -3,9 +3,9 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <nav className="h-[3.53rem]">
-      <div className="p-4 bg-gray-800 text-white fixed w-full">
-        <ul className="flex justify-between">
+    <nav className="p-7 bg-gray-800 text-white relative w-full h-fit">
+      <div className="fixed top-0 left-0">
+        <ul className="flex justify-between fixed top-0 left-0 p-4 w-full bg-gray-800">
           <li>
             <Link to="/" className="hover:text-blue-400">
               Home
@@ -18,6 +18,7 @@ const Navbar = () => {
           </li>
         </ul>
       </div>
+        
     </nav>
   );
 };

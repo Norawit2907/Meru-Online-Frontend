@@ -7,9 +7,9 @@ import Navbar from "./components/Navbar";
 const App = () => {
   return (
     <Router>
-      <div className="w-full h-screen">
+      <div className="w-full h-screen overflow-y-hidden">
         <Navbar />
-        <main className="flex-1 w-full   overflow-hidden">
+        <main className="h-[90vh]">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
