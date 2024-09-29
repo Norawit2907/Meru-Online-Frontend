@@ -4,13 +4,6 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
-  },
-  plugins: [],
-}
-
-module.exports = {
-  theme: {
     extend: {
       animation: {
         fadeIn: 'fadeIn 2s ease-out',
@@ -30,5 +23,3 @@ module.exports = {
   },
   plugins: [],
 }
-
-
