@@ -24,7 +24,7 @@ const addonData = [
   ];
   
 
-const Watpage = () => {
+const Watpage2 = () => {
     return (
         <div className="mx-4 mt-8 md:mx-[77px] md:mt-[70px]">
             {/* wat-picture section */}
@@ -118,4 +118,4 @@ const Watpage = () => {
     );
 };
 
-export default Watpage;
+export default Watpage2;
