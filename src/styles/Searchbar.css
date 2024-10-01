@@ -1,0 +1,27 @@
+.searchbar-container {
+    background-color: rgba(49, 47, 50, 0.8); /* #312F32 with transparency */
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+}
+.searchbar-container input[type="text"] {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #AD957B; /* Primary color */
+    border-radius: 3px;
+    margin-right: 10px;
+    color: #AD957B; /* Primary color */
+    background-color: transparent;
+}
+.searchbar-container button {
+    padding: 8px 16px;
+    background-color: #AD957B; /* Primary color */
+    border: none;
+    border-radius: 3px;
+    color: #312F32; /* Background color */
+    cursor: pointer;
+}
+.searchbar-container button:hover {
+    background-color: #8C7A63; /* Slightly darker shade of primary color */
+}

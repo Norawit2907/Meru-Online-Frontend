@@ -4,6 +4,16 @@ import "./App.css";
 function App() {
   return (
     <div className="App">
+<<<<<<< HEAD
+      <header className="Title-header">
+        <div className="title">
+          <h1>จัดงานศพ</h1>
+          <h1>ให้กับคนที่คุณรัก</h1>
+        </div>
+        <h2>ค้นหาวัด สำหรับงานศพของคุณ</h2>
+      
+      
+=======
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
@@ -18,9 +28,12 @@ function App() {
         >
           Learn React
         </a>
+>>>>>>> 849e55fbc9f03b0e72a913c6d7347711b1695171
       </header>
+
+      
     </div>
   );
 }
-
 export default App;
+

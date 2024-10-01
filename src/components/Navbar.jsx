@@ -1,22 +1,27 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import '../styles/Navbar.css'; 
 
 const Navbar = () => {
   return (
-    <nav className="p-7 bg-gray-800 text-white relative w-full h-fit z-50">
-      <div className="fixed top-0 left-0">
-        <ul className="flex justify-between fixed top-0 left-0 p-4 w-full bg-gray-800">
-          <li>
-            <Link to="/" className="hover:text-blue-400">
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link to="/profile" className="hover:text-blue-400">
-              Profile
-            </Link>
-          </li>
-        </ul>
+    <nav className="navbar">
+      <div className="logo">
+        <img src="../logo.png"/>
+        <Link to="/">Meru-Online</Link>
+      </div>
+      <div className="nav-buttons">
+        <div className="Login-buttons">
+          <Link to="">
+            <button>Login</button>
+          </Link>
+        </div>
+        <div className="Profile-buttons">
+          <Link to="/Profile">
+              <button>
+                <img src="../user.png"/>
+              </button>
+          </Link>
+        </div>
       </div>
         
     </nav>
