@@ -1,0 +1,52 @@
+:root{
+    --primary-color: #AD957B;
+    --secondary1: #312F32;
+}
+
+h1{
+    color: var(--primary-color);
+    font-size: 64px;
+
+}
+
+.start-date{
+    width: 450px;
+}
+
+.pick-day-pray{
+    width: 680px;
+}
+
+.pick-day-cremation{
+    width: 450px;
+}
+
+.booking-container {
+    overflow-y: auto; 
+  }
+  
+
+
+
+.pick-date {
+    background-color: #2E2E2E; /* Dark background similar to the image */
+    padding: 10px 20px; /* Add padding for spacing */
+    border-radius: 12px; /* Rounded corners */
+    width: 300px; /* Automatically adjusts to content width */
+    align-items: center; /* Aligns the content vertically */
+}
+
+.date {
+    font-size: 18px; /* Set a proper font size */
+    color: #fff; /* White color for the text */
+    margin-right: 10px; /* Spacing between date and icon */
+}
+
+.calendar-icon {
+    font-size: 24px; /* Adjust icon size */
+    color: #fff; /* White color for the icon */
+}
+
+.payment-method{
+    color: var(--primary-color);
+}

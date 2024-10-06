@@ -6,6 +6,7 @@ import Homes from "./styles/Home.css";
 import Navbar from "./components/Navbar";
 import Watpage2 from './pages/Watpage2.jsx'
 import EditWat from "./pages/EditWat.jsx";
+import Booking from "./pages/Booking.jsx";
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
             <Route path="/profile" element={<Profile />} />
             <Route path="/watpage2" element={<Watpage2/>} />
             <Route path="/editwat" element={<EditWat></EditWat>}></Route>
+            <Route path="/booking" element={<Booking></Booking>}></Route>
           </Routes>
         </main>
       </div>
