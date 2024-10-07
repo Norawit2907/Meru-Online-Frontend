@@ -10,7 +10,7 @@ const InputField = ({ label, id ,type}) => {
                 <input
                     id={id}
                     type={type}
-                    className="block w-full outline-none rounded-[12px] border-0 py-2 px-4 text-[#AD957B] bg-[#484848] sm:text-sm sm:leading-6"
+                    className="block w-[200px] outline-none rounded-[12px] border-0 py-2 px-4 text-[#AD957B] bg-[#484848] sm:text-sm sm:leading-6"
                 />
             </div>
         </div>

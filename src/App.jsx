@@ -10,9 +10,9 @@ import EditWat from "./pages/EditWat.jsx";
 const App = () => {
   return (
     <Router>
-      <div className="w-full h-screen overflow-x-hidden">
+      <div className="w-full h-full  ">
         <Navbar />
-        <main >
+        <main>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
