@@ -11,38 +11,38 @@ const PaymentOptions = () => {
   return (
     <div className="payment-options-container">
       <div className={`payment-option ${selectedOption === "mobile" ? "active" : ""}`}>
-        <label>
+        <label className="flex justify-between items-center">
+          Mobile Banking
           <input
             type="radio"
             value="mobile"
             checked={selectedOption === "mobile"}
             onChange={handleOptionChange}
           />
-          Mobile Banking
         </label>
       </div>
 
       <div className={`payment-option ${selectedOption === "qr" ? "active" : ""}`}>
-        <label>
+        <label className="flex justify-between items-center">
+          QR พร้อมเพย์
           <input
             type="radio"
             value="qr"
             checked={selectedOption === "qr"}
             onChange={handleOptionChange}
           />
-          QR พร้อมเพย์
         </label>
       </div>
 
       <div className={`payment-option ${selectedOption === "cash" ? "active" : ""}`}>
-        <label>
+        <label className="flex justify-between items-center">
+          เก็บเงินปลายทาง
           <input
             type="radio"
             value="cash"
             checked={selectedOption === "cash"}
             onChange={handleOptionChange}
           />
-          เก็บเงินปลายทาง
         </label>
       </div>
     </div>

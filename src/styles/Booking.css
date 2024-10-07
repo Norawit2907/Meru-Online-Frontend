@@ -9,6 +9,10 @@ h1{
 
 }
 
+h2{
+    color: var(--primary-color);
+}
+
 .start-date{
     width: 450px;
 }
@@ -50,3 +54,31 @@ h1{
 .payment-method{
     color: var(--primary-color);
 }
+
+.total{
+    font-size: 22px;
+    color: #E9C649;
+}
+
+.confirm-payment{
+    background-color: var(--primary-color);
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.confirm-payment button{
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.confirm-payment button:hover {
+    background-color: #E9C649;
+    border-radius: 12px;
+  }
+
+
+

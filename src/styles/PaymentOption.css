@@ -1,25 +1,40 @@
+:root{
+    --primary-color: #AD957B;
+    --secondary-color: #312F32;
+}
+
 .payment-options-container {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 20px;
   }
   
   .payment-option {
-    background-color: #333;
-    padding: 15px;
-    border-radius: 10px;
+    background-color: var(--secondary-color);
+    padding: 20px;
+    border-radius: 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: #fff;
+    color: white;
     cursor: pointer;
+
+
   }
   
   .payment-option.active {
-    border: 2px solid #fff; /* เพิ่มความแตกต่างเมื่อถูกเลือก */
+    border: 2px solid #AD957B;
   }
   
+  .payment-option label {
+    display: flex;
+    justify-content: space-between;
+
+    width: 100%;
+  }
+
   .payment-option input[type="radio"] {
-    accent-color: #fff; /* ปรับสี radio button */
+    accent-color: #AD957B;
+    margin-left: 10px;
   }
-  
+
