@@ -33,7 +33,8 @@ const Booking = () => {
       <h1 className="font-prompt font-bold">วัดดูยูมีน</h1>
 
       {/* Calendar Component */}
-      <Calendar />
+      <div className="flex justify-center mb-10"><Calendar /></div>
+
 
       <div className="all-section grid grid-cols-3">
         {/* Left Section */}
