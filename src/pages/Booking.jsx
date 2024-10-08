@@ -2,6 +2,9 @@ import React from "react";
 import "../styles/Booking.css";
 import Calendar from "../components/Calendar";
 import PaymentOptions from "../components/PaymentOption";
+import SlickSaLa from "../components/Slick-SaLa";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarAlt, faCaretDown } from "@fortawesome/free-solid-svg-icons";
@@ -39,7 +42,14 @@ const Booking = () => {
           <SelectDate label="จำนวนวันสวด" date="3" suffix="วัน" />
           <SelectDate label="วันเริ่มฌาปณกิจ" date="select" />
 
-          <h2>ศาลา</h2>
+          <h2 className="mb-5">ศาลา</h2>
+          <SlickSaLa />
+
+          <h3 className="text-white mt-10 ml-[20px] text-[32px] font-bold">กำหนดการสวดอภิธรรมศพ</h3>
+
+
+          
+
         </div>
 
         {/* Right Section */}
@@ -51,60 +61,65 @@ const Booking = () => {
 
             {/* สิ่งที่วัดเตรียมให้ */}
             <div className="mb-10">
-              <div className="font-bold text-white">สิ่งที่วัดเตรียมให้</div>
-
+              <div className="font-bold text-white mb-3">
+                สิ่งที่วัดเตรียมให้
+              </div>
               <div className="grid grid-cols-2 text-white">
-                <div className="flex">- รถแห่เสียงดังๆเผื่อศพตื่นมาเต้น</div>
-                <div className="flex">5,000 $</div>
+                <div className="flex ml-2">
+                  - รถแห่เสียงดังๆเผื่อศพตื่นมาเต้น
+                </div>
+                <div className="flex justify-end">5,000 $</div>
               </div>
             </div>
 
             {/* สินค้าและบริการ */}
             <div className="mb-10">
-              <div className="font-bold text-white">สินค้าและบริการ</div>
+              <div className="font-bold text-white mb-3">สินค้าและบริการ</div>
 
               <div className="grid grid-cols-2 text-white">
-                <div className="flex">-ชุดน้ำอาบศพและเครื่องไหว้ x 1</div>
-                <div className="flex">999 $</div>
+                <div className="flex ml-3">-ชุดน้ำอาบศพและเครื่องไหว้ x 1</div>
+                <div className="flex justify-end">999 $</div>
               </div>
 
               <div className="grid grid-cols-2 text-white">
-                <div className="flex"> -ชุดน้ำอาบศพและเครื่องไหว้ x 2</div>
-                <div className="flex">1,998 $</div>
+                <div className="flex ml-3"> -ชุดน้ำอาบศพและเครื่องไหว้ x 2</div>
+                <div className="flex justify-end">1,998 $</div>
               </div>
 
               <div className="grid grid-cols-2 text-white">
-                <div className="flex">-ชุดน้ำอาบศพและเครื่องไหว้ x 3</div>
-                <div className="flex">2,997$</div>
+                <div className="flex ml-3">-ชุดน้ำอาบศพและเครื่องไหว้ x 3</div>
+                <div className="flex justify-end">2,997$</div>
               </div>
             </div>
 
             {/* ศาลา */}
             <div className="mb-10">
-              <div className="font-bold text-white">ศาลา</div>
+              <div className="font-bold text-white mb-3">ศาลา</div>
 
               <div className="grid grid-cols-2 text-white">
-                <div className="flex">-ศาลาแบบซุปเปอร์ไฮเทค</div>
-                <div className="flex">9,999 $</div>
+                <div className="flex ml-3">-ศาลาแบบซุปเปอร์ไฮเทค</div>
+                <div className="flex justify-end">9,999 $</div>
               </div>
             </div>
 
             {/* กำหนดการสวดอภิธรรม */}
             <div className="mb-10">
-              <div className="font-bold text-white">กำหนดการสวดอภิธรรม</div>
+              <div className="font-bold text-white mb-3">
+                กำหนดการสวดอภิธรรม
+              </div>
               <div className="grid grid-cols-2 text-white">
-                <div className="flex">-วันที่ 17/8/67</div>
-                <div className="flex">4,000 $</div>
+                <div className="flex ml-3">-วันที่ 17/8/67</div>
+                <div className="flex justify-end">4,000 $</div>
               </div>
 
               <div className="grid grid-cols-2 text-white">
-                <div className="flex">-วันที่ 18/8/67</div>
-                <div className="flex">5,500 $</div>
+                <div className="flex ml-3">-วันที่ 18/8/67</div>
+                <div className="flex justify-end">5,500 $</div>
               </div>
 
               <div className="grid grid-cols-2 text-white">
-                <div className="flex">-วันที่ 19/8/67</div>
-                <div className="flex">3,500 $</div>
+                <div className="flex ml-3">-วันที่ 19/8/67</div>
+                <div className="flex justify-end">3,500 $</div>
               </div>
             </div>
 
@@ -144,9 +159,7 @@ const SelectDate = ({ label, date, suffix = "" }) => {
         </div>
       </div>
       {suffix && (
-        <h2 className="font-prompt text-white font-bold text-2xl ml-32">
-          {suffix}
-        </h2>
+        <h2 className="font-prompt text-white font-bold text-2xl">{suffix}</h2>
       )}
     </div>
   );
