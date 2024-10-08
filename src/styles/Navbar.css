@@ -34,7 +34,7 @@
 }
 .navbar .nav-buttons {
     display: flex;
-    gap: 45px;
+    gap: 35px;
 }
 
 .navbar .Login-buttons button {

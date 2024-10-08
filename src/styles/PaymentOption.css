@@ -1,0 +1,40 @@
+:root{
+    --primary-color: #AD957B;
+    --secondary-color: #312F32;
+}
+
+.payment-options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .payment-option {
+    background-color: var(--secondary-color);
+    padding: 20px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    cursor: pointer;
+
+
+  }
+  
+  .payment-option.active {
+    border: 2px solid #AD957B;
+  }
+  
+  .payment-option label {
+    display: flex;
+    justify-content: space-between;
+
+    width: 100%;
+  }
+
+  .payment-option input[type="radio"] {
+    accent-color: #AD957B;
+    margin-left: 10px;
+  }
+
