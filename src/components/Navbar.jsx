@@ -10,6 +10,13 @@ const Navbar = () => {
         <Link to="/">Meru-Online</Link>
       </div>
       <div className="nav-buttons">
+        <div className="Bell-Buttons">
+            <Link to="/">
+                <button>
+                  <img src="../bell.png"/>
+                </button>
+            </Link>
+         </div>
         <div className="Login-buttons">
           <Link to="">
             <button>Login</button>

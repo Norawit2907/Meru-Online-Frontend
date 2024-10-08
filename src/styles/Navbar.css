@@ -36,6 +36,7 @@
     display: flex;
     gap: 45px;
 }
+
 .navbar .Login-buttons button {
     height: 40px;
     width: 175px;
@@ -65,4 +66,11 @@
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
+}
+.navbar .Bell-Buttons {
+    margin-top: 5px;
+}
+
+.navbar .Profile-buttons button:hover {
+    opacity: 0.8;
 }
