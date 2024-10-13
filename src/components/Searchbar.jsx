@@ -3,16 +3,20 @@ import { BrowserRouter as Router, Routes, Route, Link,  } from "react-router-dom
 import { useLocation } from 'react-router-dom';
 import Calendar from 'react-calendar';
 import '../styles/Searchbar.css';
+import { GetWatCard } from "../services/search";
 const Searchbar = ({ onSearch }) => {
     const [query, setQuery] = useState('');
     const handleInputChange = (e) => {
         setQuery(e.target.value);
     };
-    const handleSearch = () => {
+    const handleSearch = async () => {
         if (onSearch) {
             onSearch(query);
+            const wats = await GetWatCard(query)
+            console.log("check",wats)
         }
     };
+
     const [showCalendar, setShowCalendar] = useState(false);
     const [startDate, setStartDate] = useState(null); 
     const [endDate, setEndDate] = useState(null); 
