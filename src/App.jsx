@@ -8,6 +8,7 @@ import Profile from "./pages/Profile.jsx";
 import Navbar from "./components/Navbar";
 import Watpage2 from './pages/Watpage2.jsx'
 import EditWat from "./pages/EditWat.jsx";
+import Watpage1 from "./pages/Watpage1.jsx";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/result" element={<Result />} />
+            <Route path="/watpage1" element={<Watpage1/>} />
             <Route path="/watpage2" element={<Watpage2/>} />
             <Route path="/editwat" element={<EditWat></EditWat>}></Route>
           </Routes>
