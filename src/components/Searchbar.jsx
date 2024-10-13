@@ -109,7 +109,7 @@ const Searchbar = ({ onSearch }) => {
             startDate ? new Date(startDate).toISOString() : ""
           }&endDate=${endDate ? new Date(endDate).toISOString() : ""}`}
         >
-          <button onClick={handleSearch}>
+          <button onClick={handleSearch} className="flex items-center justify-center">
             <img src="../glass.png" alt="Search Icon" />
           </button>
         </Link>

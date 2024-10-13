@@ -3,19 +3,24 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
 import '../styles/Watcard.css';
 
-const Watcard = () => {
+const Watcard = ({image ,title, minprice, maxprice, location}) => {
     return (
-        <div style={{ width: '100%', height: '100%', flexDirection: 'column', justifyContent: 'flex-end', alignItems: 'center', gap: 15, display: 'inline-flex' }}>
-            <div style={{ width: 382, height: 340, background: 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.60) 100%)', borderRadius: 12 }} />
-            <div style={{ width: 188, height: 27, color: 'white', fontSize: 32, fontFamily: 'Montserrat', fontWeight: '600', wordWrap: 'break-word' }}>วัดดูยูมีน</div>
-            <div style={{ width: 188, height: 27, color: 'white', fontSize: 18, fontFamily: 'Montserrat', fontWeight: '600', wordWrap: 'break-word' }}>$ 1000 - 5000 บาท</div>
-            <div style={{ width: 55, height: 10, position: 'relative' }}>
-                <div style={{ width: 10, height: 10, left: 30, top: 0, position: 'absolute', background: 'linear-gradient(0deg, white 0%, white 100%), linear-gradient(0deg, white 0%, white 100%), linear-gradient(0deg, white 0%, white 100%)', borderRadius: 9999 }} />
-                <div style={{ width: 10, height: 10, left: 45, top: 0, position: 'absolute', background: 'linear-gradient(0deg, white 0%, white 100%), linear-gradient(0deg, white 0%, white 100%), linear-gradient(0deg, white 0%, white 100%)', borderRadius: 9999 }} />
-                <div style={{ width: 10, height: 10, left: 15, top: 0, position: 'absolute', background: 'linear-gradient(0deg, white 0%, white 100%), linear-gradient(0deg, white 0%, white 100%), linear-gradient(0deg, white 0%, white 100%)', borderRadius: 9999 }} />
-                <div style={{ width: 10, height: 10, left: 0, top: 0, position: 'absolute', background: 'linear-gradient(0deg, white 0%, white 100%), linear-gradient(0deg, white 0%, white 100%), linear-gradient(0deg, white 0%, white 100%)', borderRadius: 9999 }} />
+        <div>
+            <div className='relative w-full h-128  rounded-xl object-contain '>
+                <div className='z-0 absolute inset-0 bg-gradient-to-t from-black to-70% rounded-xl'>
+
+                </div>
+                <img src={image} alt='img pic.' className='w-full h-full rounded-xl'/>
+            
+                <div className='absolute bottom-0 left-0 p-4 pr-2'>
+                    <p className='text-2xl font-bold text-white line-clamp-1'>{title}</p>
+                    <p className='text-md  text-white line-clamp-1'>${minprice} - {maxprice} บาท.-</p>
+                </div>
+
             </div>
-            <div style={{ alignSelf: 'stretch', height: 24, color: '#9A9A9A', fontSize: 14, fontFamily: 'Montserrat', fontWeight: '500', wordWrap: 'break-word' }}>123 อ.บางบอน จ.ชลบุรี</div>
+           
+            <p className='text-[#9A9A9A] text-sm line-clamp-2 mt-2 p-4 pt-1'>{location}</p>
+           
         </div>
     );
 };
