@@ -54,13 +54,6 @@ const Navbar = () => {
             </div>
           )}
         </div>
-        <div className="Bell-Buttons">
-            <Link to="/">
-                <button>
-                  <img src="../bell.png"/>
-                </button>
-            </Link>
-         </div>
         <div className="Login-buttons ml-4">
           <Link to="">
             <button className="text-white bg-blue-500 hover:bg-blue-700 rounded px-4 py-2">
