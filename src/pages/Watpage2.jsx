@@ -26,7 +26,7 @@ const addonData = [
 
 const Watpage2 = () => {
     return (
-        <div className="mx-4 mt-8 md:mx-[77px] md:mt-[70px]">
+        <div className="mx-4 mt-8 md:mx-[77px] md:mt-[70px] overflow-x-hidden">
             {/* wat-picture section */}
             <div className="w-full h-auto md:h-[440px] flex flex-col md:flex-row gap-[20px]">
                 <div className="bg-[#C2C6CC] md:w-full lg:w-7/12 h-[300px] md:h-full rounded-[16px] flex items-end">
