@@ -9,6 +9,7 @@ import Navbar from "./components/Navbar";
 import Watpage1 from './pages/Watpage1.jsx'
 import Watpage2 from './pages/Watpage2.jsx'
 import EditWat from "./pages/EditWat.jsx";
+import Booking from "./pages/Booking.jsx";
 
 const App = () => {
   return (
@@ -22,7 +23,8 @@ const App = () => {
             <Route path="/result" element={<Result />} />
             <Route path="/watpage1" element={<Watpage2/>} />
             <Route path="/watpage2" element={<Watpage2/>} />
-            <Route path="/editwat" element={<EditWat></EditWat>}></Route>
+            <Route path="/editwat" element={<EditWat/>}></Route>
+            <Route path="/booking" element={<Booking/>} />
           </Routes>
         </main>
       </div>
