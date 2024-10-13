@@ -6,7 +6,7 @@ const Profile = () => {
     <div className="flex h-full overflow-y-hidden divide-x-2 pb-10 pt-16">
       <div className='flex flex-col text-white w-1/5 items-center justify-between  '>
         <div className='flex flex-col relative pt-6 gap-3 items-center'>
-          <img src={require('../assets/profile.png')} alt='profile' width={300} height={300} className='w-28 h-28 rounded-full  ' />
+          <img src={require('../Assets/profile.png')} alt='profile' width={300} height={300} className='w-28 h-28 rounded-full  ' />
           <div>
             <p className='text-3xl text-center text-[#AD957B] font-bold'>John Figma</p>
             <p className='text-sm text-[#484848]'>Nick Name</p>
