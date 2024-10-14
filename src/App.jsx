@@ -20,7 +20,8 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/result" element={<Result />} />
-            <Route path="/watpage1" element={<Watpage2/>} />
+            <Route path="/watpage1" element={<Watpage1/>} />
+            <Route path="/watpage1/:id" element={<Watpage1/>} />
             <Route path="/watpage2" element={<Watpage2/>} />
             <Route path="/editwat" element={<EditWat></EditWat>}></Route>
           </Routes>

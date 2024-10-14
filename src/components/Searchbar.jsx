@@ -27,7 +27,9 @@ const Searchbar = ({ onSearch }) => {
   };
 
   useEffect(()=>{
-    setQuery(queries)
+    if(queries){
+      setQuery(queries)
+    }
     setStartDate(sdate)
     setEndDate(edate)
   }, [])
