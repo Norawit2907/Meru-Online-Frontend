@@ -37,7 +37,7 @@ const Footer = () => {
 			</div>
 
 			<hr className="my-5" />
-			<div className="text-start mt-3 ">
+			<div className="text-start mt-3 ml-[20px]">
 				<p className="">&copy; 2024 Meru Online. All Rights Reserved.</p>
 			</div>
 		</footer>

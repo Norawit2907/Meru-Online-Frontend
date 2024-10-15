@@ -29,7 +29,7 @@ const App = () => {
             <Route path="/booking" element={<Booking/>} />
           </Routes>
         </main>
-        <Footer/>
+        {/* <Footer/> */}
       </div>
     </Router>
     
