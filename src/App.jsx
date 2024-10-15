@@ -10,6 +10,7 @@ import Watpage1 from './pages/Watpage1.jsx'
 import Watpage2 from './pages/Watpage2.jsx'
 import EditWat from "./pages/EditWat.jsx";
 import Booking from "./pages/Booking.jsx";
+import Footer from "./components/Footer.jsx";
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
             <Route path="/booking" element={<Booking/>} />
           </Routes>
         </main>
+        <Footer/>
       </div>
     </Router>
     
