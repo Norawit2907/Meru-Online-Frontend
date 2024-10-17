@@ -5,7 +5,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 const AddonWat = ({ title, addonList }) => {
     return (
         <div className="mb-10 flex flex-col gap-6">
-            <h1 className="text-white text-[32px]">{title}</h1>
+            <h1 className="text-[#AD957B] text-[32px] font-bold">{title}</h1>
             <div className="flex gap-6">
                 
                 {/* Render the list of addons */}

@@ -12,6 +12,7 @@ import Login from "./pages/login.jsx";
 import Userregister from "./pages/Userregister.jsx";
 import Watregister from "./pages/Watregister.jsx";
 import Booking from "./pages/Booking.jsx";
+import Footer from "./components/Footer.jsx";
 
 const App = () => {
   return (
@@ -34,6 +35,7 @@ const App = () => {
             <Route path="/booking" element={<Booking/>} />
           </Routes>
         </main>
+        {/* <Footer/> */}
       </div>
     </Router>
     
