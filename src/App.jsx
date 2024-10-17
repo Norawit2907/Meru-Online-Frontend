@@ -11,13 +11,12 @@ import EditWat from "./pages/EditWat.jsx";
 import Login from "./pages/login.jsx";
 import Userregister from "./pages/Userregister.jsx";
 import Watregister from "./pages/Watregister.jsx";
-import Watpage1 from "./pages/Watpage1.jsx";
 import Booking from "./pages/Booking.jsx";
 
 const App = () => {
   return (
     <Router>
-      <div className="w-full h-full  ">
+      <div>
         <Navbar />
         <main>
           <Routes>
@@ -28,7 +27,7 @@ const App = () => {
             <Route path="/watpage1" element={<Watpage1/>} />
             <Route path="/watpage1/:id" element={<Watpage1/>} />
             <Route path="/watpage2" element={<Watpage2/>} />
-            <Route path="/editwat" element={<EditWat/>}></Route>
+            <Route path="/editwat" element={<EditWat/>}/>
             <Route path="/login" element={<Login />} />
             <Route path="/Userregister" element={<Userregister />} />
             <Route path="/Watregister" element={<Watregister />} />
