@@ -1,39 +1,31 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faUser , faLock, faEye,faEyeSlash} from "@fortawesome/free-solid-svg-icons";
-
-// const showHiddenPass = (loginPass, loginEye) =>{
-//     const input = document.getElementById(loginPass),
-//           iconEye = document.getElementById(loginEye)
- 
-//     iconEye.addEventListener('click', () =>{
-//        // Change password to text
-//        if(input.type === 'password'){
-//           // Switch to text
-//           input.type = 'text'
- 
-//           // Icon change
-//           iconEye.classList.add('ri-eye-line')
-//           iconEye.classList.remove('ri-eye-off-line')
-//        } else{
-//           // Change to password
-//           input.type = 'password'
- 
-//           // Icon change
-//           iconEye.classList.remove('ri-eye-line')
-//           iconEye.classList.add('ri-eye-off-line')
-//        }
-//     })
-//  }
- 
-//  showHiddenPass('login-pass','login-eye')
+import { UserLogin } from "../services/auth";
 
 const Loginbox = ({registerlink}) => {
 
   const [showPassword, setShowPassword] = useState(0);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  }
+
+  const handlePasswordChange = (event) =>{
+    setPassword(event.target.value);
+  }
 
   const togglepassword = () => {
     setShowPassword(!showPassword)
+  }
+
+  const handlelogin = async () => {
+    const res = await UserLogin(email, password);
+    if(res === true){
+      window.location.href = `/`
+    }
   }
 
   return (
@@ -43,7 +35,7 @@ const Loginbox = ({registerlink}) => {
       <div className="my-4 w-full">
         <label for="username" className="text-white text-sm"><FontAwesomeIcon icon={faUser}></FontAwesomeIcon> Username/email</label>
         <br />
-        <input type="text" id="username" name="username" className="w-full bg-[#2d2d2e] p-2 rounded-xl border border-slate-600 text-white"></input>
+        <input type="text" id="username" name="username" onChange={handleEmailChange} className="w-full bg-[#2d2d2e] p-2 rounded-xl border border-slate-600 text-white"></input>
         <br />
       </div>
 
@@ -51,7 +43,7 @@ const Loginbox = ({registerlink}) => {
         <label for="password" className="text-white text-sm"><FontAwesomeIcon icon={faLock}></FontAwesomeIcon> Password </label>
         <br/>
         <div className="relative">
-          <input type={showPassword ? "text" : "password"} id="password" name="password" className="w-full bg-[#2d2d2e] p-2 rounded-xl border border-slate-600 text-white"></input>
+          <input type={showPassword ? "text" : "password"} id="password" name="password" onChange={handlePasswordChange} className="w-full bg-[#2d2d2e] p-2 rounded-xl border border-slate-600 text-white"></input>
           <button className="absolute top-2 right-4" onClick={togglepassword}>
           {
             showPassword ? 
@@ -64,7 +56,7 @@ const Loginbox = ({registerlink}) => {
         <br/>
       </div>
 
-      <button class="button" type="submit" className="w-full text-center text-white bg-[#ad957b] p-3 rounded-lg">
+      <button class="button" type="submit" onClick={handlelogin} className="w-full text-center text-white bg-[#ad957b] p-3 rounded-lg">
         Login
       </button>
 
