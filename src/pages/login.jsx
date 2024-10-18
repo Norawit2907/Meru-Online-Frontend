@@ -8,12 +8,12 @@ const Login = () => (
           <div class="flex-container">
             <div class="flex-item-left">
               <h1 className='text-center font-semibold'>Hello User!</h1>
-              <Loginbox registerlink="userregister"></Loginbox>
+              <Loginbox registerlink="userregister" userchoice='user'></Loginbox>
             </div>
             <div class="vertical-line"></div>
             <div class="flex-item-right">
               <h1 className='text-center font-semibold'>Hello Wat!</h1>
-              <Loginbox registerlink="watregister"></Loginbox>
+              <Loginbox registerlink="watregister" userchoice='wat'></Loginbox>
             </div>
           </div>
         

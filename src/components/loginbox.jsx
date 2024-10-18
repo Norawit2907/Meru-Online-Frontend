@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faUser , faLock, faEye,faEyeSlash} from "@fortawesome/free-solid-svg-icons";
-import { UserLogin } from "../services/auth";
+import { UserLogin, WatLogin } from "../services/auth";
 
-const Loginbox = ({registerlink}) => {
+const Loginbox = ({registerlink, userchoice}) => {
 
   const [showPassword, setShowPassword] = useState(0);
   const [email, setEmail] = useState("");
@@ -22,9 +22,18 @@ const Loginbox = ({registerlink}) => {
   }
 
   const handlelogin = async () => {
-    const res = await UserLogin(email, password);
-    if(res === true){
-      window.location.href = `/`
+    if(userchoice == 'user'){
+      const res = await UserLogin(email, password);
+      if(res === true){
+        window.location.href = `/`
+      }
+    }
+
+    else if(userchoice == 'wat'){
+      const res = await WatLogin(email, password);
+      if(res === true){
+        window.location.href = `/`
+      }
     }
   }
 
