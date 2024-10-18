@@ -28,7 +28,7 @@ import {faUser , faLock, faEye,faEyeSlash} from "@fortawesome/free-solid-svg-ico
  
 //  showHiddenPass('login-pass','login-eye')
 
-const Loginbox = () => {
+const Loginbox = ({registerlink}) => {
 
   const [showPassword, setShowPassword] = useState(0);
 
@@ -49,26 +49,20 @@ const Loginbox = () => {
 
       <div className="my-4 w-full text-white">
         <label for="password" className="text-white text-sm"><FontAwesomeIcon icon={faLock}></FontAwesomeIcon> Password </label>
-        <button onClick={togglepassword}>
-        {
-          showPassword ? 
-          <FontAwesomeIcon icon={faEye}></FontAwesomeIcon>
-          :
-          <FontAwesomeIcon icon={faEyeSlash}></FontAwesomeIcon>
-        }
-        </button>
-        
-        <br></br>
-        <input type={showPassword ? "text" : "password" } id="password" name="password" className="w-full bg-[#2d2d2e] p-2 rounded-xl border border-slate-600 text-white"></input>
-        <br></br>
+        <br/>
+        <div className="relative">
+          <input type={showPassword ? "text" : "password"} id="password" name="password" className="w-full bg-[#2d2d2e] p-2 rounded-xl border border-slate-600 text-white"></input>
+          <button className="absolute top-2 right-4" onClick={togglepassword}>
+          {
+            showPassword ? 
+            <FontAwesomeIcon icon={faEye}></FontAwesomeIcon>
+            :
+            <FontAwesomeIcon icon={faEyeSlash}></FontAwesomeIcon>
+          }
+          </button>
+        </div>
+        <br/>
       </div>
-      
-
-      <label class="container" className="flex gap-2 mb-4 text-white">
-        <input type="checkbox"></input>
-        <p>remember me</p>
-        <span class="checkmark"></span>
-      </label>
 
       <button class="button" type="submit" className="w-full text-center text-white bg-[#ad957b] p-3 rounded-lg">
         Login
@@ -76,7 +70,7 @@ const Loginbox = () => {
 
       <div className="flex justify-center text-sm text-white mt-8">
       <p className="">Don't have an account?</p>
-      <a className="hover:underline mx-2 text-[#ad957b]" href="#" id="register">Register</a>  
+      <a className="hover:underline mx-2 text-[#ad957b]" href={`/${registerlink}`} id="register">Register</a>  
       </div>
     </div>
   );
