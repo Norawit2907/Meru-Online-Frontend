@@ -1,12 +1,21 @@
 import React from 'react';
+import '../styles/Home.css'
 
-const Home = () => {
-  return (
-    <div className="home">
-      <h1 className="text-3xl font-bold">Home Page</h1>
-      <p>Welcome to the Home page!</p>
-    </div>
-  );
-};
+import Searchbar from '../components/Searchbar';
+
+const Home = () => (
+  <div className="App">
+    <header className="Title-header">
+      <div className="title">
+        <h1>จัดงานศพ</h1>
+        <h1>ให้กับคนที่คุณรัก</h1>
+      </div>
+      <h1>ค้นหาวัด สำหรับงานศพของคุณ</h1>
+      <div className="Search-bar">
+        <Searchbar onSearch={(query) => console.log(query)} />
+      </div>
+    </header>
+  </div>
+);
 
 export default Home;
