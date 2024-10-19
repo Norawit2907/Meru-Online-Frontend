@@ -1,0 +1,19 @@
+.sala-carousel .slick-dots li button:before {
+  color: white;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.sala-carousel .slick-dots li.slick-active button:before {
+  color: #a88955;
+  margin-top: 10px;
+}
+
+.slick-list {
+  margin: 0 -5px;
+}
+
+.slick-slide > div {
+  padding: 0 20px;
+}
+
