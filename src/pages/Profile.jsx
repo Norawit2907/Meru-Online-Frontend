@@ -19,18 +19,18 @@ const Profile = () => {
   return (
     <div className="flex h-full overflow-y-hidden divide-x-2 pb-10 pt-16">
       <div className="flex flex-col text-white w-1/5 items-center justify-between">
-        <div className="flex flex-col relative pt-6 gap-3 items-center">
+        <div className="flex flex-col relative pt-6 gap-3 items-center mb-10">
           <img src={require("../Assets/profile.png")} alt="profile" width={300} height={300} className="w-28 h-28 rounded-full" />
-          <div>
+          <div className="text-start">
             <p className="text-3xl text-center text-[#AD957B] font-bold">John Figma</p>
             <p className="text-sm text-[#484848]">Nick Name</p>
           </div>
           <div className="flew flex-col">
-            <div className="flex">
+            <div className="flex gap-2">
               <BsFillTelephoneFill />
               <p className="text-sm">Tel: 081-234-5678</p>
             </div>
-            <div className="flex">
+            <div className="flex gap-2">
               <MdEmail />
               <p className="text-sm">Email: meru@gmail.com</p>
             </div>

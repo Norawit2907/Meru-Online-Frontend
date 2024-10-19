@@ -146,7 +146,7 @@ const PaymentSection = ({ totalCost }) => {
 
 const Section = ({ title, children }) => {
   return (
-    <div className="block justify-end w-full h-auto mb-10">
+    <div className="block justify-end w-full h-auto mb-10 mt-10">
       <h3 className="font-prompt font-bold text-white text-3xl mb-10">{title}</h3>
       {children}
     </div>
@@ -173,7 +173,7 @@ const SelectDate = ({ label, date, suffix = "" }) => {
       <h2 className="font-prompt text-white font-bold text-2xl">{label}</h2>
       <div className="pick-date flex justify-between items-center rounded-xl">
         <div className="date text-white">{date}</div>
-        <div className="calendar-icon text-white">
+        <div className="text-white">
           <FontAwesomeIcon icon={faCaretDown} />
         </div>
       </div>
