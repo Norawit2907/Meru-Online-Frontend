@@ -23,10 +23,9 @@ const Calendar = () => {
     const year = currentDate.getFullYear();
     const totalDays = getDaysInMonth(month, year);
 
-        // Find the first day of the current month (0 = Sunday, 6 = Saturday)
+
         const firstDayOfMonth = new Date(year, month, 1).getDay();
 
-        // Fill empty spaces before the first day of the month
         for (let emptyDay = 0; emptyDay < firstDayOfMonth; emptyDay++) {
           days.push(<div key={`empty-${emptyDay}`} className="empty-day"></div>);
         }
