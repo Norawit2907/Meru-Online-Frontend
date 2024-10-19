@@ -1,5 +1,6 @@
 import React from "react";
 import Addon from "../components/Addon";
+import Calendar from "../components/Calendar";
 
 const addonData = [
     {
@@ -89,7 +90,8 @@ const Watpage2 = () => {
             </div>
 
             {/* wat-calendar-section */}
-            <div className="w-[835px] h-[696.25px] bg-[#312F32] rounded-[10px] mb-10">
+            <div className="w-[835px] h-[696.25px] bg-[#312F32] rounded-[10px] mb-10 flex justify-center items-center">
+                <Calendar/>
             </div>
 
             {/* wat-location-section */}

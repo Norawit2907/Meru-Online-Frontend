@@ -14,6 +14,7 @@ import Watregister from "./pages/Watregister.jsx";
 import Booking from "./pages/Booking.jsx";
 import Footer from "./components/Footer.jsx";
 
+
 const App = () => {
   return (
     <Router>
@@ -33,6 +34,7 @@ const App = () => {
             <Route path="/userregister" element={<Userregister />} />
             <Route path="/watregister" element={<Watregister />} />
             <Route path="/booking" element={<Booking/>} />
+
           </Routes>
         </main>
         {/* <Footer/> */}
