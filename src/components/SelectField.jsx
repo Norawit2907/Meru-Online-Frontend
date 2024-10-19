@@ -1,6 +1,8 @@
 import React from 'react'
 
-const SelectField = ({ label, id, name, options, defaultValue }) => {
+
+
+const SelectField = ({ label, id, name, options, defaultValue, onChange }) => {
     return (
         <div>
             <label htmlFor={id} className="block text-sm font-medium leading-6 text-[#9A9A9A]">

@@ -31,8 +31,8 @@ const App = () => {
             <Route path="/watpage2" element={<Watpage2/>} />
             <Route path="/editwat" element={<EditWat/>}/>
             <Route path="/login" element={<Login />} />
-            <Route path="/Userregister" element={<Userregister />} />
-            <Route path="/Watregister" element={<Watregister />} />
+            <Route path="/userregister" element={<Userregister />} />
+            <Route path="/watregister" element={<Watregister />} />
             <Route path="/booking" element={<Booking/>} />
 
           </Routes>
