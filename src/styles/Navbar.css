@@ -10,7 +10,7 @@
     top: 0;
     width: 100%;
     background-color: #312F32;     
-    z-index: 1000; 
+    z-index: 60; 
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
   }
   
