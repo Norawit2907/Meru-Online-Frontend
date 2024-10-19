@@ -13,6 +13,8 @@ const Userregister = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(0);
   const [profileImage, setProfileImage] = useState();
   const [confirmpassword, setConfirmPassword] = useState();
+
+
   const [formValue, setFormValue] = useState({
     firstname: "",
     lastname: "",
@@ -43,6 +45,7 @@ const Userregister = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const profile_link = await UploadImage(profileImage);
+    
     if(formValue.password === confirmpassword){
       const response = await UserRegister(formValue.firstname, formValue.lastname, formValue.phoneNumber, profile_link, formValue.email, formValue.password);
       if(response){
