@@ -17,12 +17,14 @@ const EditProfile = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
     console.log({ name, nickname, telephone, email });
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form 
+      onSubmit={handleSubmit} 
+      className="space-y-4 mx-auto max-w-md p-4 h-auto"
+    >
       <div className="flex flex-col items-center text-white">
         {profileImage ? (
           <img 
@@ -39,22 +41,24 @@ const EditProfile = () => {
           type="file" 
           accept="image/*" 
           onChange={handleImageChange} 
-          className="mb-4 w-full"
+          className="mb-4 w-full text-white"
         />
       </div>
 
-      {/* Reusing InputField component for each input */}
+
       <InputField 
         label="Name" 
         value={name} 
         onChange={(e) => setName(e.target.value)} 
         required
+        className="w-full"  
       />
       <InputField 
         label="Nickname" 
         value={nickname} 
         onChange={(e) => setNickname(e.target.value)} 
         required
+        className="w-full"  
       />
       <InputField 
         label="Telephone" 
@@ -62,6 +66,7 @@ const EditProfile = () => {
         value={telephone} 
         onChange={(e) => setTelephone(e.target.value)} 
         required
+        className="w-full"  
       />
       <InputField 
         label="Email" 
@@ -69,11 +74,12 @@ const EditProfile = () => {
         value={email} 
         onChange={(e) => setEmail(e.target.value)} 
         required
+        className="w-full"  
       />
 
       <button 
         type="submit" 
-        className="mt-4 w-full bg-[#AD957B] text-white py-2 rounded-lg"
+        className="mt-4 w-full bg-[#AD957B] text-white py-2 rounded-lg hover:bg-[#A86E54]"
       >
         Save Changes
       </button>

@@ -85,13 +85,7 @@ const SlickSaLa = () => {
             />
           ))}
         </Slider>
-        {selectedIndex !== null && (
-          <div className="text-center mt-4">
-            <p className="text-lg text-white mt-10">
-              คุณได้เลือก: <span className="font-bold">{costData[selectedIndex].title}</span> ราคา {costData[selectedIndex].price} บาท
-            </p>
-          </div>
-        )}
+       
       </div>
     </div>
   );
