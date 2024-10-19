@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import InputField from "../components/InputField";
 import SelectField from "../components/SelectField";
 import Addon from "../components/Addon";
@@ -24,9 +24,73 @@ const addonData = [
     },
 ];
 
+
 const EditWat = () => {
+    
+    const [addressForm, setAddressForm] = useState({
+        address: "",
+        street: "",
+        alley: "",
+        province: "",
+        distrinct: "",
+        sub_distrinct: "",
+        postalCode: "",
+        latitude: "",
+        longtitude: ""
+    })
+
+    const [watForm, setWatForm] = useState({
+        name: "",
+        admin_id: "",
+        admin_name: "",
+        phoneNumber: "",
+        line_id: "",
+        Facebook: "",
+        description: "",
+        max_workload: 0,
+    })
+
+    const handleWatFormChange = (event) => {
+        setWatForm({
+          ...watForm,
+          [event.target.name]: event.target.value
+        })
+        console.log(watForm);
+        
+    }
+
+    const handleAddressFormChange = (event) => {
+        setAddressForm({
+          ...addressForm,
+          [event.target.name]: event.target.value
+        })
+    }
+
+    const handleworkload = (set) =>{
+        let cur = watForm.max_workload
+        if (set == "i"){
+            setWatForm({
+                ...watForm,
+                max_workload: cur += 1
+            })
+        }
+        else if( set == "d"){
+            if(watForm.max_workload > 0){
+                setWatForm({
+                    ...watForm,
+                    max_workload: cur -= 1
+                })
+            }
+        }
+        console.log(watForm.max_workload);
+        
+    }
+
     return (
-        <div className="mx-4 mt-8 md:mx-[77px] md:mt-[70px] overflow-x-hidden">
+        <div className="relative mx-4 mt-8 md:mx-[77px] md:mt-[70px] overflow-x-hidden">
+            <button className="absolute top-0 text-white text-xl font-bold p-6 bg-[#ad957b] rounded-xl">
+                Done
+            </button>
             <h1 className="text-[#AD957B] text-[30px] md:text-[50px] font-semibold">
                 แก้ไขรายละเอียด
             </h1>
@@ -41,6 +105,9 @@ const EditWat = () => {
                             ชื่อของวัด
                         </p>
                         <input
+                            value={watForm.name}
+                            name="name"
+                            onChange={handleWatFormChange}
                             className="w-full md:w-[700px] bg-[#484848] placeholder:text-[#AD957B] text-[#AD957B] outline-none rounded-[12px] py-2 px-4"
                             placeholder="ชื่อวัด"
                         ></input>
@@ -50,34 +117,42 @@ const EditWat = () => {
                             ที่อยู่ของวัด
                         </p>
                         <div className="lg:flex-col">
-                            <div className="flex flex-col gap-6 md:flex-row">
-                                <InputField label="เลขที่" id="number" />
-                                <InputField label="ถนน" id="street" />
-                                <InputField label="ตรอก/ซอย" id="alley" />
+                            <div className="grid grid-cols-4 gap-6 mb-2 md:flex-row">
+                                <div>
+                                <p className="text-gray-400 mb-1">เลขที่</p>
+                                <input value={addressForm.address} onChange={handleAddressFormChange} name="address" label="เลขที่" id="address" className="w-[200px] text-sm bg-[#484848] placeholder:text-[#AD957B] text-[#AD957B] outline-none rounded-[12px] py-2 px-4" />
+                                </div>
+
+                                <div>
+                                <p className="text-gray-400 mb-1">เลขที่</p>
+                                <input value={addressForm.street} onChange={handleAddressFormChange} name="street" label="ถนน" id="street" className="w-[200px] text-sm bg-[#484848] placeholder:text-[#AD957B] text-[#AD957B] outline-none rounded-[12px] py-2 px-4"/>
+                                </div>
+                                
+                                <div>
+                                <p className="text-gray-400 mb-1">เลขที่</p>
+                                <input value={addressForm.alley} onChange={handleAddressFormChange} name="alley" label="ตรอก/ซอย" id="alley" className="w-[200px] text-sm bg-[#484848] placeholder:text-[#AD957B] text-[#AD957B] outline-none rounded-[12px] py-2 px-4"/>
+                                </div>
                             </div>
                             <div className="flex flex-col gap-6 md:flex-row">
-                                <SelectField
-                                    label="จังหวัด"
-                                    id="location"
-                                    name="location"
-                                    defaultValue="Canada"
-                                    options={["United States", "Canada", "Mexico"]}
-                                />
-                                <SelectField
-                                    label="อำเภอ/เขต"
-                                    id="location"
-                                    name="location"
-                                    defaultValue="Canada"
-                                    options={["United States", "Canada", "Mexico"]}
-                                />
-                                <SelectField
-                                    label="ตำบล/แขวง"
-                                    id="location"
-                                    name="location"
-                                    defaultValue="Canada"
-                                    options={["United States", "Canada", "Mexico"]}
-                                />
-                                <InputField label="รหัสไปรษณีย์" id="alley" />
+                                <div>
+                                    <p className="text-gray-400 mb-1">จังหวัด</p>
+                                    <input value={addressForm.province} onChange={handleAddressFormChange} name="province" label="province" id="province" className="w-[200px] text-sm bg-[#484848] placeholder:text-[#AD957B] text-[#AD957B] outline-none rounded-[12px] py-2 px-4" />
+                                </div>
+
+                                <div>
+                                    <p className="text-gray-400 mb-1">อำเภอ/เขต</p>
+                                    <input value={addressForm.distrinct} onChange={handleAddressFormChange} name="distrinct" label="distrinct" id="distrinct" className="w-[200px] text-sm bg-[#484848] placeholder:text-[#AD957B] text-[#AD957B] outline-none rounded-[12px] py-2 px-4" />
+                                </div>
+
+                                <div>
+                                <p className="text-gray-400 mb-1">ตำบล/แขวง</p>
+                                <input value={addressForm.sub_distrinct} onChange={handleAddressFormChange} name="sub_distrinct" label="sub_distrinct" id="sub_distrinct" className="w-[200px] text-sm bg-[#484848] placeholder:text-[#AD957B] text-[#AD957B] outline-none rounded-[12px] py-2 px-4" />
+                                </div>
+                                
+                                <div>
+                                <p className="text-gray-400 mb-1">รหัสไปรษณีย์</p>
+                                <input value={addressForm.postalCode} onChange={handleAddressFormChange} name="postalCode" label="postalCode" id="postalCode" className="w-[200px] text-sm bg-[#484848] placeholder:text-[#AD957B] text-[#AD957B] outline-none rounded-[12px] py-2 px-4" />
+                                </div>
                             </div>
                         </div>
 
@@ -147,6 +222,9 @@ const EditWat = () => {
                                 ชื่อผู้ดูแล
                             </p>
                             <input
+                                value={watForm.admin_name}
+                                onChange={handleWatFormChange}
+                                name="admin_name"
                                 className="w-full md:w-[700px] bg-[#484848] placeholder:text-[#AD957B] text-[#AD957B] outline-none rounded-[12px] py-2 px-4"
                                 placeholder="ชื่อผู้ดูแล"
                             ></input>
@@ -156,6 +234,9 @@ const EditWat = () => {
                                 เบอร์โทรติดต่อ
                             </p>
                             <input
+                                value={watForm.phoneNumber}
+                                onChange={handleWatFormChange}
+                                name="phoneNumber"
                                 className="w-full md:w-[700px] bg-[#484848] placeholder:text-[#AD957B] text-[#AD957B] outline-none rounded-[12px] py-2 px-4"
                                 placeholder="เบอร์โทรติดต่อ"
                             ></input>
@@ -165,6 +246,9 @@ const EditWat = () => {
                                 Line ID
                             </p>
                             <input
+                                value={watForm.line_id}
+                                onChange={handleWatFormChange}
+                                name="line_id"
                                 className="w-full md:w-[700px] bg-[#484848] placeholder:text-[#AD957B] text-[#AD957B] outline-none rounded-[12px] py-2 px-4"
                                 placeholder="Line ID"
                             ></input>
@@ -174,6 +258,9 @@ const EditWat = () => {
                                 Facebook
                             </p>
                             <input
+                                value={watForm.Facebook}
+                                onChange={handleWatFormChange}
+                                name="Facebook"
                                 className="w-full md:w-[700px] bg-[#484848] placeholder:text-[#AD957B] text-[#AD957B] outline-none rounded-[12px] py-2 px-4"
                                 placeholder="Facebook"
                             ></input>
@@ -191,8 +278,11 @@ const EditWat = () => {
                         <p className="text-white text-[18px] sm:text-[20px] pb-4 sm:pb-0 sm:pr-[7rem]">
                             รายละเอียดของวัด
                         </p>
-                        <input
-                            className="w-full sm:w-[700px] h-[150px] sm:h-[200px] bg-[#484848] placeholder:text-[#AD957B] text-[#AD957B] outline-none rounded-[12px] px-4 pb-[5rem] sm:pb-[9rem]"
+                        <textarea
+                            value={watForm.description}
+                            onChange={handleWatFormChange}
+                            name="description"
+                            className="w-full sm:w-[700px] h-[150px] sm:h-[200px] bg-[#484848] placeholder:text-[#AD957B] text-[#AD957B] outline-none rounded-[12px] p-4 pb-[5rem] sm:pb-[9rem]"
                             placeholder="รายละเอียดของวัด"
                         />
                     </div>
@@ -204,6 +294,7 @@ const EditWat = () => {
                             <button
                                 type="button"
                                 id="decrement-button"
+                                onClick={()=>{ handleworkload("d") } }
                                 data-input-counter-decrement="counter-input"
                                 className="flex-shrink-0 bg-[#484848] dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-[#383838] inline-flex items-center justify-center rounded-xl h-6 w-6 sm:h-5 sm:w-5 focus:ring-gray-100"
                             >
@@ -223,19 +314,14 @@ const EditWat = () => {
                                     />
                                 </svg>
                             </button>
-                            <input
-                                type="text"
-                                id="counter-input"
-                                data-input-counter
-                                className="flex-shrink-0 text-[#AD957B] dark:text-white border-0 bg-transparent text-sm font-normal focus:outline-none focus:ring-0 max-w-[3rem] sm:max-w-[2.5rem] text-center"
-                                placeholder=""
-                                value="12"
-                                required
-                            />
+                            <p className="flex-shrink-0 text-[#AD957B] dark:text-white border-0 bg-transparent text-sm font-normal focus:outline-none focus:ring-0 max-w-[3rem] sm:max-w-[2.5rem] text-center">
+                                {watForm.max_workload}
+                            </p>
                             <button
                                 type="button"
                                 id="increment-button"
                                 data-input-counter-increment="counter-input"
+                                onClick={()=>{ handleworkload("i") } }
                                 className="flex-shrink-0 bg-[#484848] dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-[#383838] inline-flex items-center justify-center rounded-xl h-6 w-6 sm:h-5 sm:w-5 focus:ring-gray-100"
                             >
                                 <svg
@@ -268,6 +354,7 @@ const EditWat = () => {
                 </div>
 
             </div>
+            
         </div>
     );
 };

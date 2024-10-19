@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import '../styles/Calendar.css'
 
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -8,14 +7,14 @@ const Calendar = () => {
     return new Date(year, month + 1, 0).getDate();
   };
 
-  const renderDaysOfWeek = () =>{
-    const daysOfWeek = ['Su','Mo','Tu','We', 'Th','Fr', 'Sa'];
+  const renderDaysOfWeek = () => {
+    const daysOfWeek = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
     return daysOfWeek.map((day, index) => (
-      <div key={index} className="day-header font-bold text-center text-[21px]">
+      <div key={index} className="font-bold text-center text-[21px]">
         {day}
       </div>
     ));
-  }
+  };
 
   const renderDays = () => {
     const days = [];
@@ -23,19 +22,16 @@ const Calendar = () => {
     const year = currentDate.getFullYear();
     const totalDays = getDaysInMonth(month, year);
 
-        // Find the first day of the current month (0 = Sunday, 6 = Saturday)
-        const firstDayOfMonth = new Date(year, month, 1).getDay();
+    const firstDayOfMonth = new Date(year, month, 1).getDay();
 
-        // Fill empty spaces before the first day of the month
-        for (let emptyDay = 0; emptyDay < firstDayOfMonth; emptyDay++) {
-          days.push(<div key={`empty-${emptyDay}`} className="empty-day"></div>);
-        }
-    
+    for (let emptyDay = 0; emptyDay < firstDayOfMonth; emptyDay++) {
+      days.push(<div key={`empty-${emptyDay}`} className="h-16"></div>);
+    }
 
     for (let day = 1; day <= totalDays; day++) {
       days.push(
-        <div key={day} className="day">
-          <p className="font-bold text-[]">{day}</p>
+        <div key={day} className="bg-gray-700 p-4 text-center rounded-lg">
+          <p className="font-bold">{day}</p>
           <p>0/2</p>
         </div>
       );
@@ -44,11 +40,13 @@ const Calendar = () => {
   };
 
   return (
-    <div className="calendar-container text-white font-prompt p-10">
-      <div className="calendar-header">
-        <h2 className="font-bold text-white text-[25px]">{currentDate.toLocaleString("default", { month: "long" })} {currentDate.getFullYear()}</h2>
+    <div className="w-full max-w-[600px] mx-0 text-white font-prompt p-10">
+      <div className="text-center mb-5">
+        <h2 className="font-bold text-white text-[25px]">
+          {currentDate.toLocaleString("default", { month: "long" })} {currentDate.getFullYear()}
+        </h2>
       </div>
-      <div className="calendar-grid">
+      <div className="grid grid-cols-7 gap-2.5">
         {renderDaysOfWeek()}
         {renderDays()}
       </div>

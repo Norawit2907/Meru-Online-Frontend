@@ -1,43 +1,19 @@
-.slick-prev {
-  left: -50px; /* ระยะห่างจากด้านซ้าย */
-}
-
-.slick-next {
-  right: -30px; /* ระยะห่างจากด้านขวา */
-}
-
-
 .sala-carousel .slick-dots li button:before {
   color: white;
   font-size: 12px;
+  margin-top: 10px;
 }
 
 .sala-carousel .slick-dots li.slick-active button:before {
   color: #a88955;
+  margin-top: 10px;
 }
 
-.card-item img {
-    width: 185px;
-    height: 120px;
+.slick-list {
+  margin: 0 -5px;
 }
 
-.card-item {
-  background-color: #292725;
-  border-radius: 10px;
-  width: 185px;
-  height: 200px;
-}
-
-.card-item h3 {
-    font-size: 14px;
-    color: white;
-    font-weight: bold;
-
-}
-
-.card-item p {
-  font-size: 10px;
-    color: #a88955;
-    
+.slick-slide > div {
+  padding: 0 20px;
 }
 
