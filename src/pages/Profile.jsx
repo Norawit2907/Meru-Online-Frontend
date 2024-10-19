@@ -18,18 +18,18 @@ const Profile = () => {
                 width={100}
                 className="w-28 h-28 rounded-full " />
               ) : (
-          <img src={require('../assets/profile.png')} alt='profile' width={100} height={100} className='w-28 h-28 rounded-full  ' />)}
+          <img src={require('../Assets/profile.png')} alt='profile' width={100} height={100} className='w-28 h-28 rounded-full  ' />)}
           <div>
             <p className='text-3xl text-center text-[#AD957B] font-bold'>John Figma</p>
             <p className='text-sm text-[#484848]'>Nick Name</p>
           </div>
           <div className='flew flex-col'>
             <div className='flex'>
-            <img src={require('../assets/Phone.png')} alt='profile' width={50} height={50} className='w-3.5 h-3.5 mr-2 my-auto' />
+            <img src={require('../Assets/Phone.png')} alt='profile' width={50} height={50} className='w-3.5 h-3.5 mr-2 my-auto' />
               <p className='text-sm'>Tel: 081-234-5678</p>
             </div>
             <div className='flex'>
-            <img src={require('../assets/mail.png')} alt='profile' width={50} height={50} className='w-3.5 h-3.5 mr-2 my-auto' />
+            <img src={require('../Assets/mail.png')} alt='profile' width={50} height={50} className='w-3.5 h-3.5 mr-2 my-auto' />
               <p className='text-sm'>Email: meru@gmail.com</p>
             </div>
           </div>
