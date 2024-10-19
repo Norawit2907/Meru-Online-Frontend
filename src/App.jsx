@@ -13,7 +13,7 @@ import Userregister from "./pages/Userregister.jsx";
 import Watregister from "./pages/Watregister.jsx";
 import Booking from "./pages/Booking.jsx";
 import Footer from "./components/Footer.jsx";
-import EditProfile from "./pages/EditProfile.jsx";
+
 
 const App = () => {
   return (

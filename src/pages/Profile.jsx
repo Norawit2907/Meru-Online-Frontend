@@ -3,18 +3,10 @@ import Modal from "react-modal";
 import Segment from "../components/Profile_segment.jsx";
 import { BsFillTelephoneFill } from "react-icons/bs";
 import { MdEmail } from "react-icons/md";
-import { IoMdCloseCircle } from "react-icons/io";
-import EditProfile from "./EditProfile.jsx";
 
-
-Modal.setAppElement("#root");
 
 const Profile = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
 
   return (
     <div className="flex h-full overflow-y-hidden divide-x-2 pb-10 pt-16">
@@ -37,7 +29,7 @@ const Profile = () => {
           </div>
         </div>
 
-        <button onClick={toggleModal} className="mb-5 h-14 w-36 border-2 border-[#484848] rounded-lg bg-[#AD957B]">
+        <button className="mb-5 h-14 w-36 border-2 border-[#484848] rounded-lg bg-[#AD957B]">
           Edit Profile
         </button>
       </div>
@@ -48,21 +40,7 @@ const Profile = () => {
         </div>
       </div>
 
-      {/* Modal */}
-      <Modal
-        isOpen={isModalOpen}
-        onRequestClose={toggleModal}
-        className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
-        overlayClassName="fixed inset-0 bg-black bg-opacity-50"
-      >
-        <div className="bg-[#292725] p-6 rounded-lg shadow-lg max-w-md w-full">
-          <div className="flex justify-between mb-4">
-          <h2 className="text-2xl font-bold">Edit Profile</h2>
-          <button onClick={toggleModal} className="text-gray-200"><IoMdCloseCircle /></button>
-          </div>
-          <EditProfile />
-        </div>
-      </Modal>
+
     </div>
   );
 };
