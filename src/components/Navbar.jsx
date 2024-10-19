@@ -32,6 +32,7 @@ const Navbar = () => {
 
   useEffect(()=>{
     const token = sessionStorage.getItem("access_token")
+    const role = sessionStorage.getItem("role")
     if(token){
       setLoginState(true)
     }
