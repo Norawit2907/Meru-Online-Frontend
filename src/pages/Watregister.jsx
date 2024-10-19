@@ -38,7 +38,7 @@ const Watregister = () => {
     if(formValue.password === confirmpassword){
       const response = await WatRegister(formValue.email, formValue.password)
       if(response){
-        window.location.href = '/' 
+        window.location.href = '/registerwat' 
       }
     }
     else{
@@ -103,4 +103,4 @@ const Watregister = () => {
   )
 }
   
-  export default Watregister;
+export default Watregister;

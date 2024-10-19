@@ -72,6 +72,8 @@ export async function WatLogin(email, password){
         if(response.status == 201){
             // console.log("res ", response)
             sessionStorage.setItem("access_token", response.data.access_token)
+            sessionStorage.setItem("currentUser_id", response.data.sub)
+            sessionStorage.setItem("wat_id", response.data.wat_id)
             sessionStorage.setItem("role", response.data.role)
             return true
         }
@@ -100,6 +102,7 @@ export async function WatRegister(email, password) {
         if(response.status == 201){
             sessionStorage.setItem("access_token", response.data.access_token)
             sessionStorage.setItem("currentUser_id", response.data.sub)
+            sessionStorage.setItem("wat_id", response.data.wat_id)
             sessionStorage.setItem("role", response.data.role)
             return true
         }
