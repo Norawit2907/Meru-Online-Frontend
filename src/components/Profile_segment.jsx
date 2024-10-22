@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const Segment = () => {
+const Segment = ({ onSegmentChange }) => {
   const [activeSegment, setActiveSegment] = useState(1);
 
   const segments = [
@@ -10,12 +10,17 @@ const Segment = () => {
     { id: 4, label: 'ปฏิเสธแล้ว' }
   ];
 
+  const handleClick = (segmentId) => {
+    setActiveSegment(segmentId);
+    onSegmentChange(segmentId);
+  };
+
   return (
     <div className="flex justify-around  text-white py-2 rounded-lg">
       {segments.map(segment => (
         <div
           key={segment.id}
-          onClick={() => setActiveSegment(segment.id)}
+          onClick={() => handleClick(segment.id)}
           className={`flex-1 text-center cursor-pointer py-2 transition-all duration-300 ${
             activeSegment === segment.id ? 'border-b-2 border-white' : ''
           }`}
