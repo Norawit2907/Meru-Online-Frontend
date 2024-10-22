@@ -1,12 +1,54 @@
-"use client";
+import axios from "axios";
 import React, { useEffect, useState } from 'react';
 import Segment from '../components/Profile_segment.jsx';
 import EditProfile from '../components/Profile_edit.jsx'; 
 
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
+
 const Profile = () => {
   const [isEditOpen, setIsEditOpen] = useState(false)
   const [profileImg, setProfileImg] = useState('')
+  const [selectedSegment, setSelectedSegment] = useState(1)
+  const [reservations, setReservations] = useState([])
+
+  useEffect(() => {
+    const fetchReservations = async () => {
+      try {
+        const response = await axios.get(`${backendUrl}/reserves`);
+        console.log("res ", response.data);
+        setReservations(response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+
+    fetchReservations();
+  }, []);
+
+
+  const handleSegmentChange = (segmentId) => {
+    setSelectedSegment(segmentId);
+  };
+
+  const getFilteredReservations = () => {
+    switch (selectedSegment) {
+      case 1:
+        return reservations.filter(reservation => reservation.status === "pending");
+      case 2:
+        return reservations.filter(reservation => reservation.status === "accept");
+      case 3:
+        return reservations.filter(reservation => reservation.status === "passed");
+      case 4:
+        return reservations.filter(reservation => reservation.status === "reject");
+      default:
+        return reservations;
+    }
+  };
+  
+  const filteredReservations = getFilteredReservations();
 
   return (
     <div className="flex h-[calc(100vh-80px)] divide-x-2 overflow-y-hidden pb-10 pt-16">
@@ -41,7 +83,21 @@ const Profile = () => {
       <div className="flex flex-col text-white w-4/5 px-10">
         <p className="text-3xl font-bold text-[#AD957B]">Reservations</p>
         <div className="h-16 w-1/2">
-          <Segment />
+          <Segment onSegmentChange={handleSegmentChange} />
+          {filteredReservations.length > 0 ? (
+              <ul>
+                {filteredReservations.map((reservation) => (
+                  <li key={reservation.id} className="mt-2">
+                    <p>Name: {reservation.namewat}</p>
+                    <p>Reservation Date: {reservation.reservation_date}</p>
+                    <p>Duration: {reservation.duration}</p>
+                    <p>Cremation Date: {reservation.cremation_date}</p>
+                  </li>
+                ))}
+              </ul>
+          ) : (
+            <p className="mt-4">No reservations found for this status.</p>
+          )}
         </div>
       </div>
       <EditProfile
