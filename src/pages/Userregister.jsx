@@ -47,6 +47,7 @@ const Userregister = () => {
     const profile_link = await UploadImage(profileImage);
     
     if(formValue.password === confirmpassword){
+      console.log('user')
       const response = await UserRegister(formValue.firstname, formValue.lastname, formValue.phoneNumber, profile_link, formValue.email, formValue.password);
       if(response){
         const loginresponse = await UserLogin(formValue.email, formValue.password)
@@ -110,7 +111,7 @@ const Userregister = () => {
                 </div>
                 
                 <div>
-                  <label for="phoneNumber"><FontAwesomeIcon icon={faPhone}></FontAwesomeIcon> Telephine No.</label>
+                  <label for="phoneNumber"><FontAwesomeIcon icon={faPhone}></FontAwesomeIcon> Telephone No.</label>
                   <input type="tel" id="phoneNumber" name="phoneNumber" value={formValue.phoneNumber} onChange={handleFormChange} className="w-full bg-[#2d2d2e] p-2 rounded-xl border border-slate-600 text-white" required></input>
                 </div>
 

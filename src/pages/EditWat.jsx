@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import InputField from "../components/InputField";
 import SelectField from "../components/SelectField";
 import Addon from "../components/Addon";
-import { updateAddressByWatId, updateWat } from "../services/wat";
+import { getAddressByWatId, updateAddressByWatId, updateWat } from "../services/wat";
 
 const addonData = [
     {
@@ -107,6 +107,11 @@ const EditWat = () => {
         if(!token){
             window.location.href = "/login"
         }
+
+        async function getData(){
+            const wat_id = sessionStorage.getItem("wat_id")
+            const watdata = await getAddressByWatId
+        }
     }, [])
 
     return (
@@ -147,12 +152,12 @@ const EditWat = () => {
                                 </div>
 
                                 <div>
-                                <p className="text-gray-400 mb-1">เลขที่</p>
+                                <p className="text-gray-400 mb-1">ถนน</p>
                                 <input value={addressForm.street} onChange={handleAddressFormChange} name="street" label="ถนน" id="street" className="w-[200px] text-sm bg-[#484848] placeholder:text-[#AD957B] text-[#AD957B] outline-none rounded-[12px] py-2 px-4"/>
                                 </div>
                                 
                                 <div>
-                                <p className="text-gray-400 mb-1">เลขที่</p>
+                                <p className="text-gray-400 mb-1">ซอย</p>
                                 <input value={addressForm.alley} onChange={handleAddressFormChange} name="alley" label="ตรอก/ซอย" id="alley" className="w-[200px] text-sm bg-[#484848] placeholder:text-[#AD957B] text-[#AD957B] outline-none rounded-[12px] py-2 px-4"/>
                                 </div>
                             </div>

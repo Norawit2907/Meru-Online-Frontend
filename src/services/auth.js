@@ -54,9 +54,9 @@ export async function UserRegister(firstname, lastname, phoneNumber, profile_img
             return false
         }
     }
-    catch (err){
-        alert("Register failed!!")
-        console.log(err);
+    catch (error){
+        if(error.response.status == 403)
+        alert(error.response.data.message)
         return false;
     }
 }
