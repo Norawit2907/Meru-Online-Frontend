@@ -2,14 +2,38 @@ import axios from "axios";
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
-export async function updateWat(id, admin_id, name, max_workload, description, picture) {
+export async function  getWatById(wat_id) {
     try{
-        const response = await axios.put(`${backendUrl}/wats/${id}`,
+        const response = await axios.get(`${backendUrl}/wats/id/${wat_id}`)
+        if(response.status == 200){
+            return response.data
+        }
+        else{
+            alert("Something's Worig")
+            return false
+        }
+    }
+    catch(err){
+        console.log(err)
+        return false
+    }
+}
+
+export async function updateWat(wat_id, admin_id, admin_name, name, phoneNumber, line_ID, Facebook, min_cost, max_cost, max_workload, description, picture, location) {
+    try{
+        const response = await axios.put(`${backendUrl}/wats/${wat_id}`,
             {
                 admin_id,
+                admin_name,
                 name,
+                phoneNumber,
+                line_ID,
+                Facebook,
+                min_cost,
+                max_cost,
                 max_workload,
                 description,
+                location,
                 picture
             }
         )
@@ -27,6 +51,7 @@ export async function updateWat(id, admin_id, name, max_workload, description, p
         console.log(err);
     }
 }
+
 
 export async function getAddressByWatId(wat_id){
     try{
@@ -69,5 +94,7 @@ export async function updateAddressByWatId(wat_id, address, street, alley, provi
     }
     catch (err){
         console.log(err);
+        console.log(err.response.data.message);
+        
     }
 }

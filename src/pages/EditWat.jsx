@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import InputField from "../components/InputField";
 import SelectField from "../components/SelectField";
 import Addon from "../components/Addon";
-import { getAddressByWatId, updateAddressByWatId, updateWat } from "../services/wat";
+import { getAddressByWatId, getWatById, updateAddressByWatId, updateWat } from "../services/wat";
 
 const addonData = [
     {
@@ -88,6 +88,8 @@ const EditWat = () => {
     }
 
     const handlesubmit = async (e) => {
+        console.log("pressed");
+        
         e.preventDefault();
         const wat_id = sessionStorage.getItem('wat_id')
         const admin_id = sessionStorage.getItem('currentUser_id')
@@ -96,8 +98,12 @@ const EditWat = () => {
         if(!resAddress){
             alert("can't update address")
         }
-        const response = await updateWat(wat_id, admin_id, watForm.name, watForm.max_workload, watForm.description, picture)
-        if (response){
+        const response = await updateWat(wat_id, admin_id, watForm.admin_name, watForm.name, watForm.phoneNumber, watForm.line_id, watForm.Facebook, 0, 0, watForm.max_workload, watForm.description, picture, "location")
+        if (!response){
+            alert("can't update wat")
+        }
+        else{
+            console.log(response);
             window.location.href = `/watpage1/${wat_id}`
         }
     }
@@ -110,8 +116,25 @@ const EditWat = () => {
 
         async function getData(){
             const wat_id = sessionStorage.getItem("wat_id")
-            const watdata = await getAddressByWatId
+            const watdata = await getWatById(wat_id)
+            const addressdata = await getAddressByWatId(wat_id)
+            if(watdata){
+                setWatForm({
+                    name:  watdata.name == '-' ? "" : watdata.name,
+                    admin_id: watdata.admin_id == '-' ? "" : watdata.admin_id,
+                    admin_name: watdata.admin_name == '-' ? "" : watdata.admin_name,
+                    phoneNumber: watdata.phoneNumber == '-' ? "" : watdata.phoneNumber,
+                    line_id: watdata.line_ID == '-' ? "" : watdata.line_ID,
+                    Facebook: watdata.Facebook == '-' ? "" : watdata.Facebook,
+                    description: watdata.description == '-' ? "" : watdata.description,
+                    max_workload: watdata.max_workload == '-' ? "" : watdata.max_workload
+                })
+            }
+            if(addressdata){
+                setAddressForm(addressdata)
+            }
         }
+        getData()
     }, [])
 
     return (
