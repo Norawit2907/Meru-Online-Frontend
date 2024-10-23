@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Addon from "../components/Addon";
 import Calendar from "../components/Calendar";
 import AddonWat from "../components/Addon_Watpage1";
+import { GetWatId } from "../services/wat";
 
 const addonData = [
   {
@@ -24,7 +25,19 @@ const addonData = [
   },
 ];
 
+
 const Watpage1 = () => {
+  const [watData, setWatData] = useState([]);
+  useEffect( () => {
+    async function getwat(id) {
+      const result = await GetWatId(id);
+      setWatData(result)
+      console.log(watData)
+    }
+
+    getwat("670d4074f2bd50c27ade5db0")
+  },[])
+    
   return (
     <div className="mx-4 mt-8 md:mx-[77px] md:mt-[70px]">
       {/* wat-picture section */}
