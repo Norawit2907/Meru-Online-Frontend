@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import InputField from "../components/InputField";
 import SelectField from "../components/SelectField";
 import Addon from "../components/Addon";
+import { updateAddressByWatId, updateWat } from "../services/wat";
 
 const addonData = [
     {
@@ -86,9 +87,31 @@ const EditWat = () => {
         
     }
 
+    const handlesubmit = async (e) => {
+        e.preventDefault();
+        const wat_id = sessionStorage.getItem('wat_id')
+        const admin_id = sessionStorage.getItem('currentUser_id')
+        let picture = [""]
+        const resAddress = await updateAddressByWatId(wat_id, addressForm.address, addressForm.street, addressForm.alley, addressForm.province, addressForm.distrinct, addressForm.sub_distrinct, addressForm.postalCode, "-", "-");
+        if(!resAddress){
+            alert("can't update address")
+        }
+        const response = await updateWat(wat_id, admin_id, watForm.name, watForm.max_workload, watForm.description, picture)
+        if (response){
+            window.location.href = `/watpage1/${wat_id}`
+        }
+    }
+
+    useEffect(() => {
+        const token = sessionStorage.getItem("access_token")
+        if(!token){
+            window.location.href = "/login"
+        }
+    }, [])
+
     return (
         <div className="relative mx-4 mt-8 md:mx-[77px] md:mt-[70px] overflow-x-hidden">
-            <button className="absolute top-0 text-white text-xl font-bold p-6 bg-[#ad957b] rounded-xl">
+            <button onClick={handlesubmit} className="fixed bottom-20 right-20 text-white text-2xl font-semibold p-6 px-10 bg-[#ad957b] border-4 border-white rounded-full">
                 Done
             </button>
             <h1 className="text-[#AD957B] text-[30px] md:text-[50px] font-semibold">
