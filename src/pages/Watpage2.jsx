@@ -1,31 +1,61 @@
 import React from "react";
 import Addon from "../components/Addon";
 import Calendar from "../components/Calendar";
+import { useState } from "react";
+import { useEffect } from "react";
+import { GetWatAddress } from "../services/address";
+import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
+import Google_map from "../components/Google_map";
+
 
 const addonData = [
     {
-      imageUrl: './addon.png',
-      title: 'ชุดครอบครัว',
-      description: 'เหมาะสำหรับครอบครัวเล็กและใหญ่',
-      price: '750 .- /ชุด',
+        imageUrl: './addon.png',
+        title: 'ชุดครอบครัว',
+        description: 'เหมาะสำหรับครอบครัวเล็กและใหญ่',
+        price: '750 .- /ชุด',
     },
     {
-      imageUrl: './addon.png',
-      title: 'ชุดงานเลี้ยง',
-      description: 'ครบทุกสิ่งสำหรับงานเลี้ยง',
-      price: '1,500 .- /ชุด',
+        imageUrl: './addon.png',
+        title: 'ชุดงานเลี้ยง',
+        description: 'ครบทุกสิ่งสำหรับงานเลี้ยง',
+        price: '1,500 .- /ชุด',
     },
     {
-      imageUrl: './addon.png',
-      title: 'ชุดพรีเมียม',
-      description: 'เหมาะสำหรับการใช้งานพิเศษ',
-      price: '2,000 .- /ชุด',
+        imageUrl: './addon.png',
+        title: 'ชุดพรีเมียม',
+        description: 'เหมาะสำหรับการใช้งานพิเศษ',
+        price: '2,000 .- /ชุด',
     },
-    
-  ];
-  
+
+];
+
+
+
 
 const Watpage2 = () => {
+
+    const wat_id = '6717f925e460c729f3027396'
+    const [watAddress, setWatAddress] = useState([]);
+    const [latitude, setLatitude] = useState('');
+    const [longitude, setLongitude] = useState('');
+
+    useEffect(() => {
+        const fetchWatAddress = async () => {
+            try {
+                const result = await GetWatAddress(wat_id);
+                setWatAddress(result);
+                setLatitude(result.latitude);
+                setLongitude(result.longtitude);
+                console.log("Fetched Wat Address:", result);
+            } catch (error) {
+                console.error("Failed to fetch Wat address:", error);
+            }
+        };
+
+        fetchWatAddress();
+    }, [wat_id]);
+
     return (
         <div className="mx-4 mt-8 md:mx-[77px] md:mt-[70px] overflow-x-hidden">
             {/* wat-picture section */}
@@ -91,30 +121,33 @@ const Watpage2 = () => {
 
             {/* wat-calendar-section */}
             <div className="w-[835px] h-[696.25px] bg-[#312F32] rounded-[10px] mb-10 flex justify-center items-center">
-                <Calendar/>
+                <Calendar />
             </div>
 
             {/* wat-location-section */}
             <div className="mb-10">
                 <div>
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1888.3614974760078!2d98.99544928857912!3d18.81049424558505!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30da3ac67f9a497d%3A0xab10b4883234a8ff!2z4LiB4Liy4Lij4Lib4Lij4Liw4Lib4Liy4Liq4LmI4Lin4LiZ4Lig4Li54Lih4Li04Lig4Liy4LiE4Liq4Liy4LiC4Liy4LmA4LiK4Li14Lii4LiH4LmD4Lir4Lih4LmIICjguIrguLHguYnguJnguJ7guLTguYDguKjguKkp!5e0!3m2!1sth!2sth!4v1727608768483!5m2!1sth!2sth"
+                    <iframe
+                        src={ `https://www.google.com/maps?q=${latitude},${longitude}&z=16&output=embed`} 
                         width="835"
                         height="250"
                         allowfullscreen=""
                         loading="lazy"
                         referrerpolicy="no-referrer-when-downgrade">
                     </iframe>
+                    {/* <Google_map latitude={latitude} longtitude={longitude} /> */}
+                    
                     <div className=" text-white">
                         <h1 className="py-4 text-[18px] ">สถานที่ตั้ง</h1>
-                        <p className="text-[16px]">330 ถ.เชียงใหม่-ลำปาง ต.ป่าตัน อ.เมือง<br />รหัสไปรษณีย์ 50300</p>
+                        <p className="text-[16px]">{watAddress.address}<br />รหัสไปรษณีย์ {watAddress.postalCode}</p>
                     </div>
                 </div>
             </div>
 
             {/* wat-add-on-section */}
             <Addon title={"ศาลาที่มีให้"} addonList={addonData} />
-            <Addon title={"บริการระหว่างอภิธรรมศพ"} addonList={addonData}/>
-            <Addon title={"สินค้าและบริการ (ลูกค้าเลือกจ่าย)"} addonList={addonData}/>
+            <Addon title={"บริการระหว่างอภิธรรมศพ"} addonList={addonData} />
+            <Addon title={"สินค้าและบริการ (ลูกค้าเลือกจ่าย)"} addonList={addonData} />
         </div>
 
     );
