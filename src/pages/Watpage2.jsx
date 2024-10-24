@@ -4,28 +4,27 @@ import Calendar from "../components/Calendar";
 import { useState } from "react";
 import { useEffect } from "react";
 import { GetWatAddress } from "../services/address";
-import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
-import Google_map from "../components/Google_map";
-
+import { GetWatData } from "../services/getWatDataById";
+import { GetWatAddons } from "../services/getWatAddons";
 
 const addonData = [
     {
         imageUrl: './addon.png',
-        title: 'ชุดครอบครัว',
+        name: 'ชุดครอบครัว',
         description: 'เหมาะสำหรับครอบครัวเล็กและใหญ่',
-        price: '750 .- /ชุด',
+        cost: '750 .- /ชุด',
     },
     {
         imageUrl: './addon.png',
-        title: 'ชุดงานเลี้ยง',
+        name: 'ชุดงานเลี้ยง',
         description: 'ครบทุกสิ่งสำหรับงานเลี้ยง',
-        price: '1,500 .- /ชุด',
+        cost: '1,500 .- /ชุด',
     },
     {
         imageUrl: './addon.png',
-        title: 'ชุดพรีเมียม',
+        name: 'ชุดพรีเมียม',
         description: 'เหมาะสำหรับการใช้งานพิเศษ',
-        price: '2,000 .- /ชุด',
+        cost: '2,000 .- /ชุด',
     },
 
 ];
@@ -35,12 +34,28 @@ const addonData = [
 
 const Watpage2 = () => {
 
-    const wat_id = '6717f925e460c729f3027396'
+    const wat_id = '6719a16461c391e42b756b76'
     const [watAddress, setWatAddress] = useState([]);
+    const [watAddons, setWatAddons] = useState([]);
+    const [filteredAddonsCat1, setFilteredAddonsCat1] = useState([]);
+    const [filteredAddonsCat2, setFilteredAddonsCat2] = useState([]);
+    const [filteredAddonsCat3, setFilteredAddonsCat3] = useState([]);
+
+    const [watData, setWatData] = useState([]);
+
     const [latitude, setLatitude] = useState('');
     const [longitude, setLongitude] = useState('');
 
     useEffect(() => {
+        const fetchWatData = async () => {
+            try {
+                const result = await GetWatData(wat_id);
+                setWatData(result);
+                console.log("Fetched Wat Data:", result);
+            } catch (error) {
+                console.error("Failed to fetch Wat data:", error);
+            }
+        };
         const fetchWatAddress = async () => {
             try {
                 const result = await GetWatAddress(wat_id);
@@ -52,9 +67,36 @@ const Watpage2 = () => {
                 console.error("Failed to fetch Wat address:", error);
             }
         };
+        const fetchWatAddons = async () => {
+            try {
+                const result = await GetWatAddons(wat_id);
+                setWatAddons(result);
+                const filtered = result.filter(
+                    (addon) => addon.catalog === "ศาลาที่มีให้"
+                );
+                setFilteredAddonsCat1(filtered);
+                const filtered_2 = result.filter(
+                    (addon) => addon.catalog === "บริการระหว่างอภิธรรมศพ"
+                );
+                setFilteredAddonsCat1(filtered);
+                const filtered_3 = result.filter(
+                    (addon) => addon.catalog === "สินค้าและบริการ (ลูกค้าเลือกจ่าย)"
+                );
+                setFilteredAddonsCat1(filtered);
+                setFilteredAddonsCat2(filtered_2);
+                setFilteredAddonsCat3(filtered_3);
+                console.log("Fetched Wat Addons:", result);
+            } catch (error) {
+                console.error("Failed to fetch Wat addons:", error);
+            }
+        };
 
+        fetchWatAddons();
         fetchWatAddress();
+        fetchWatData();
     }, [wat_id]);
+
+  
 
     return (
         <div className="mx-4 mt-8 md:mx-[77px] md:mt-[70px] overflow-x-hidden">
@@ -95,10 +137,9 @@ const Watpage2 = () => {
             {/* wat-info-section */}
             <div className="w-full flex flex-col lg:flex-row justify-between my-[40px]">
                 <div className="flex- flex-col mb-8 lg:mb-0">
-                    <h1 className="text-[#AD957B] text-[36px] md:text-[50px] font-bold">วัดดูยูมีน</h1>
+                    <h1 className="text-[#AD957B] text-[36px] md:text-[50px] font-bold">{watAddress.wat_name}</h1>
                     <p className="text-white text-[16px] md:text-[18px] py-4 indent-6 md:indent-12">
-                        Loren Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum<br />
-                        has been the industry's standard dummy text ever since the 1500s
+                        {watData.description}
                     </p>
                     <ul className="text-white text-[16px] md:text-[18px] list-disc list-inside">
                         <li>4 ศาลา</li>
@@ -109,9 +150,9 @@ const Watpage2 = () => {
                 <div className="w-full lg:w-[500px] h-[220px] md:h-[266px] bg-[#484848] rounded-[10px] flex flex-col justify-between py-4 px-6 md:px-8">
                     <div className="flex flex-col text-white gap-4 md:gap-5">
                         <h1 className="text-[16px] md:text-[18px] font-bold">CONTACT INFO</h1>
-                        <p className="text-[14px] md:text-[15px]">Phone: 1234567890</p>
-                        <p className="text-[14px] md:text-[15px]">Email: company@email.com</p>
-                        <p className="text-[14px] md:text-[15px]">Location: 100 Smart Street, LA, USA</p>
+                        <p className="text-[14px] md:text-[15px]">Phone: {watData.phoneNumber}</p>
+                        <p className="text-[14px] md:text-[15px]">Facebook: {watData.Facebook}</p>
+                        <p className="text-[14px] md:text-[15px]">Location: {watAddress.address}</p>
                     </div>
                     <div className="flex justify-center">
                         <img src="/socialmedialinks.png" alt="Social Media Links" />
@@ -145,9 +186,9 @@ const Watpage2 = () => {
             </div>
 
             {/* wat-add-on-section */}
-            <Addon title={"ศาลาที่มีให้"} addonList={addonData} />
-            <Addon title={"บริการระหว่างอภิธรรมศพ"} addonList={addonData} />
-            <Addon title={"สินค้าและบริการ (ลูกค้าเลือกจ่าย)"} addonList={addonData} />
+            <Addon title={"ศาลาที่มีให้"} addonList={filteredAddonsCat1} />
+            <Addon title={"บริการระหว่างอภิธรรมศพ"} addonList={filteredAddonsCat2} />
+            <Addon title={"สินค้าและบริการ (ลูกค้าเลือกจ่าย)"} addonList={filteredAddonsCat3} />
         </div>
 
     );
