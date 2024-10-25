@@ -1,12 +1,41 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const EditProfile = ({ isOpen, onClose }) => {
-  const [profileImg, setProfileImg] = useState('');
-  const [firstname, setFirstname] = useState('John');
-  const [lastname, setLastname] = useState('Figma');
-  const [email, setEmail] = useState('meru@gmail.com');
-  const [phone, setPhone] = useState('081-234-5678');
-  const [showEmailPasswordForm, setShowEmailPasswordForm] = useState(false); // Always false initially
+  const [useredit, setUseredit] = useState(null);
+  const [profileImg, setProfileImg] = useState(null);
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [showEmailPasswordForm, setShowEmailPasswordForm] = useState(false);
+  const token = sessionStorage.getItem("access_token");
+  const current_id = sessionStorage.getItem("currentUser_id");
+
+  useEffect(() => {
+    if (isOpen && !useredit) {
+      const fetchUser = async () => {
+        try {
+          const response = await axios.get(`${backendUrl}/users/${current_id}`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          setUseredit(response.data);
+          setProfileImg(response.data.profile_img);
+          setFirstname(response.data.firstName);
+          setLastname(response.data.lastName);
+          setEmail(response.data.email);
+          setPhone(response.data.phoneNumber);
+          setPassword(response.data.password);
+        } catch (error) {
+          console.error("Failed to fetch user data:", error);
+        }
+      };
+      fetchUser();
+    }
+  }, [isOpen, useredit, current_id, token]);
 
   if (!isOpen) return null;
 
@@ -22,6 +51,30 @@ const EditProfile = ({ isOpen, onClose }) => {
       alert('Please select a PNG or JPG image.');
     }
   };
+
+  const save_profile = async () => {
+    // console.log(firstname, lastname, phone, email, password);
+    // console.log(`${backendUrl}/users/${current_id}`);
+    try {
+      const response = await axios.put(`${backendUrl}/users/${current_id}`, 
+        {
+          firstname: firstname,
+          lastname: lastname,
+          phoneNumber: phone,
+          email: email,
+          password: password
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+      console.log("Profile updated successfully:", response.data);
+      onClose();
+    } catch (err) {
+      console.error("Error updating profile:", err);
+    }
+  };
+
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-[70]">
@@ -111,7 +164,7 @@ const EditProfile = ({ isOpen, onClose }) => {
                   className="mr-2 px-4 py-2 bg-[#181914] text-white rounded"
                   onClick={() => {
                     onClose();
-                    setShowEmailPasswordForm(false);
+                    setShowEmailPasswordForm(true);
                   }}
                 >
                   Cancel
@@ -119,6 +172,7 @@ const EditProfile = ({ isOpen, onClose }) => {
                 <button
                   className="px-4 py-2 bg-[#AD957B] text-white rounded"
                   onClick={() => {
+                    save_profile();
                     onClose();
                     setShowEmailPasswordForm(false);
                   }}
@@ -167,6 +221,7 @@ const EditProfile = ({ isOpen, onClose }) => {
                 <button
                   className="px-4 py-2 bg-[#AD957B] text-white rounded"
                   onClick={() => {
+                    save_profile();
                     onClose();
                     setShowEmailPasswordForm(false);
                   }}

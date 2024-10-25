@@ -1,54 +1,40 @@
-import axios from "axios";
 import React, { useEffect, useState } from 'react';
-import Segment from '../components/Profile_segment.jsx';
+import Reservation from '../components/Reservation.jsx';
 import EditProfile from '../components/Profile_edit.jsx'; 
+import axios from 'axios';
 
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
-
 const Profile = () => {
   const [isEditOpen, setIsEditOpen] = useState(false)
   const [profileImg, setProfileImg] = useState('')
-  const [selectedSegment, setSelectedSegment] = useState(1)
-  const [reservations, setReservations] = useState([])
+  const [user, setUser] = useState({})
+  const token = sessionStorage.getItem("access_token")
+  const curresnt_id = sessionStorage.getItem("currentUser_id")
 
-  useEffect(() => {
-    const fetchReservations = async () => {
-      try {
-        const response = await axios.get(`${backendUrl}/reserves`);
-        console.log("res ", response.data);
-        setReservations(response.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-
-    fetchReservations();
-  }, []);
-
-
-  const handleSegmentChange = (segmentId) => {
-    setSelectedSegment(segmentId);
-  };
-
-  const getFilteredReservations = () => {
-    switch (selectedSegment) {
-      case 1:
-        return reservations.filter(reservation => reservation.status === "pending");
-      case 2:
-        return reservations.filter(reservation => reservation.status === "accept");
-      case 3:
-        return reservations.filter(reservation => reservation.status === "passed");
-      case 4:
-        return reservations.filter(reservation => reservation.status === "reject");
-      default:
-        return reservations;
+  const fetchUser = async () => {
+    try {
+      const response = await axios.get(`${backendUrl}/users/${curresnt_id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      return response.data;
+    } catch (err) {
+      console.error(err);
     }
   };
   
-  const filteredReservations = getFilteredReservations();
+  useEffect(() => {
+    fetchUser().then((user) => {
+      setUser(user);
+      setProfileImg(user.profile_img);
+      // console.log(user)
+    });
+  }, []);
+
+
 
   return (
     <div className="flex h-[calc(100vh-80px)] divide-x-2 overflow-y-hidden pb-10 pt-16">
@@ -62,17 +48,17 @@ const Profile = () => {
               ) : (
           <img src={require('../Assets/profile.png')} alt='profile' width={100} height={100} className='w-28 h-28 rounded-full  ' />)}
           <div>
-            <p className='text-3xl text-center text-[#AD957B] font-bold'>John Figma</p>
+            <p className='text-3xl text-center text-[#AD957B] font-bold'>{user.firstName} {user.lastName}</p>
             <p className='text-sm text-[#484848]'>Nick Name</p>
           </div>
           <div className='flew flex-col'>
             <div className='flex'>
             <img src={require('../Assets/Phone.png')} alt='profile' width={50} height={50} className='w-3.5 h-3.5 mr-2 my-auto' />
-              <p className='text-sm'>Tel: 081-234-5678</p>
+              <p className='text-sm'>Tel: {user.phoneNumber}</p>
             </div>
             <div className='flex'>
             <img src={require('../Assets/mail.png')} alt='profile' width={50} height={50} className='w-3.5 h-3.5 mr-2 my-auto' />
-              <p className='text-sm'>Email: meru@gmail.com</p>
+              <p className='text-sm'>Email: {user.email}</p>
             </div>
           </div>
         </div>
@@ -82,22 +68,8 @@ const Profile = () => {
       </div>
       <div className="flex flex-col text-white w-4/5 px-10">
         <p className="text-3xl font-bold text-[#AD957B]">Reservations</p>
-        <div className="h-16 w-1/2">
-          <Segment onSegmentChange={handleSegmentChange} />
-          {filteredReservations.length > 0 ? (
-              <ul>
-                {filteredReservations.map((reservation) => (
-                  <li key={reservation.id} className="mt-2">
-                    <p>Name: {reservation.namewat}</p>
-                    <p>Reservation Date: {reservation.reservation_date}</p>
-                    <p>Duration: {reservation.duration}</p>
-                    <p>Cremation Date: {reservation.cremation_date}</p>
-                  </li>
-                ))}
-              </ul>
-          ) : (
-            <p className="mt-4">No reservations found for this status.</p>
-          )}
+        <div className="h-16 w-full">
+          <Reservation />
         </div>
       </div>
       <EditProfile
