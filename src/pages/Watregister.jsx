@@ -38,7 +38,7 @@ const Watregister = () => {
     if(formValue.password === confirmpassword){
       const response = await WatRegister(formValue.email, formValue.password)
       if(response){
-        window.location.href = '/registerwat' 
+        window.location.href = '/editwat' 
       }
     }
     else{
