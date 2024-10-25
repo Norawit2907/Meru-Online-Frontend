@@ -70,7 +70,7 @@ const Calendar = () => {
       let works = 0
 
       const formattedDate = `${year}-${formattedMonth}-${formattedDay}`
-      if (formattedDate in reservationDays) {
+      if (reservationDays && formattedDate in reservationDays) {
         works = reservationDays[formattedDate]
       }
 
