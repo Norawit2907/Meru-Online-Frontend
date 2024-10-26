@@ -92,12 +92,7 @@ const addonData = [
     description: "เหมาะสำหรับการใช้งานพิเศษ",
     price: "2,000 .- /ชุด",
   },
-  {
-    imageUrl: "./addon.png",
-    title: "ชุดพรีเมียม",
-    description: "เหมาะสำหรับการใช้งานพิเศษ",
-    price: "2,000 .- /ชุด",
-  },
+
 ];
 
 
@@ -127,7 +122,7 @@ const CostDetails = () => {
 const PaymentSection = ({ totalCost }) => {
   return (
     <>
-      <hr />
+      <hr  className="my-10"/>
       <Section title="วิธีการชำระเงิน">
         <PaymentOptions />
         <div className="grid grid-cols-2 text-white mt-10 mb-10">
@@ -146,7 +141,7 @@ const PaymentSection = ({ totalCost }) => {
 
 const Section = ({ title, children }) => {
   return (
-    <div className="block justify-end w-full h-auto mb-10 mt-10">
+    <div className="block justify-end w-full h-auto mb-10">
       <h3 className="font-prompt font-bold text-white text-3xl mb-10">{title}</h3>
       {children}
     </div>
@@ -156,7 +151,7 @@ const Section = ({ title, children }) => {
 const CostItem = ({ label, items }) => {
   return (
     <>
-      <div className="font-bold text-white mb-3">{label}</div>
+      <div className="font-bold text-white mt-5">{label}</div>
       {items.map((item, index) => (
         <div key={index} className="grid grid-cols-2 text-white">
           <div className="flex ml-3">-{item.title}</div>

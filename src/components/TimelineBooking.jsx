@@ -1,62 +1,172 @@
 import React from "react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const timelineItems = [
     {
-      date: "22.08.90",
-      content:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta sint earum ab nihil deleniti molestiae ipsam at magnam corrupti, sapiente aut maxime ipsa quae fugit blanditiis quas soluta mollitia laudantium.",
+      date: "17/8/67",
+      services: [
+        {
+          imageUrl: "./temple.jpg",
+          title: "ชุดครอบครัว",
+          description: "เหมาะสำหรับครอบครัวเล็กและใหญ่",
+          price: "650 บ.",
+        },
+        {
+          imageUrl: "./temple.jpg",
+          title: "ชุดครอบครัว",
+          description: "เหมาะสำหรับครอบครัวเล็กและใหญ่",
+          price: "650 บ.",
+        },
+        {
+          imageUrl: "./temple.jpg",
+          title: "ชุดครอบครัว",
+          description: "เหมาะสำหรับครอบครัวเล็กและใหญ่",
+          price: "650 บ.",
+        },
+      ]
     },
     {
-      date: "22.08.90",
-      content:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta sint earum ab nihil deleniti molestiae ipsam at magnam corrupti, sapiente aut maxime ipsa quae fugit blanditiis quas soluta mollitia laudantium.",
+      date: "17/8/67",
+      services: [
+        {
+          imageUrl: "./temple.jpg",
+          title: "ชุดครอบครัว",
+          description: "เหมาะสำหรับครอบครัวเล็กและใหญ่",
+          price: "650 บ.",
+        },
+        {
+          imageUrl: "./temple.jpg",
+          title: "ชุดครอบครัว",
+          description: "เหมาะสำหรับครอบครัวเล็กและใหญ่",
+          price: "650 บ.",
+        },
+        {
+          imageUrl: "./temple.jpg",
+          title: "ชุดครอบครัว",
+          description: "เหมาะสำหรับครอบครัวเล็กและใหญ่",
+          price: "650 บ.",
+        },
+      ]
     },
     {
-      date: "22.08.90",
-      content:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta sint earum ab nihil deleniti molestiae ipsam at magnam corrupti, sapiente aut maxime ipsa quae fugit blanditiis quas soluta mollitia laudantium.",
+      date: "17/8/67",
+      services: [
+        {
+          imageUrl: "./temple.jpg",
+          title: "ชุดครอบครัว",
+          description: "เหมาะสำหรับครอบครัวเล็กและใหญ่",
+          price: "650 บ.",
+        },
+        {
+          imageUrl: "./temple.jpg",
+          title: "ชุดครอบครัว",
+          description: "เหมาะสำหรับครอบครัวเล็กและใหญ่",
+          price: "650 บ.",
+        },
+        {
+          imageUrl: "./temple.jpg",
+          title: "ชุดครอบครัว",
+          description: "เหมาะสำหรับครอบครัวเล็กและใหญ่",
+          price: "650 บ.",
+        },
+      ]
     },
-  ];
-  
+];
 
 const Timeline = () => {
-    return (
-      <section className="h-auto flex justify-center pt-10">
-        <div className="w-3/4">
-          <ul>
-            {timelineItems.map((item, index) => (
-              <TimelineItem
-                key={index}
-                date={item.date}
-                content={item.content}
-                isLast={index === timelineItems.length - 1} // Add a condition for the last item
-              />
+  return (
+    <section className="h-auto flex justify-center pt-4 sm:pt-6 md:pt-10">
+      <div className="w-[95%] sm:w-[90%] max-w-[1000px] relative">
+        <ul className="ml-2 md:ml-4">
+          {timelineItems.map((item, index) => (
+            <TimelineItem
+              key={index}
+              date={item.date}
+              services={item.services}
+              isLast={index === timelineItems.length - 1}
+            />
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+};
+
+const TimelineItem = ({ date, services, isLast }) => {
+  const settings = {
+    dots: false,
+    infinite: false,
+    arrows: false,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1280,
+        settings: {
+          slidesToShow: 2,
+          arrows: false 
+        }
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          arrows: false
+        }
+      }
+    ]
+  };
+
+  return (
+    <li className="relative flex gap-2 md:gap-6 mb-8 sm:mb-10 md:mb-12">
+      <div className="flex items-center">
+        <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg">
+          <circle r="8" cx="8" cy="8" fill="white" />
+        </svg>
+
+        {!isLast && (
+          <div className="before:absolute before:left-[7px] before:top-[130px] sm:before:top-[150px] md:before:top-[170px] before:h-[270px] sm:before:h-[320px] md:before:h-[370px] before:w-[2px] before:bg-white" />
+        )}
+      </div>
+
+      <div className="flex-1 bg-white rounded-xl p-2 sm:p-3 md:p-4 mr-2 sm:mr-4 md:mr-8">
+        <div className="text-black text-lg sm:text-xl md:text-[24px] font-bold mb-2 sm:mb-3 md:mb-4 ml-2">
+          วันที่ {date}
+        </div>
+
+        <div className="flex justify-center">
+          <Slider {...settings}>
+            {services.map((service, index) => (
+              <div key={index} className="px-1 sm:px-2 flex justify-center">
+                <div className="w-full sm:w-[240px] md:w-[260px] lg:w-[280px] bg-[#484848] rounded-lg">
+                  <div className="relative w-full h-[120px] sm:h-[130px] md:h-[140px]">
+                    <div
+                      className="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-t-lg"
+                      style={{ backgroundImage: `url(${service.imageUrl})` }}
+                    />
+                  </div>
+                  <div className="p-2 sm:p-3">
+                    <h1 className="text-white text-base sm:text-lg font-semibold line-clamp-1">
+                      {service.title}
+                    </h1>
+                    <p className="text-[#AD957B] text-xs sm:text-sm py-1 line-clamp-2">
+                      {service.description}
+                    </p>
+                    <p className="text-white text-lg sm:text-xl font-medium">
+                      {service.price}
+                    </p>
+                  </div>
+                </div>
+              </div>
             ))}
-          </ul>
+          </Slider>
         </div>
-      </section>
-    );
-  };
-  
-  const TimelineItem = ({ date, content, isLast }) => {
-    return (
-      <li className="relative flex gap-6">
-        <div className="flex items-center">          <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg">
-            <circle r="8" cx="8" cy="8" fill="white" />
-          </svg>
+      </div>
+    </li>
+  );
+};
 
-          {!isLast && (
-            <div className="before:absolute before:left-[7px] before:top-[90px] before:h-full before:w-[2px] before:bg-white" />
-          )}
-        </div>
-
-        <div className="text-sm text-gray-600 bg-white p-4 m-10">
-          <p>{date}</p>
-          <p className="mt-2">{content}</p>
-        </div>
-      </li>
-    );
-  };
-  
-
-export default Timeline
+export default Timeline;
