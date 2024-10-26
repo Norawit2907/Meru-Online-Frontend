@@ -13,6 +13,7 @@ import {
   updateAddressByWatId,
   updateWat,
 } from "../services/wat";
+import { UploadImage } from "../services/imageupload";
 
 const addonData = [
   {
@@ -60,16 +61,13 @@ const EditWat = () => {
   });
 
   const [imagefiles, setimagefiles] = useState([]);
-  const [imagelinks, setImageLinks] = useState([]);
-  const [active, setActive] = useState([]);
-  const controls = useDragControls()
 
   const handleWatFormChange = (event) => {
     setWatForm({
       ...watForm,
       [event.target.name]: event.target.value,
     });
-    console.log(watForm);
+    // console.log(watForm);
   };
 
   const handleAddressFormChange = (event) => {
@@ -94,7 +92,7 @@ const EditWat = () => {
         });
       }
     }
-    console.log(watForm.max_workload);
+    // console.log(watForm.max_workload);
   };
 
   const handleUploadImage = (event) => {
@@ -107,7 +105,7 @@ const EditWat = () => {
             url: url,
             name: filename
         }
-        console.log(filename);
+        // console.log(filename);
         
         
       setimagefiles([...imagefiles, imageobject]);
@@ -123,17 +121,26 @@ const EditWat = () => {
     setimagefiles(newimage)
  }
 
-  useEffect(() => {
-    console.log("effect", imagefiles);
-  }, [imagefiles]);
+  // useEffect(() => {
+  //   // console.log("effect", imagefiles);
+  // }, [imagefiles]);
 
   const handlesubmit = async (e) => {
-    console.log("pressed");
-
     e.preventDefault();
+    // console.log("pressed");
+
+    let pictures = [];
+    imagefiles.map(async (item) => {
+      if(item.file != null){
+        const link = await UploadImage(item.file)
+        // console.log("link", link);
+        item.url = link
+        pictures = [...pictures, item]
+      }
+    })
+    
     const wat_id = sessionStorage.getItem("wat_id");
     const admin_id = sessionStorage.getItem("currentUser_id");
-    let picture = [""];
     const resAddress = await updateAddressByWatId(
       wat_id,
       addressForm.address,
@@ -143,8 +150,8 @@ const EditWat = () => {
       addressForm.distrinct,
       addressForm.sub_distrinct,
       addressForm.postalCode,
-      "-",
-      "-"
+      addressForm.latitude,
+      addressForm.longtitude
     );
     if (!resAddress) {
       alert("can't update address");
@@ -161,14 +168,14 @@ const EditWat = () => {
       0,
       watForm.max_workload,
       watForm.description,
-      picture,
+      pictures,
       "location"
     );
     if (!response) {
       alert("can't update wat");
     } else {
-      console.log(response);
-      window.location.href = `/watpage1/${wat_id}`;
+      // console.log(response);
+      window.location.href = `/watpage2/${wat_id}`;
     }
   };
 
@@ -197,6 +204,9 @@ const EditWat = () => {
       if (addressdata) {
         setAddressForm(addressdata);
       }
+      
+      setimagefiles(watdata.picture)
+  
     }
     getData();
   }, []);
@@ -328,7 +338,7 @@ const EditWat = () => {
               ระบุตำแหน่งของวัด
             </p>
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1888.3614974760078!2d98.99544928857912!3d18.81049424558505!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30da3ac67f9a497d%3A0xab10b4883234a8ff!2z4LiB4Liy4Lij4Lib4Lij4Liw4Lib4Liy4Liq4LmI4Lin4LiZ4Lig4Li54Lih4Li04Lig4Liy4LiE4Liq4Liy4LiC4Liy4LmA4LiK4Li14Lii4LiH4LmD4Lir4Lih4LmIICjguIrguLHguYnguJnguJ7guLTguYDguKjguKkp!5e0!3m2!1sth!2sth!4v1727608768483!5m2!1sth!2sth"
+              src={ `https://www.google.com/maps?q=${addressForm.latitude},${addressForm.longtitude}&z=16&output=embed`}
               className="w-full h-64 md:w-[950px] md:h-[638px]"
               allowFullScreen=""
               loading="lazy"
