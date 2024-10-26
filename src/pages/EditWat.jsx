@@ -135,7 +135,11 @@ const EditWat = () => {
         const link = await UploadImage(item.file)
         // console.log("link", link);
         item.url = link
-        pictures = [...pictures, item]
+        const obj = {
+          name: item.name,
+          url: item.url
+        }
+        pictures = [...pictures, obj]
       }
     })
     
