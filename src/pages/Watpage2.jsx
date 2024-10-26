@@ -137,7 +137,7 @@ const Watpage2 = () => {
             {/* wat-info-section */}
             <div className="w-full flex flex-col lg:flex-row justify-between my-[40px]">
                 <div className="flex- flex-col mb-8 lg:mb-0">
-                    <h1 className="text-[#AD957B] text-[36px] md:text-[50px] font-bold">{watAddress.wat_name}</h1>
+                    <h1 className="text-[#AD957B] text-[36px] md:text-[50px] font-bold">{watData.name}</h1>
                     <p className="text-white text-[16px] md:text-[18px] py-4 indent-6 md:indent-12">
                         {watData.description}
                     </p>
