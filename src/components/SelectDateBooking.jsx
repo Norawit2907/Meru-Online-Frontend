@@ -81,6 +81,17 @@ const SelectDateBooking = ({
     return disabled;
   };
 
+
+    useEffect(() => {
+      if (isStartDate && startDate !== undefined) {
+        setSelectedDate(startDate);
+      } else if (isSelectDays && daysCount !== undefined) {
+        setSelectedDays(daysCount);
+      } else if (isCremationDate) {
+        setSelectedDate(null); // reset วันเผา เมื่อเปลี่ยนจำนวนวัดสวด
+      }
+    }, [startDate, daysCount, isStartDate, isSelectDays, isCremationDate]);
+
   // เลือกวันเผาหลังจากสวดเสร็จ
   const calculateAllowedCremationDates = () => {
     if (!startDate || !daysCount) return null;

@@ -51,17 +51,22 @@ const Booking = () => {
     cremationDate: null
   });
 
-  // ฟังก์ชันจัดการข้อมูลที่ได้จาก SelectDate
+  // State SelectDate
   const handleDateSelect = (data) => {
     if (data.type === 'startDate') {
       setBookingData(prev => ({
         ...prev,
-        startDate: data.value
+        startDate: data.value,
+        // Reset ทั้ง daysCount และ cremationDate เมื่อเปลี่ยนวันเริ่มงาน
+        daysCount: null,
+        cremationDate: null
       }));
     } else if (data.type === 'days') {
       setBookingData(prev => ({
         ...prev,
-        daysCount: data.value
+        daysCount: data.value,
+        // Reset เฉพาะ cremationDate เมื่อเปลี่ยนจำนวนวัน
+        cremationDate: null
       }));
     } else if (data.type === 'cremationDate') {
       setBookingData(prev => ({
@@ -69,7 +74,7 @@ const Booking = () => {
         cremationDate: data.value
       }));
     }
-    console.log('Updated booking data:', data);
+
   };
 
   // ฟังก์ชันคำนวณราคารวม
