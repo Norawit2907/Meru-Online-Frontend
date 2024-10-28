@@ -47,6 +47,7 @@ const Userregister = () => {
     const profile_link = await UploadImage(profileImage);
     
     if(formValue.password === confirmpassword){
+      console.log('user')
       const response = await UserRegister(formValue.firstname, formValue.lastname, formValue.phoneNumber, profile_link, formValue.email, formValue.password);
       if(response){
         const loginresponse = await UserLogin(formValue.email, formValue.password)
@@ -60,8 +61,6 @@ const Userregister = () => {
     }
   }
  
-
-
   return (
       <div className="flex justify-center bg-[#1C1C1C] text-white">
         
@@ -72,13 +71,13 @@ const Userregister = () => {
               </div>
 
               {profileImage && (
-              <div className='flex flex-col items-center'>
+              <div className='flex flex-col items-center mt-10'>
                 {/* Display the selected image */}
                 <img
                   alt="not found"
                   width={"250px"}
                   src={URL.createObjectURL(profileImage)}
-                  className='rounded-full'
+                  className='rounded-full object-cover h-48 w-48'
                 />
                 {/* Button to remove the selected image */}
                 <button className="text-center text-white bg-[#ad957b] p-3 rounded-lg my-4 mt-10" onClick={() => setProfileImage(null)}>Remove</button>
@@ -91,6 +90,7 @@ const Userregister = () => {
                   file:bg-[#2d2d2e] file:border-0
                   file:me-4
                   file:py-3 file:px-4 file:text-white"/>
+                
              
 
               <form onSubmit={handleSubmit} className='flex flex-col mt-2 gap-y-4'>
@@ -110,7 +110,7 @@ const Userregister = () => {
                 </div>
                 
                 <div>
-                  <label for="phoneNumber"><FontAwesomeIcon icon={faPhone}></FontAwesomeIcon> Telephine No.</label>
+                  <label for="phoneNumber"><FontAwesomeIcon icon={faPhone}></FontAwesomeIcon> Telephone No.</label>
                   <input type="tel" id="phoneNumber" name="phoneNumber" value={formValue.phoneNumber} onChange={handleFormChange} className="w-full bg-[#2d2d2e] p-2 rounded-xl border border-slate-600 text-white" required></input>
                 </div>
 

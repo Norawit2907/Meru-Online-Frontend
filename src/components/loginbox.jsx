@@ -23,6 +23,7 @@ const Loginbox = ({registerlink, userchoice}) => {
 
   const handlelogin = async () => {
     if(userchoice == 'user'){
+      console.log('user');
       const res = await UserLogin(email, password);
       if(res === true){
         window.location.href = `/`
