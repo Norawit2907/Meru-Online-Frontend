@@ -105,8 +105,8 @@ const SelectDateBooking = ({
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     
-    const thirdDay = new Date(today);
-    thirdDay.setDate(today.getDate() + 3);
+    const lockDays = new Date(today);
+    lockDays.setDate(today.getDate() + 1);
 
     if (isCremationDate) {
       const minCremationDate = calculateAllowedCremationDates();
@@ -114,7 +114,7 @@ const SelectDateBooking = ({
       return date >= minCremationDate;
     }
     
-    return date.getTime() === today.getTime() || date.getTime() >= thirdDay.getTime();
+    return date.getTime() === today.getTime() || date.getTime() >= lockDays.getTime();
   };
 
   const handleDaySelect = (day) => {
