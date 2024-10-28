@@ -1,7 +1,4 @@
 import React from "react";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 
 const timelineItems = [
     {
@@ -95,31 +92,6 @@ const Timeline = () => {
 };
 
 const TimelineItem = ({ date, services, isLast }) => {
-  const settings = {
-    dots: false,
-    infinite: false,
-    arrows: false,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 1280,
-        settings: {
-          slidesToShow: 2,
-          arrows: false 
-        }
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 1,
-          arrows: false
-        }
-      }
-    ]
-  };
-
   return (
     <li className="relative flex gap-2 md:gap-6 mb-8 sm:mb-10 md:mb-12">
       <div className="flex items-center">
@@ -137,32 +109,30 @@ const TimelineItem = ({ date, services, isLast }) => {
           วันที่ {date}
         </div>
 
-        <div className="flex justify-center">
-          <Slider {...settings}>
-            {services.map((service, index) => (
-              <div key={index} className="px-1 sm:px-2 flex justify-center">
-                <div className="w-full sm:w-[240px] md:w-[260px] lg:w-[280px] bg-[#484848] rounded-lg">
-                  <div className="relative w-full h-[120px] sm:h-[130px] md:h-[140px]">
-                    <div
-                      className="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-t-lg"
-                      style={{ backgroundImage: `url(${service.imageUrl})` }}
-                    />
-                  </div>
-                  <div className="p-2 sm:p-3">
-                    <h1 className="text-white text-base sm:text-lg font-semibold line-clamp-1">
-                      {service.title}
-                    </h1>
-                    <p className="text-[#AD957B] text-xs sm:text-sm py-1 line-clamp-2">
-                      {service.description}
-                    </p>
-                    <p className="text-white text-lg sm:text-xl font-medium">
-                      {service.price}
-                    </p>
-                  </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {services.map((service, index) => (
+            <div key={index} className="flex justify-center">
+              <div className="w-full sm:w-[240px] md:w-[260px] lg:w-[280px] bg-[#484848] rounded-lg">
+                <div className="relative w-full h-[120px] sm:h-[130px] md:h-[140px]">
+                  <div
+                    className="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-t-lg"
+                    style={{ backgroundImage: `url(${service.imageUrl})` }}
+                  />
+                </div>
+                <div className="p-2 sm:p-3">
+                  <h1 className="text-white text-base sm:text-lg font-semibold line-clamp-1">
+                    {service.title}
+                  </h1>
+                  <p className="text-[#AD957B] text-xs sm:text-sm py-1 line-clamp-2">
+                    {service.description}
+                  </p>
+                  <p className="text-white text-lg sm:text-xl font-medium">
+                    {service.price}
+                  </p>
                 </div>
               </div>
-            ))}
-          </Slider>
+            </div>
+          ))}
         </div>
       </div>
     </li>
