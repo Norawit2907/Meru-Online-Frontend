@@ -1,9 +1,10 @@
-import React from "react";
+import React, {useState} from "react";
 import Calendar from "../components/Calendar";
 import PaymentOptions from "../components/PaymentOption";
 import SlickSaLa from "../components/SaLa";
 import AddonWat from "../components/Addon_Watpage1";
 import Timeline from "../components/TimelineBooking";
+import SelectDate from "../components/SelectDateBooking";
 
 import "../styles/Booking.css";
 import "slick-carousel/slick/slick.css";
@@ -51,7 +52,7 @@ const LeftSection = () => {
   return (
     <div className="section1 col-span-2">
       <SelectDate label="วันเริ่มจัดงาน" date="13 พ.ย. 2564" />
-      <SelectDate label="จำนวนวันสวด" date="3" suffix="วัน" />
+      <SelectDate label="จำนวนวันสวด" date="3" suffix="วัน"/>
       <SelectDate label="วันเริ่มฌาปณกิจ" date="select" />
 
       <h2 className="mb-5 font-bold text-[32px]">ศาลา</h2>
@@ -159,23 +160,6 @@ const CostItem = ({ label, items }) => {
         </div>
       ))}
     </>
-  );
-};
-
-const SelectDate = ({ label, date, suffix = "" }) => {
-  return (
-    <div className="grid grid-cols-3 items-center whitespace-nowrap mb-16">
-      <h2 className="font-prompt text-white font-bold text-2xl">{label}</h2>
-      <div className="pick-date flex justify-between items-center rounded-xl">
-        <div className="date text-white">{date}</div>
-        <div className="text-white">
-          <FontAwesomeIcon icon={faCaretDown} />
-        </div>
-      </div>
-      {suffix && (
-        <h2 className="font-prompt text-white font-bold text-2xl">{suffix}</h2>
-      )}
-    </div>
   );
 };
 
