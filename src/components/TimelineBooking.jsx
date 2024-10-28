@@ -5,42 +5,19 @@ const timelineItems = [
       date: "17/8/67",
       services: [
         {
-          imageUrl: "./temple.jpg",
+          imageUrl: "https://huahin.town/wp-content/uploads/2023/07/cover-FB.jpg",
           title: "ชุดครอบครัว",
           description: "เหมาะสำหรับครอบครัวเล็กและใหญ่",
           price: "650 บ.",
         },
         {
-          imageUrl: "./temple.jpg",
+          imageUrl: "https://img.wongnai.com/p/1920x0/2019/04/11/a75bbf13ca274d4f8240c776dd61bf51.jpg",
           title: "ชุดครอบครัว",
           description: "เหมาะสำหรับครอบครัวเล็กและใหญ่",
           price: "650 บ.",
         },
         {
-          imageUrl: "./temple.jpg",
-          title: "ชุดครอบครัว",
-          description: "เหมาะสำหรับครอบครัวเล็กและใหญ่",
-          price: "650 บ.",
-        },
-      ]
-    },
-    {
-      date: "17/8/67",
-      services: [
-        {
-          imageUrl: "./temple.jpg",
-          title: "ชุดครอบครัว",
-          description: "เหมาะสำหรับครอบครัวเล็กและใหญ่",
-          price: "650 บ.",
-        },
-        {
-          imageUrl: "./temple.jpg",
-          title: "ชุดครอบครัว",
-          description: "เหมาะสำหรับครอบครัวเล็กและใหญ่",
-          price: "650 บ.",
-        },
-        {
-          imageUrl: "./temple.jpg",
+          imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9R9FD3KMWGpFwMMLQ9f249pDxFJ5HQgyjtQ&s",
           title: "ชุดครอบครัว",
           description: "เหมาะสำหรับครอบครัวเล็กและใหญ่",
           price: "650 บ.",
@@ -51,19 +28,42 @@ const timelineItems = [
       date: "17/8/67",
       services: [
         {
-          imageUrl: "./temple.jpg",
+          imageUrl: "https://huahin.town/wp-content/uploads/2023/07/cover-FB.jpg",
           title: "ชุดครอบครัว",
           description: "เหมาะสำหรับครอบครัวเล็กและใหญ่",
           price: "650 บ.",
         },
         {
-          imageUrl: "./temple.jpg",
+          imageUrl: "https://img.wongnai.com/p/1920x0/2019/04/11/a75bbf13ca274d4f8240c776dd61bf51.jpg",
           title: "ชุดครอบครัว",
           description: "เหมาะสำหรับครอบครัวเล็กและใหญ่",
           price: "650 บ.",
         },
         {
-          imageUrl: "./temple.jpg",
+          imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9R9FD3KMWGpFwMMLQ9f249pDxFJ5HQgyjtQ&s",
+          title: "ชุดครอบครัว",
+          description: "เหมาะสำหรับครอบครัวเล็กและใหญ่",
+          price: "650 บ.",
+        },
+      ]
+    },
+    {
+      date: "17/8/67",
+      services: [
+        {
+          imageUrl: "https://huahin.town/wp-content/uploads/2023/07/cover-FB.jpg",
+          title: "ชุดครอบครัว",
+          description: "เหมาะสำหรับครอบครัวเล็กและใหญ่",
+          price: "650 บ.",
+        },
+        {
+          imageUrl: "https://img.wongnai.com/p/1920x0/2019/04/11/a75bbf13ca274d4f8240c776dd61bf51.jpg",
+          title: "ชุดครอบครัว",
+          description: "เหมาะสำหรับครอบครัวเล็กและใหญ่",
+          price: "650 บ.",
+        },
+        {
+          imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9R9FD3KMWGpFwMMLQ9f249pDxFJ5HQgyjtQ&s",
           title: "ชุดครอบครัว",
           description: "เหมาะสำหรับครอบครัวเล็กและใหญ่",
           price: "650 บ.",
@@ -105,14 +105,14 @@ const TimelineItem = ({ date, services, isLast }) => {
       </div>
 
       <div className="flex-1 bg-white rounded-xl p-2 sm:p-3 md:p-4 mr-2 sm:mr-4 md:mr-8">
-        <div className="text-black text-lg sm:text-xl md:text-[24px] font-bold mb-2 sm:mb-3 md:mb-4 ml-2">
+        <div className="text-black text-lg sm:text-xl md:text-[24px] font-bold mb-2 sm:mb-3 md:mb-4 ml-2 underline">
           วันที่ {date}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {services.map((service, index) => (
             <div key={index} className="flex justify-center">
-              <div className="w-full sm:w-[240px] md:w-[260px] lg:w-[280px] bg-[#484848] rounded-lg">
+              <div className="w-full sm:w-[240px] md:w-[260px] lg:w-[280px] bg-[#292725] rounded-lg">
                 <div className="relative w-full h-[120px] sm:h-[130px] md:h-[140px]">
                   <div
                     className="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-t-lg"
