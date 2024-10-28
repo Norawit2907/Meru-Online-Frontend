@@ -6,7 +6,7 @@ import { GetReservesDays } from "../services/getReservationDays";
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [watData, setWatData] = useState([]);
-  const wat_id = '6719a16461c391e42b756b76';
+  const wat_id = '671fa23fd2a1d6d9478ef334';
   const [reservationDays, setReservationDays] = useState({});
 
 

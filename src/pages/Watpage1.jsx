@@ -44,7 +44,7 @@ const Watpage1 = () => {
     //   getwat("670d4074f2bd50c27ade5db0")
     // },[])
 
-    const wat_id = '670d4074f2bd50c27ade5db0'
+    const wat_id = '671fa23fd2a1d6d9478ef334'
     const [watAddress, setWatAddress] = useState([]);
     const [watAddons, setWatAddons] = useState([]);
     const [filteredAddonsCat1, setFilteredAddonsCat1] = useState([]);
