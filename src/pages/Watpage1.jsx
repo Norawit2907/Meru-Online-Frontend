@@ -1,6 +1,7 @@
 import React from "react";
 import Addon from "../components/Addon";
 import Calendar from "../components/Calendar";
+import AddonWat from "../components/Addon_Watpage1";
 import { useState } from "react";
 import { useEffect } from "react";
 import { GetWatAddress } from "../services/address";
@@ -44,7 +45,7 @@ const Watpage1 = () => {
     //   getwat("670d4074f2bd50c27ade5db0")
     // },[])
 
-    const wat_id = '670d4074f2bd50c27ade5db0'
+    const wat_id = '671fec855a531995fe412828'
     const [watAddress, setWatAddress] = useState([]);
     const [watAddons, setWatAddons] = useState([]);
     const [filteredAddonsCat1, setFilteredAddonsCat1] = useState([]);
@@ -107,10 +108,14 @@ const Watpage1 = () => {
 
     return (
         <div className="mx-4 mt-8 md:mx-[77px] md:mt-[70px] overflow-x-hidden">
-            {/* wat-picture section */}
             <div className="w-full h-auto md:h-[440px] flex flex-col md:flex-row gap-[20px]">
-                <div className="bg-[#C2C6CC] md:w-full lg:w-7/12 h-[300px] md:h-full rounded-[16px] flex items-end">
-                    <div className="flex gap-4 md:gap-12 items-center p-4">
+                <div className="bg-[#C2C6CC] md:w-full lg:w-12/12 h-[300px] md:h-full rounded-[16px] flex items-end relative overflow-hidden">
+                    <img
+                        src={watData.picture}
+                        alt="Wat Image" 
+                        className="w-full h-full object-cover rounded-[16px]"
+                    />
+                    <div className="flex gap-4 md:gap-12 items-center p-4 absolute bottom-0 left-0 z-10">
                         <img
                             alt=""
                             src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
@@ -118,45 +123,63 @@ const Watpage1 = () => {
                         />
                         <div className="flex flex-col items-start">
                             <p className="text-[10px] md:text-[12px]">by</p>
-                            <h1 className="text-[14px] md:text-[18px] font-bold">John wat</h1>
-                            <p className="text-[14px] md:text-[16px]">For: $ 1000 - $ 5000</p>
-                        </div>
-                    </div>
-                </div>
-                <div className="grid grid-cols-2 gap-4 w-full md:w-auto ">
-                    <div className="bg-[#C2C6CC] h-[150px] md:h-auto  lg:w-[270px]  rounded-[16px]"></div>
-                    <div className="bg-[#C2C6CC] h-[150px] md:h-auto  rounded-[16px]"></div>
-                    <div className="bg-[#C2C6CC] h-[150px] md:h-auto  rounded-[16px]"></div>
-                    <div className="bg-[#C2C6CC] h-[150px] md:h-auto  rounded-[16px] relative hover:bg-blend-normal">
-                        <div className="absolute top-[35%] left-[25%] opacity-0 hover:opacity-100 transition-opacity duration-300">
-                            <button className="flex gap-4 md:gap-6 items-center">
-                                <h1 className="text-[32px] md:text-[42px] font-bold">+2</h1>
-                                <div className="flex flex-col items-start">
-                                    <p className="text-[12px] md:text-[14px] font-semibold">More</p>
-                                    <p className="text-[16px] md:text-[18px] font-bold">Photos</p>
-                                </div>
-                            </button>
+                            <h1 className="text-[14px] md:text-[18px] font-bold">{watData.admin_name}</h1>
+                            <p className="text-[14px] md:text-[16px]">For: ${watData.min_cost} - ${watData.max_cost}</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* wat-info-section */}
             <div className="w-full flex flex-col lg:flex-row justify-between my-[40px]">
-                <div className="flex- flex-col mb-8 lg:mb-0">
-                    <h1 className="text-[#AD957B] text-[36px] md:text-[50px] font-bold">{watAddress.wat_name}</h1>
-                    <p className="text-white text-[16px] md:text-[18px] py-4 indent-6 md:indent-12">
-                        {watData.description}
-                    </p>
-                    <ul className="text-white text-[16px] md:text-[18px] list-disc list-inside">
-                        <li>4 ศาลา</li>
-                        <li>2 ศาลาร้อน</li>
-                        <li>2 ศาลาเย็น</li>
-                    </ul>
+                <div className="left w-full lg:w-3/5">
+                    {/* wat-info-section */}
+                        <div className="flex- flex-col mb-8 lg:mb-0">
+                            <h1 className="text-[#AD957B] text-[36px] md:text-[50px] font-bold">{watData.name}</h1>
+                            <p className="text-white text-[16px] md:text-[18px] py-4 indent-6 md:indent-12">
+                                {watData.description}
+                            </p>
+                            <ul className="text-white text-[16px] md:text-[18px] list-disc list-inside">
+                                <li>4 ศาลา</li>
+                                <li>2 ศาลาร้อน</li>
+                                <li>2 ศาลาเย็น</li>
+                            </ul>
+                        </div>
+
+
+                    {/* wat-calendar-section */}
+                    <div className="w-[675px] h-[696.25px] bg-[#1C1C1C] rounded-[10px] mb-10 flex justify-center items-center">
+                        <Calendar />
+                    </div>
+
+                    {/* wat-location-section */}
+                    <div className="w-[835px] mb-10" >
+                        <div>
+                            <iframe
+                                src={ `https://www.google.com/maps?q=${latitude},${longitude}&z=16&output=embed`} 
+                                width="675"
+                                height="250"
+                                allowfullscreen=""
+                                loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade">
+                            </iframe>
+                            {/* <Google_map latitude={latitude} longtitude={longitude} /> */}
+                            
+                            <div className=" text-white">
+                                <h1 className="py-4 text-[18px] ">สถานที่ตั้ง</h1>
+                                <p className="text-[16px]">{watAddress.address}<br />รหัสไปรษณีย์ {watAddress.postalCode}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* wat-add-on-section */}
+                    <Addon title={"ศาลาที่มีให้"} addonList={filteredAddonsCat1} />
+                    <Addon title={"บริการระหว่างอภิธรรมศพ"} addonList={filteredAddonsCat2} />
+                    <Addon title={"สินค้าและบริการ (ลูกค้าเลือกจ่าย)"} addonList={filteredAddonsCat3} />
                 </div>
-                <div className="w-full lg:w-[500px] h-[220px] md:h-[266px] bg-[#484848] rounded-[10px] flex flex-col justify-between py-4 px-6 md:px-8">
+                <div className="right w-full lg:w-2/5 flex flex-col items-center gap-4">         
+                <div className="w-full lg:w-[375px] h-[220px] md:h-[266px] bg-[#292725] rounded-[10px] flex flex-col justify-between py-4 px-6 md:px-8">
                     <div className="flex flex-col text-white gap-4 md:gap-5">
-                        <h1 className="text-[16px] md:text-[18px] font-bold">CONTACT INFO</h1>
+                        <p className="text-[16px] md:text-[18px] font-bold">CONTACT INFO</p>
                         <p className="text-[14px] md:text-[15px]">Phone: {watData.phoneNumber}</p>
                         <p className="text-[14px] md:text-[15px]">Facebook: {watData.Facebook}</p>
                         <p className="text-[14px] md:text-[15px]">Location: {watAddress.address}</p>
@@ -165,39 +188,23 @@ const Watpage1 = () => {
                         <img src="/socialmedialinks.png" alt="Social Media Links" />
                     </div>
                 </div>
-            </div>
 
-            {/* wat-calendar-section */}
-            <div className="w-[835px] h-[696.25px] bg-[#312F32] rounded-[10px] mb-10 flex justify-center items-center">
-                <Calendar />
-            </div>
-
-            {/* wat-location-section */}
-            <div className="mb-10">
-                <div>
-                    <iframe
-                        src={ `https://www.google.com/maps?q=${latitude},${longitude}&z=16&output=embed`} 
-                        width="835"
-                        height="250"
-                        allowfullscreen=""
-                        loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade">
-                    </iframe>
-                    {/* <Google_map latitude={latitude} longtitude={longitude} /> */}
-                    
-                    <div className=" text-white">
-                        <h1 className="py-4 text-[18px] ">สถานที่ตั้ง</h1>
-                        <p className="text-[16px]">{watAddress.address}<br />รหัสไปรษณีย์ {watAddress.postalCode}</p>
+                <div className="w-full lg:w-[375px] h-[220px] md:h-[266px] bg-[#292725] rounded-[10px] flex flex-col justify-between py-4 px-6 md:px-8">
+                    <div className="flex flex-col text-white gap-4 md:gap-5">
+                        <p className="text-[16px] md:text-[18px] font-bold">${watData.min_cost} - ${watData.max_cost}</p>
+                        <p className="text-[14px] md:text-[15px]">Short Period: $ 1000 </p>
+                        <p className="text-[14px] md:text-[15px]">Medium Period: $ 2000</p>
+                        <p className="text-[14px] md:text-[15px]">Long Period: $ 2000</p>
                     </div>
+                    <button className="bg-[#AD957B] text-white text-[16px] md:text-[18px] font-bold rounded-[20px] py-2">
+                        Book Now
+                    </button>
                 </div>
             </div>
 
-            {/* wat-add-on-section */}
-            <Addon title={"ศาลาที่มีให้"} addonList={filteredAddonsCat1} />
-            <Addon title={"บริการระหว่างอภิธรรมศพ"} addonList={filteredAddonsCat2} />
-            <Addon title={"สินค้าและบริการ (ลูกค้าเลือกจ่าย)"} addonList={filteredAddonsCat3} />
+            </div>
         </div>
-
+        
     );
 };
 

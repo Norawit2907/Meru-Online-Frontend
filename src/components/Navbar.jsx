@@ -7,7 +7,8 @@ import "../styles/Navbar.css";
 
 const Navbar = () => {
   const [showNotifications, setShowNotifications] = useState(false);
-  const [loginState, setLoginState] = useState(false)
+  const [loginState, setLoginState] = useState(false);
+  const [ShowWATnav, setShowWATnav] = useState(false);
 
   const notifications = [
     { title: "New Reservation Alert", date: "12 Mar 2021" },
@@ -21,39 +22,58 @@ const Navbar = () => {
   };
 
   const handlebutton = () => {
-    if(loginState == true){
-      sessionStorage.clear()
-      setLoginState(false)
+    if (loginState) {
+      sessionStorage.clear();
+      setLoginState(false);
+      setShowWATnav(false); // Hide WATnav on logout
+    } else {
+      window.location.href = "/login";
     }
-    else{
-      window.location.href = "/login"
-    }
-  }
+  };
 
-  useEffect(()=>{
-    const token = sessionStorage.getItem("access_token")
-    const role = sessionStorage.getItem("role")
-    if(token){
-      setLoginState(true)
+  useEffect(() => {
+    const token = sessionStorage.getItem("access_token");
+    const role = sessionStorage.getItem("role");
+
+    if (token) {
+      setLoginState(true);
+      if (role === "watuser") {
+        setShowWATnav(true);
+      }
+    } else {
+      setLoginState(false);
+      setShowWATnav(false); 
     }
-    else{
-      setLoginState(false)
-    }
-    console.log(token);
-  }, [])
+
+    console.log("Token:", token, "Role:", role);
+  }, []);
 
   return (
     <nav className="navbar flex justify-between items-center p-4 bg-gray-800">
-      <div className="logo flex items-center">
-        <img src="../logo.png" alt="Logo" className="h-10" />
-        <Link to="/" className="text-white text-lg ml-2">
-          Meru-Online
-        </Link>
+      <div className="Wat logo flex justify-between items-start">
+        <div className="logo flex items-center mr-2" style={{ fontFamily: 'Old Standard TT' }}>
+          <img src="../logo.png" alt="Logo" className="h-10" />
+          <Link to="/" className="text-white text-4xl ml-2 ">
+            Meru-Online
+          </Link>
+        </div>
+        {loginState && ShowWATnav && (
+          <div className="Wat-button flex justify-between items-center w-200">
+            <Link to="/EditWat" className="text-white text-lg ml-10">
+              Edit Wat
+            </Link>
+            <Link to="/Booking" className="text-white text-lg ml-10">
+              Reservation
+            </Link>
+            <Link to="/Watpage1" className="text-white text-lg ml-10">
+              My Wat
+            </Link>
+          </div>
+        )}
       </div>
-      
+
       <div className="nav-buttons flex items-center">
-        {
-            loginState ?
+        {loginState ? (
           <div className="Notification-buttons relative">
             <button className="text-white" onClick={toggleNotifications}>
               <FontAwesomeIcon icon={faBell} className="text-2xl" />
@@ -70,41 +90,31 @@ const Navbar = () => {
                         title={notification.title}
                         date={notification.date}
                       />
-
-                      {index < notifications.length - 1 && (
-                        <hr className="mx-4" />
-                      )}
+                      {index < notifications.length - 1 && <hr className="mx-4" />}
                     </div>
                   ))}
                 </div>
               </div>
             )}
           </div>
-          :
-          null
-        }
+        ) : null}
+        
         <p>{sessionStorage.getItem("currentUser_username")}</p>
+        
         <div className="Login-buttons">
-            <button onClick={handlebutton} className="text-white bg-blue-500 hover:bg-blue-700 rounded px-4 py-2">
-              {loginState ? 
-                "logout"
-              :
-                "login"
-              }
-            </button>
+          <button onClick={handlebutton} className="text-white bg-blue-500 hover:bg-blue-700 rounded px-4 py-2">
+            {loginState ? "logout" : "login"}
+          </button>
         </div>
         
         <div className="Profile-buttons">
-          {
-            loginState ?
+          {loginState ? (
             <Link to="/Profile">
               <button className="text-white">
                 <img src={sessionStorage.getItem("currentUser_profileimg")} alt="User" className="h-8" />
               </button>
             </Link>
-            :
-            null
-          }
+          ) : null}
         </div>
       </div>
     </nav>
