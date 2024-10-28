@@ -11,11 +11,11 @@ const Profile = () => {
   const [profileImg, setProfileImg] = useState('')
   const [user, setUser] = useState({})
   const token = sessionStorage.getItem("access_token")
-  const curresnt_id = sessionStorage.getItem("currentUser_id")
+  const current_id = sessionStorage.getItem("currentUser_id")
 
   const fetchUser = async () => {
     try {
-      const response = await axios.get(`${backendUrl}/users/${curresnt_id}`, {
+      const response = await axios.get(`${backendUrl}/users/${current_id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
