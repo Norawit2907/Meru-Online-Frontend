@@ -179,7 +179,7 @@ const EditWat = () => {
       alert("can't update wat");
     } else {
       // console.log(response);
-      window.location.href = `/watpage2/${wat_id}`;
+      window.location.href = `/watpage1/${wat_id}`;
     }
   };
 
