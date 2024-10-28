@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarAlt, faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import 'react-calendar/dist/Calendar.css';
 
-// เพิ่ม CSS สำหรับปรับแต่ง Calendar
 const calendarStyles = `
   .react-calendar {
     background: transparent;
@@ -40,7 +39,7 @@ const calendarStyles = `
   }
 `;
 
-const SelectDate = ({ label, date, suffix = "" }) => {
+const SelectDate = ({ label, suffix = "" }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedDays, setSelectedDays] = useState(null);
   const [showCalendar, setShowCalendar] = useState(false);
@@ -53,13 +52,6 @@ const SelectDate = ({ label, date, suffix = "" }) => {
   const isDateSelectable = (date) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    
-    const tomorrow = new Date(today);
-    tomorrow.setDate(today.getDate() + 1);
-    
-    const dayAfterTomorrow = new Date(today);
-    dayAfterTomorrow.setDate(today.getDate() + 2);
-    
     const thirdDay = new Date(today);
     thirdDay.setDate(today.getDate() + 3);
     
@@ -78,10 +70,6 @@ const SelectDate = ({ label, date, suffix = "" }) => {
     }
   };
 
-  const handleCalendarClick = (e) => {
-    e.stopPropagation();
-  };
-
   const getBlockedDates = () => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -95,8 +83,6 @@ const SelectDate = ({ label, date, suffix = "" }) => {
     return [tomorrow, dayAfterTomorrow];
   };
 
-  const blockedDates = getBlockedDates();
-
   const handleDropdownClick = (e) => {
     e.stopPropagation();
     if (isStartDate) {
@@ -106,7 +92,6 @@ const SelectDate = ({ label, date, suffix = "" }) => {
     }
   };
 
-  // Text if Default
   const getDisplayValue = () => {
     if (isSelectDays) {
       return selectedDays || "-";
@@ -123,7 +108,6 @@ const SelectDate = ({ label, date, suffix = "" }) => {
 
   return (
     <div className="relative font-prompt">
-
       <style>{calendarStyles}</style>
       
       <div className="grid grid-cols-3 items-center mb-16 relative">
@@ -144,7 +128,7 @@ const SelectDate = ({ label, date, suffix = "" }) => {
               />
             </button>
           </div>
-
+          
           {/* Dropdown for days selection */}
           {isSelectDays && isOpen && (
             <div className="absolute top-full mt-2 w-full bg-[#292725] border border-[#AD957B] rounded-xl shadow-lg overflow-hidden z-50">
@@ -162,10 +146,7 @@ const SelectDate = ({ label, date, suffix = "" }) => {
 
           {/* Calendar popup */}
           {isStartDate && showCalendar && (
-            <div
-              className="absolute top-full mt-2 left-1/2 transform -translate-x-1/2 z-50"
-              onClick={handleCalendarClick}
-            >
+            <div className="absolute top-full mt-2 left-1/2 transform -translate-x-1/2 z-50">
               <div className="bg-[#292725] border border-[#AD957B] rounded-xl p-2 shadow-xl w-[350px]">
                 <Calendar
                   calendarType="gregory"
@@ -184,7 +165,7 @@ const SelectDate = ({ label, date, suffix = "" }) => {
                     const classes = ['transition-all duration-200 rounded-lg hover:bg-[#AD957B]/50'];
                     
                     if (view === 'month') {
-                      const isBlocked = blockedDates.some(
+                      const isBlocked = getBlockedDates().some(
                         blockedDate => blockedDate.toDateString() === date.toDateString()
                       );
                       
