@@ -61,6 +61,7 @@ const EditWat = () => {
   });
 
   const [imagefiles, setimagefiles] = useState([]);
+  const [pictures, setPictures] = useState([]);
 
   const handleWatFormChange = (event) => {
     setWatForm({
@@ -122,32 +123,31 @@ const EditWat = () => {
     setimagefiles(newimage)
   }
 
-  // useEffect(() => {
-  //   // console.log("effect", imagefiles);
-  // }, [imagefiles]);
+  useEffect(() => {
+    console.log("effect", imagefiles);
+  }, [imagefiles]);
 
   const handlesubmit = async (e) => {
     e.preventDefault();
     // console.log("pressed");
 
-    let pictures = [];
-    imagefiles.map(async (item) => {
-      if (item.file != null) {
-        const link = await UploadImage(item.file)
-        // console.log("link", link);
-        item.url = link
-        const obj = {
-          name: item.name,
-          url: item.url
-        }
-        pictures = [...pictures, obj]
-      }
-    })
-
+    let pictures = await Promise.all(
+      imagefiles.map(async (item) => {
+          if (item.file != null) {
+              const link = await UploadImage(item.file);
+              return {
+                  name: item.name,
+                  url: link,
+              };
+          }
+          return null;
+      })
+  );
+    
+    console.log("ttttt", pictures)
     const wat_id = sessionStorage.getItem("wat_id");
     const admin_id = sessionStorage.getItem("currentUser_id");
 
-    console.log(watForm)
     const response = await updateWat(
       wat_id,
       admin_id,
@@ -161,7 +161,7 @@ const EditWat = () => {
       watForm.max_workload,
       0,
       watForm.description,
-      pictures || [],
+      pictures,
       "String",
     );
 
@@ -189,7 +189,7 @@ const EditWat = () => {
       alert("can't update wat");
     } else {
       // console.log(response);
-      window.location.href = `/watpage1/${wat_id}`;
+      // window.location.href = `/watpage1/${wat_id}`;
     }
 
 
