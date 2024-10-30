@@ -19,7 +19,7 @@ const Watpage1 = () => {
     //   getwat("670d4074f2bd50c27ade5db0")
     // },[])
 
-    const wat_id = '671fec855a531995fe412828'
+    const wat_id = '67228a9fe05dbb239cc58fdd'
 
     const [loginState, setLoginState] = useState(false);
     const [ShowBooking, setBooking ] = useState(false);

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { UploadImage } from '../services/imageupload';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faEye,faEyeSlash} from "@fortawesome/free-solid-svg-icons";
+import { set } from 'react-hook-form';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
@@ -50,10 +51,11 @@ const EditProfile = ({ isOpen, onClose }) => {
   const save_profile = async () => {
     console.log(firstname, lastname, phone, email, password);
     const profile_link = null;
-
-    if (profileImg) {
+    if (profileImg instanceof File || profileImg instanceof Blob) {
       try {
         profile_link = await UploadImage(profileImg);
+        console.log("Image uploaded successfully:", profile_link);
+        setProfileImg(profile_link);
       } catch (err) {
         console.error("Image upload failed:", err);
         return;
@@ -65,13 +67,9 @@ const EditProfile = ({ isOpen, onClose }) => {
       lastname: lastname,
       phoneNumber: phone,
       email: email,
-      password: password
+      password: password,
+      profile_img: profileImg
     };
-
-    if (profile_link) {
-      updatedData.profile_img = profile_link;
-    }
-
 
     try {
       const response = await axios.put(`${backendUrl}/users/${current_id}`,updatedData);
@@ -204,7 +202,7 @@ const EditProfile = ({ isOpen, onClose }) => {
               <label className="block text-white">Password:</label>
               <input
                 type={showPassword ? "text" : "password"}
-                id = "password"
+                value={password}
                 className="w-full p-2 border rounded"
                 placeholder="Enter new password"
               />

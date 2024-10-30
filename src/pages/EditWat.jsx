@@ -134,7 +134,7 @@ const EditWat = () => {
     imagefiles.map(async (item) => {
       if (item.file != null) {
         const link = await UploadImage(item.file)
-        // console.log("link", link);
+        console.log("link", link);
         item.url = link
         const obj = {
           name: item.name,
