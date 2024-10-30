@@ -11,11 +11,11 @@ const Profile = () => {
   const [profileImg, setProfileImg] = useState('')
   const [user, setUser] = useState({})
   const token = sessionStorage.getItem("access_token")
-  const curresnt_id = sessionStorage.getItem("currentUser_id")
+  const current_id = sessionStorage.getItem("currentUser_id")
 
   const fetchUser = async () => {
     try {
-      const response = await axios.get(`${backendUrl}/users/${curresnt_id}`, {
+      const response = await axios.get(`${backendUrl}/users/${current_id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -49,7 +49,6 @@ const Profile = () => {
           <img src={require('../Assets/profile.png')} alt='profile' width={100} height={100} className='w-28 h-28 rounded-full  ' />)}
           <div>
             <p className='text-3xl text-center text-[#AD957B] font-bold'>{user.firstName} {user.lastName}</p>
-            <p className='text-sm text-[#484848]'>Nick Name</p>
           </div>
           <div className='flew flex-col'>
             <div className='flex'>

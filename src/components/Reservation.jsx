@@ -48,7 +48,7 @@ const Reservation = () => {
       setWats(watData);
 
       const watPic = watResponses.reduce((acc, response) => {
-        acc[response.data.id] = response.data.picture[0];
+        acc[response.data.id] = response.data.picture[0].url;
         return acc;
         
       }, {});
@@ -78,6 +78,19 @@ const Reservation = () => {
     setActiveSegment(segmentId);
   };
 
+  const handleSkip = async (reservation) => {
+    alert('เวลาที่ผ่านไปแล้ว ไม่สามารถย้อนกลับมาได้ โปรดดูแลคนที่คุณรักให้ดี');
+    try {
+      const response = await axios.put(`${backendUrl}/reserves/${reservation._id}`, {
+        status: 'passed',
+        sender: 'user'
+      });
+      fetchReservationsAndWats();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const filteredReservations = reservations.filter(
     reservation => reservation.status === segments.find(segment => segment.id === activeSegment)?.status && reservation.user_id === curresnt_id
   );
@@ -102,7 +115,7 @@ const Reservation = () => {
         {filteredReservations.length > 0 ? (
           filteredReservations.map(reservation => (
             <div key={reservation.id} className="p-2 my-2 shadow-md flex w-[100%] gap-5 rounded-lg">
-              <img src={watspic[reservation.wat_id]} width={100} height={100} className="rounded-lg"/>
+              <img src={watspic[reservation.wat_id]} alt="wat_pic" width={100} height={100} className="rounded-lg"/>
               <div className="flex flex-col w-full justify-center">
                 <p>{wats[reservation.wat_id] || 'วัดนิรมาน เพราะไม่ได้ตั้งชื่อ แต่วัดได้เพราะใจถึง'}</p>
                 <div className="flex">
@@ -122,11 +135,29 @@ const Reservation = () => {
               </div>
 
               <div className="flex flex-row-reverse w-[30%] items-center mr-4">
-                {(reservation.status === 'pending' || reservation.status === 'accept') && (
+              {reservation.status === 'pending' && (
                   <button 
-                  className=" w-1/2 h-9 bg-[#AD957B] rounded-2xl text-sm"
-                  onClick={() => handleOpenCancel(reservation)}
-                  >Cancel</button>
+                    className="w-1/2 h-9 bg-[#AD957B] rounded-2xl text-sm"
+                    onClick={() => handleOpenCancel(reservation)}
+                  >
+                    Cancel
+                  </button>
+                )}
+                {reservation.status === 'accept' && (
+                  <>
+                    <button 
+                      className="w-1/2 h-9 bg-[#AD957B] rounded-2xl text-sm"
+                      onClick={() => handleOpenCancel(reservation)}
+                    >
+                      Cancel
+                    </button>
+                    <button 
+                      className="w-1/3 h-9 bg-[#4CAF50] rounded-2xl text-sm text-white mr-2"
+                      onClick={() => handleSkip(reservation)}
+                    >
+                      skip
+                    </button>
+                  </>
                 )}
               </div>
               

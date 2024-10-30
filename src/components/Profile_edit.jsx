@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { UploadImage } from '../services/imageupload';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
@@ -16,51 +17,41 @@ const EditProfile = ({ isOpen, onClose }) => {
   const current_id = sessionStorage.getItem("currentUser_id");
 
   useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(`${backendUrl}/users/${current_id}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setUseredit(response.data);
+        setProfileImg(response.data.profile_img);
+        setFirstname(response.data.firstName);
+        setLastname(response.data.lastName);
+        setEmail(response.data.email);
+        setPhone(response.data.phoneNumber);
+        setPassword(response.data.password);
+      } catch (error) {
+        console.error("Failed to fetch user data:", error);
+      }
+    };
     if (isOpen && !useredit) {
-      const fetchUser = async () => {
-        try {
-          const response = await axios.get(`${backendUrl}/users/${current_id}`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          setUseredit(response.data);
-          setProfileImg(response.data.profile_img);
-          setFirstname(response.data.firstName);
-          setLastname(response.data.lastName);
-          setEmail(response.data.email);
-          setPhone(response.data.phoneNumber);
-          setPassword(response.data.password);
-        } catch (error) {
-          console.error("Failed to fetch user data:", error);
-        }
-      };
       fetchUser();
     }
   }, [isOpen, useredit, current_id, token]);
 
   if (!isOpen) return null;
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file && (file.type === 'image/png' || file.type === 'image/jpeg')) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfileImg(reader.result);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      alert('Please select a PNG or JPG image.');
-    }
-  };
-
   const save_profile = async () => {
     // console.log(firstname, lastname, phone, email, password);
     // console.log(`${backendUrl}/users/${current_id}`);
+    const profile_link = await UploadImage(profileImg);
+
     try {
       const response = await axios.put(`${backendUrl}/users/${current_id}`, 
         {
           firstname: firstname,
           lastname: lastname,
           phoneNumber: phone,
+          profile_img: profile_link,
           email: email,
           password: password
         },
@@ -89,7 +80,7 @@ const EditProfile = ({ isOpen, onClose }) => {
               {profileImg ? (
                 <div>
                   <img
-                    src={profileImg}
+                    src={typeof profileImg === "string" ? profileImg : URL.createObjectURL(profileImg)}
                     alt="profile"
                     width={100}
                     height={100}
@@ -100,7 +91,7 @@ const EditProfile = ({ isOpen, onClose }) => {
                     <input
                       type="file"
                       accept="image/png, image/jpeg"
-                      onChange={handleImageChange}
+                      onChange={(e) => {setProfileImg(e.target.files[0])}}
                       className="hidden"
                     />
                   </label>
@@ -119,7 +110,7 @@ const EditProfile = ({ isOpen, onClose }) => {
                     <input
                       type="file"
                       accept="image/png, image/jpeg"
-                      onChange={handleImageChange}
+                      onChange={(e) => {setProfileImg(e.target.files[0])}}
                       className="hidden"
                     />
                   </label>

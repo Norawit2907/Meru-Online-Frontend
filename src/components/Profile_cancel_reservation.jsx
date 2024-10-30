@@ -1,23 +1,41 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const ProfileCancelReservation = ({ isOpen, onClose, reservation }) => {
+  const [currentDate, setCurrentDate] = useState(new Date());
+  // console.log(currentDate.toLocaleDateString(), reservation.reservation_date);
+  const [checkdays, setCheckdays] = useState(false);
 
-    const handleDelete = async () => {
-        try {
-            const response = await axios.put(`${backendUrl}/reserves/${reservation._id}`, {
-                status: 'reject',
-                sender: 'user'
-            });
-            onClose();
-        } catch (err) {
-          console.error(err);
-        }
-      };
-    
-      if (!isOpen || !reservation) return null;
+  useEffect(() => {
+    if (reservation?.reservation_date) {
+      const reservationDate = new Date(reservation.reservation_date);
+      const timeDifference = reservationDate - currentDate;
+      const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
+      // console.log(daysDifference);
+      setCheckdays(daysDifference <= 2 && daysDifference >= 0);
+    }
+  }, [reservation, currentDate]);
+
+  const handleDelete = async () => {
+    if (checkdays) {
+      alert("ไม่สามารถยกเลิกการจองได้เนื่องจากเหลือเวลาน้อยกว่า 2 วัน");
+      onClose();
+    } else {
+      try {
+          const response = await axios.put(`${backendUrl}/reserves/${reservation._id}`, {
+              status: 'reject',
+              sender: 'user'
+          });
+          onClose();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    };
+  
+    if (!isOpen || !reservation) return null;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-[70]">

@@ -97,8 +97,9 @@ const EditWat = () => {
 
   const handleUploadImage = (event) => {
     const filename = event.target.value;
-    const filetype = filename.split(".").pop();
-    if (filetype == "jpg" || filetype == "jpeg" || filetype== "png") {
+    // const filetype = filename.split(".").pop();
+    const file = event.target.files[0];
+    if (file && (file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg')) {
         const url = URL.createObjectURL(event.target.files[0])
         const imageobject = {
             file: event.target.files[0],
