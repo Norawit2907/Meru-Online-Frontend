@@ -1,36 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Addon from "../components/Addon";
+import Carousel from "../components/Carousel";
 import Calendar from "../components/Calendar";
-import AddonWat from "../components/Addon_Watpage1";
-import { useState } from "react";
-import { useEffect } from "react";
 import { GetWatAddress } from "../services/address";
 import { GetWatData } from "../services/getWatDataById";
 import { GetWatAddons } from "../services/getWatAddons";
-
-const addonData = [
-    {
-        imageUrl: './addon.png',
-        name: 'ชุดครอบครัว',
-        description: 'เหมาะสำหรับครอบครัวเล็กและใหญ่',
-        cost: '750 .- /ชุด',
-    },
-    {
-        imageUrl: './addon.png',
-        name: 'ชุดงานเลี้ยง',
-        description: 'ครบทุกสิ่งสำหรับงานเลี้ยง',
-        cost: '1,500 .- /ชุด',
-    },
-    {
-        imageUrl: './addon.png',
-        name: 'ชุดพรีเมียม',
-        description: 'เหมาะสำหรับการใช้งานพิเศษ',
-        cost: '2,000 .- /ชุด',
-    },
-
-];
-
-
 
 
 const Watpage1 = () => {
@@ -46,6 +20,10 @@ const Watpage1 = () => {
     // },[])
 
     const wat_id = '671fec855a531995fe412828'
+
+    const [loginState, setLoginState] = useState(false);
+    const [ShowBooking, setBooking ] = useState(false);
+
     const [watAddress, setWatAddress] = useState([]);
     const [watAddons, setWatAddons] = useState([]);
     const [filteredAddonsCat1, setFilteredAddonsCat1] = useState([]);
@@ -75,6 +53,7 @@ const Watpage1 = () => {
                 console.error("Failed to fetch Wat address:", error);
             }
         };
+
         const fetchWatAddons = async () => {
             try {
                 const result = await GetWatAddons(wat_id);
@@ -99,6 +78,33 @@ const Watpage1 = () => {
             }
         };
 
+        const handlebutton = () => {
+            if (loginState) {
+              sessionStorage.clear();
+              setLoginState(false);
+              setBooking(false);
+   
+            } else {
+              window.location.href = "/login";
+            }
+          };
+        
+        const token = sessionStorage.getItem("access_token");
+        const role = sessionStorage.getItem("role");
+        
+            if (token) {
+              setLoginState(true);
+              if (role === "wat") {
+                setBooking(true);
+              }
+            } else {
+              setLoginState(false);
+              setBooking(false);
+            }
+        
+            console.log("Token:", token, "Role:", role);
+
+
         fetchWatAddons();
         fetchWatAddress();
         fetchWatData();
@@ -109,25 +115,7 @@ const Watpage1 = () => {
     return (
         <div className="mx-4 mt-8 md:mx-[77px] md:mt-[70px] overflow-x-hidden">
             <div className="w-full h-auto md:h-[440px] flex flex-col md:flex-row gap-[20px]">
-                <div className="bg-[#C2C6CC] md:w-full lg:w-12/12 h-[300px] md:h-full rounded-[16px] flex items-end relative overflow-hidden">
-                    <img
-                        src={watData.picture}
-                        alt="Wat Image" 
-                        className="w-full h-full object-cover rounded-[16px]"
-                    />
-                    <div className="flex gap-4 md:gap-12 items-center p-4 absolute bottom-0 left-0 z-10">
-                        <img
-                            alt=""
-                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                            className="h-[56px] w-[56px] md:h-[76px] md:w-[76px] rounded-full"
-                        />
-                        <div className="flex flex-col items-start">
-                            <p className="text-[10px] md:text-[12px]">by</p>
-                            <h1 className="text-[14px] md:text-[18px] font-bold">{watData.admin_name}</h1>
-                            <p className="text-[14px] md:text-[16px]">For: ${watData.min_cost} - ${watData.max_cost}</p>
-                        </div>
-                    </div>
-                </div>
+                    <Carousel />
             </div>
 
             <div className="w-full flex flex-col lg:flex-row justify-between my-[40px]">
@@ -196,9 +184,11 @@ const Watpage1 = () => {
                         <p className="text-[14px] md:text-[15px]">Medium Period: $ 2000</p>
                         <p className="text-[14px] md:text-[15px]">Long Period: $ 2000</p>
                     </div>
-                    <button className="bg-[#AD957B] text-white text-[16px] md:text-[18px] font-bold rounded-[20px] py-2">
-                        Book Now
-                    </button>
+                    {loginState && ShowBooking && (
+                        <button className="bg-[#AD957B] text-white text-[16px] md:text-[18px] font-bold rounded-[20px] py-2">
+                            Book Now
+                        </button>
+                    )}
                 </div>
             </div>
 
