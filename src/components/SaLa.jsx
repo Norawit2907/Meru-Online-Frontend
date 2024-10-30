@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-import Slider from "react-slick";
-import "../styles/Slick-SaLa.css";
+import React, { useState, useRef } from "react";
 
 const costData = [
   {
@@ -31,61 +29,135 @@ const costData = [
     imageUrl:
       "https://www.muangboranmuseum.com/wp-content/uploads/2018/12/central-47.jpg",
   },
+  {
+    title: "ชุดครบเซ็ต",
+    description: "เหมาะสำหรับครอบครัวเล็ก",
+    price: 850,
+    imageUrl:
+      "https://oliviath.com/wp-content/uploads/2024/02/%E0%B9%81%E0%B8%9A%E0%B8%9A%E0%B8%A8%E0%B8%B2%E0%B8%A5%E0%B8%B2%E0%B8%A7%E0%B8%B1%E0%B8%94-%E0%B8%AA%E0%B8%A7%E0%B8%A2%E0%B9%86.jpg",
+  },
 ];
 
-const SaLa = ({ title, description, price, imageUrl, isSelected, onClick }) => {
-  return (
-    <div
-      onClick={onClick}
-      className={`cursor-pointer text-white bg-[#292725] h-[175px] border-2 rounded-lg ${
-        isSelected ? "border-[#AD957B]" : "border-transparent"
-      }`}
-    >
-      <img src={imageUrl} alt={title} className="w-full h-[115px] object-cover rounded-t-lg" />
-      <div className="p-1">
-        <h3 className="text-[12px]">{title}</h3>
-        <p className="text-[10px] text-[#AD957B]">{description}</p>
-        <p className="text-[16px]">
-          {price}
-          <span className="text-[10px]">.- /ชุด</span>
-        </p>
-      </div>
-    </div>
-  );
-};
-
 const SlickSaLa = () => {
-  const [selectedIndex, setSelectedIndex] = useState(null);
+  const [selectedServiceIndex, setSelectedServiceIndex] = useState(null);
+  const [currentGroup, setCurrentGroup] = useState(0);
+  const scrollContainerRef = useRef(null);
 
-  const handleSelect = (index) => {
-    setSelectedIndex(index);
-  };
+  const totalGroups = Math.ceil(costData.length / 4);
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 1,
+  const scroll = (direction) => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = direction === 'left' ? -1000 : 1000; // 250 * 3
+      scrollContainerRef.current.scrollBy({
+        left: scrollAmount,
+        behavior: 'smooth'
+      });
+      
+      if (direction === 'left' && currentGroup > 0) {
+        setCurrentGroup(prev => prev - 1);
+      } else if (direction === 'right' && currentGroup < totalGroups - 1) {
+        setCurrentGroup(prev => prev + 1);
+      }
+    }
   };
 
   return (
-    <div className="flex justify-center">
-      <div className="sala-carousel w-3/4">
-        <Slider {...settings}>
+    <div className="flex flex-col w-full items-center">
+      {/* Cards Container */}
+      <div className="w-full max-w-[1000px] overflow-hidden px-1">
+        <div 
+          ref={scrollContainerRef}
+          className="flex overflow-x-auto scrollbar-hide gap-2 scroll-smooth"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
           {costData.map((item, index) => (
-            <SaLa
+            <div key={index} className="flex-none">
+              <div 
+                className={`w-[240px] bg-[#292725] rounded-lg cursor-pointer transition-all duration-200 scale-95 hover:scale-[0.97] ${
+                  selectedServiceIndex === index 
+                    ? 'ring-4 ring-[#AD957B] shadow-lg' 
+                    : ''
+                }`}
+                onClick={() => setSelectedServiceIndex(index)}
+              >
+                <div className="relative w-full h-[120px]">
+                  <img 
+                    src={item.imageUrl} 
+                    alt={item.title}
+                    className="absolute inset-0 w-full h-full object-cover rounded-t-lg"
+                  />
+                </div>
+                <div className="p-3">
+                  <h1 className="text-white text-sm font-medium">
+                    {item.title}
+                  </h1>
+                  <p className="text-[#AD957B] text-xs">
+                    {item.description}
+                  </p>
+                  <p className="text-white text-base font-medium">
+                    {item.price}
+                    <span className="text-xs ml-1">.- /ชุด</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Navigation Controls */}
+      <div className="flex items-center justify-center gap-4 mt-4">
+        <button 
+          onClick={() => scroll('left')}
+          className="p-1"
+          disabled={currentGroup === 0}
+        >
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            width="24" 
+            height="24" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="white" 
+            strokeWidth="2" 
+            strokeLinecap="round" 
+            strokeLinejoin="round"
+          >
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        </button>
+
+        {/* Dots Indicator */}
+        <div className="flex gap-1">
+          {Array.from({ length: totalGroups }).map((_, index) => (
+            <div
               key={index}
-              title={item.title}
-              description={item.description}
-              price={item.price}
-              imageUrl={item.imageUrl}
-              isSelected={selectedIndex === index}
-              onClick={() => handleSelect(index)}
+              className={`w-2 h-2 rounded-full ${
+                currentGroup === index ? 'bg-white' : 'bg-gray-600'
+              }`}
             />
           ))}
-        </Slider>
-       
+        </div>
+
+        <button 
+          onClick={() => scroll('right')}
+          className="p-1"
+          disabled={currentGroup === totalGroups - 1}
+        >
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            width="24" 
+            height="24" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="white" 
+            strokeWidth="2" 
+            strokeLinecap="round" 
+            strokeLinejoin="round"
+          >
+            <path d="M9 18l6-6-6-6"/>
+          </svg>
+        </button>
       </div>
     </div>
   );

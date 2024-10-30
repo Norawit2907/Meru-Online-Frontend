@@ -23,7 +23,7 @@ const timelineItems = [
         price: "650 บ.",
       },
       {
-        imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9R9FD3KMWGpFwMMLQ9f249pDxFJ5HQgyjtQ&s",
+        imageUrl: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1b/99/44/8e/kfc-faxafeni.jpg?w=800&h=-1&s=1",
         title: "ชุดครอบครัว",
         description: "เหมาะสำหรับครอบครัวเล็กและใหญ่",
         price: "650 บ.",
@@ -143,7 +143,7 @@ const TimelineItem = ({ date, services, isLast }) => {
  <div 
                   className={`w-[240px] bg-[#292725] rounded-lg cursor-pointer transition-all duration-200 scale-90 hover:scale-95 ${
                     selectedServiceIndex === index 
-                      ? 'ring-4 ring-[#E9C649] scale-100 shadow-2xl' 
+                      ? 'ring-4 ring-[#E9C649] scale-100 shadow-lg' 
                       : ''
                   }`}
                   onClick={() => setSelectedServiceIndex(index)}
