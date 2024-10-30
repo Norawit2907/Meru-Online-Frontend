@@ -123,9 +123,9 @@ const EditWat = () => {
     setimagefiles(newimage)
   }
 
-  useEffect(() => {
-    console.log("effect", imagefiles);
-  }, [imagefiles]);
+  // useEffect(() => {
+  //   console.log("effect", imagefiles);
+  // }, [imagefiles]);
 
   const handlesubmit = async (e) => {
     e.preventDefault();
@@ -144,7 +144,6 @@ const EditWat = () => {
       })
   );
     
-    console.log("ttttt", pictures)
     const wat_id = sessionStorage.getItem("wat_id");
     const admin_id = sessionStorage.getItem("currentUser_id");
 
@@ -189,7 +188,7 @@ const EditWat = () => {
       alert("can't update wat");
     } else {
       // console.log(response);
-      // window.location.href = `/watpage1/${wat_id}`;
+      window.location.href = `/watpage1/${wat_id}`;
     }
 
 
