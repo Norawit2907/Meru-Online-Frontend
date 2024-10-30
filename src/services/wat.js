@@ -21,6 +21,8 @@ export async function  getWatById(wat_id) {
 
 export async function updateWat(wat_id, admin_id, admin_name, name, phoneNumber, line_ID, Facebook, min_cost, max_cost, max_workload, max_cremload, description, picture, location) {
     try{
+        console.log("piccccc",picture);
+        
         const response = await axios.put(`${backendUrl}/wats/${wat_id}`,
             {
                 admin_id,
@@ -40,6 +42,8 @@ export async function updateWat(wat_id, admin_id, admin_name, name, phoneNumber,
         )
 
         if (response.status == 200){
+            console.log("return",response.data);
+            
             return response.data
         }
         else{
