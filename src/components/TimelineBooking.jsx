@@ -123,7 +123,7 @@ const TimelineItem = ({ date, services, isLast }) => {
         </svg>
 
         {!isLast && (
-          <div className="before:absolute before:left-[7px] before:top-[130px] sm:before:top-[150px] md:before:top-[180px] before:h-[270px] sm:before:h-[320px] md:before:h-[410px] before:w-[2px] before:bg-white" />
+          <div className="before:absolute before:left-[7px] before:top-[130px] sm:before:top-[150px] md:before:top-[180px] before:h-[270px] sm:before:h-[320px] md:before:h-[380px] before:w-[2px] before:bg-white" />
         )}
       </div>
 
