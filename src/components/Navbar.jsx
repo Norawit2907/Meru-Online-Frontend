@@ -25,7 +25,7 @@ const Navbar = () => {
     if (loginState) {
       sessionStorage.clear();
       setLoginState(false);
-      setShowWATnav(false); // Hide WATnav on logout
+      setShowWATnav(false); 
     } else {
       window.location.href = "/login";
     }
@@ -37,7 +37,7 @@ const Navbar = () => {
 
     if (token) {
       setLoginState(true);
-      if (role === "watuser") {
+      if (role === "wat") {
         setShowWATnav(true);
       }
     } else {
