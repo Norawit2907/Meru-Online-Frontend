@@ -100,18 +100,18 @@ const EditWat = () => {
     // const filetype = filename.split(".").pop();
     const file = event.target.files[0];
     if (file && (file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg')) {
-        const url = URL.createObjectURL(event.target.files[0])
-        const imageobject = {
-            file: event.target.files[0],
-            url: url,
-            name: filename
-        }
-        // console.log(filename);
-        
-        
+      const url = URL.createObjectURL(event.target.files[0])
+      const imageobject = {
+        file: event.target.files[0],
+        url: url,
+        name: filename
+      }
+      // console.log(filename);
+
+
       setimagefiles([...imagefiles, imageobject]);
-    //   append({file: event.target.files[0], url: URL.createObjectURL(event.target.files[0])})
-      
+      //   append({file: event.target.files[0], url: URL.createObjectURL(event.target.files[0])})
+
     } else {
       alert("Invalid file type");
     }
@@ -120,7 +120,7 @@ const EditWat = () => {
   const handleRemoveImage = (file, url, name) => {
     const newimage = imagefiles.filter((item) => item.file != file && item.url != url && item.name != name)
     setimagefiles(newimage)
- }
+  }
 
   // useEffect(() => {
   //   // console.log("effect", imagefiles);
@@ -132,7 +132,7 @@ const EditWat = () => {
 
     let pictures = [];
     imagefiles.map(async (item) => {
-      if(item.file != null){
+      if (item.file != null) {
         const link = await UploadImage(item.file)
         // console.log("link", link);
         item.url = link
@@ -143,9 +143,32 @@ const EditWat = () => {
         pictures = [...pictures, obj]
       }
     })
-    
+
     const wat_id = sessionStorage.getItem("wat_id");
     const admin_id = sessionStorage.getItem("currentUser_id");
+
+    console.log(watForm)
+    const response = await updateWat(
+      wat_id,
+      admin_id,
+      watForm.admin_name,
+      watForm.name,
+      watForm.phoneNumber,
+      watForm.line_id,
+      watForm.Facebook,
+      0,
+      0,
+      watForm.max_workload,
+      0,
+      watForm.description,
+      pictures || [],
+      "String",
+    );
+
+
+    console.log("admin_id", admin_id);
+    console.log("wat_id", wat_id);
+    console.log("addresses", addressForm);
     const resAddress = await updateAddressByWatId(
       wat_id,
       addressForm.address,
@@ -161,27 +184,15 @@ const EditWat = () => {
     if (!resAddress) {
       alert("can't update address");
     }
-    const response = await updateWat(
-      wat_id,
-      admin_id,
-      watForm.admin_name,
-      watForm.name,
-      watForm.phoneNumber,
-      watForm.line_id,
-      watForm.Facebook,
-      0,
-      0,
-      watForm.max_workload,
-      watForm.description,
-      pictures,
-      "location"
-    );
+
     if (!response) {
       alert("can't update wat");
     } else {
       // console.log(response);
       window.location.href = `/watpage1/${wat_id}`;
     }
+
+
   };
 
   useEffect(() => {
@@ -209,11 +220,12 @@ const EditWat = () => {
       if (addressdata) {
         setAddressForm(addressdata);
       }
-      
+
       setimagefiles(watdata.picture)
-  
+
     }
     getData();
+    console.log("watForm", watForm);
   }, []);
 
   return (
@@ -343,7 +355,7 @@ const EditWat = () => {
               ระบุตำแหน่งของวัด
             </p>
             <iframe
-              src={ `https://www.google.com/maps?q=${addressForm.latitude},${addressForm.longtitude}&z=16&output=embed`}
+              src={`https://www.google.com/maps?q=${addressForm.latitude},${addressForm.longtitude}&z=16&output=embed`}
               className="w-full h-64 md:w-[950px] md:h-[638px]"
               allowFullScreen=""
               loading="lazy"
@@ -394,36 +406,36 @@ const EditWat = () => {
               </label>
             </div>
             {
-            imagefiles.length == 0 ?
+              imagefiles.length == 0 ?
                 null
-            :
-            <div className="bg-[#2e2d2d] p-5 mt-5 rounded-lg">
-              <Reorder.Group
-                values={imagefiles}
-                onReorder={setimagefiles}
-              >
-                {imagefiles.map((item, index) => (
-                  <Reorder.Item
-                    key={item.url}
-                    value={item}
-
+                :
+                <div className="bg-[#2e2d2d] p-5 mt-5 rounded-lg">
+                  <Reorder.Group
+                    values={imagefiles}
+                    onReorder={setimagefiles}
                   >
-                    <div className="flex flex-row justify-between items-center m-2 p-2 rounded-lg bg-[#353333] shadow-lg">
-                    
-                      <img
-                        src={item.url}
-                        className="object-cover h-48 w-48 m-5 text-white"
-                      />
-                      <p className="text-white text-xl truncate">{item.name}</p>
-                      <button onClick={()=>{handleRemoveImage(item.file, item.url, item.name)}} className="mr-10 ml-auto">
-                        <FontAwesomeIcon  icon={faTrash} className="text-[#AD957B] h-10" />
-                      </button>
-                      <div className="reorder-handle"/>
-                    </div>
-                  </Reorder.Item>
-                ))}
-              </Reorder.Group>
-            </div>
+                    {imagefiles.map((item, index) => (
+                      <Reorder.Item
+                        key={item.url}
+                        value={item}
+
+                      >
+                        <div className="flex flex-row justify-between items-center m-2 p-2 rounded-lg bg-[#353333] shadow-lg">
+
+                          <img
+                            src={item.url}
+                            className="object-cover h-48 w-48 m-5 text-white"
+                          />
+                          <p className="text-white text-xl truncate">{item.name}</p>
+                          <button onClick={() => { handleRemoveImage(item.file, item.url, item.name) }} className="mr-10 ml-auto">
+                            <FontAwesomeIcon icon={faTrash} className="text-[#AD957B] h-10" />
+                          </button>
+                          <div className="reorder-handle" />
+                        </div>
+                      </Reorder.Item>
+                    ))}
+                  </Reorder.Group>
+                </div>
             }
           </div>
         </div>

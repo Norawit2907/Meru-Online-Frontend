@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { GetWatData } from "../services/getWatDataById";
 import { GetReservesDays } from "../services/getReservationDays";
+import { GetCremationsDays } from "../services/getCremationsDays";
 
 
 const Calendar = () => {
@@ -8,6 +9,8 @@ const Calendar = () => {
   const [watData, setWatData] = useState([]);
   const wat_id = '671fec855a531995fe412828';
   const [reservationDays, setReservationDays] = useState({});
+  const [cremationDays, setCremationDays] = useState({});
+
 
 
 
@@ -31,6 +34,16 @@ const Calendar = () => {
         console.error("Failed to fetch Reservation:", error);
       }
     };
+    const fetchWatCremations = async () => {
+      try {
+        const result = await GetCremationsDays(wat_id);
+        setCremationDays(result);
+        console.log("Fetched Wat Cremation:", result);
+      } catch (error) {
+        console.error("Failed to fetch Cremation:", error);
+      }
+    };
+    fetchWatCremations();
     fetchWatReservation();
     fetchWatData();
   }, [wat_id]);
