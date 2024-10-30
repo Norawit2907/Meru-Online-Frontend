@@ -52,7 +52,7 @@ const Navbar = () => {
     if (loginState) {
       sessionStorage.clear();
       setLoginState(false);
-      setShowWATnav(false); // Hide WATnav on logout
+      setShowWATnav(false); 
     } else {
       window.location.href = "/login";
     }
@@ -73,7 +73,7 @@ const Navbar = () => {
     fetchNotifications();
     if (token) {
       setLoginState(true);
-      if (role === "watuser") {
+      if (role === "wat") {
         setShowWATnav(true);
       }
     } else {
@@ -145,7 +145,7 @@ const Navbar = () => {
         </div>
         
         <div className="Profile-buttons">
-          {loginState ? (
+          {loginState && sessionStorage.getItem("role") !== "wat" ? ( 
             <Link to="/Profile">
               <button className="text-white">
                 <img src={sessionStorage.getItem("currentUser_profileimg")} alt="User" className="h-8" />
