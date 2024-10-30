@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from 'react'
 import {useDropzone} from 'react-dropzone'
-import { Reorder } from "framer-motion";
+// import { Reorder } from "framer-motion";
 
 function Dropzone({className}) {
   const [files, setFiles] = useState([])

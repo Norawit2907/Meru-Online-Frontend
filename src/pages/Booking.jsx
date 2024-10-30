@@ -1,18 +1,16 @@
-import React from "react";
+import React, {useState} from "react";
 import Calendar from "../components/Calendar";
 import PaymentOptions from "../components/PaymentOption";
 import SlickSaLa from "../components/SaLa";
 import AddonWat from "../components/Addon_Watpage1";
 import Timeline from "../components/TimelineBooking";
+import SelectDate from "../components/SelectDateBooking";
 
 import "../styles/Booking.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendarAlt, faCaretDown } from "@fortawesome/free-solid-svg-icons";
 
-// Dummy data for costs
 const costData = [
   { head: "สิ่งที่วัดเตรียมให้", title: "รถแห่เสียงดังๆเผื่อศพตื่นมาเต้น", price: 5000 },
   { title: "ชุดน้ำอาบศพและเครื่องไหว้ x 1", price: 999 },
@@ -23,55 +21,6 @@ const costData = [
   { title: "วันที่ 18/8/67", price: 5500 },
   { title: "วันที่ 19/8/67", price: 3500 },
 ];
-
-const Booking = () => {
-  const totalCost = costData.reduce((total, item) => total + item.price, 0);
-
-  return (
-    <div className="booking-container my-16 mx-16 mb-16">
-      <h1 className="font-prompt font-bold">วัดดูยูมีน</h1>
-
-      {/* Calendar Component */}
-      <div className="flex justify-center mb-10">
-        <Calendar />
-      </div>
-
-      <div className="all-section grid grid-cols-3">
-        {/* Left Section */}
-        <LeftSection />
-
-        {/* Right Section */}
-        <RightSection totalCost={totalCost} />
-      </div>
-    </div>
-  );
-};
-
-const LeftSection = () => {
-  return (
-    <div className="section1 col-span-2">
-      <SelectDate label="วันเริ่มจัดงาน" date="13 พ.ย. 2564" />
-      <SelectDate label="จำนวนวันสวด" date="3" suffix="วัน" />
-      <SelectDate label="วันเริ่มฌาปณกิจ" date="select" />
-
-      <h2 className="mb-5 font-bold text-[32px]">ศาลา</h2>
-      <SlickSaLa/>
-
-
-      <h3 className="text-white mt-10 ml-[20px] text-[32px] font-bold">
-        กำหนดการสวดอภิธรรมศพ
-      </h3>
-
-      <Timeline />
-
-      <div className="mx-5">
-        <AddonWat title={"บริการระหว่างอภิธรรมศพ"} addonList={addonData} />
-      </div>
-
-      
-    </div>
-  );
-};
 
 const addonData = [
   {
@@ -92,46 +41,167 @@ const addonData = [
     description: "เหมาะสำหรับการใช้งานพิเศษ",
     price: "2,000 .- /ชุด",
   },
-
 ];
 
+const Booking = () => {
 
+  const [bookingData, setBookingData] = useState({
+    startDate: null,
+    daysCount: null,
+    cremationDate: null
+  });
 
-const RightSection = ({ totalCost }) => {
+  // State SelectDate
+  const handleDateSelect = (data) => {
+    if (data.type === 'startDate') {
+      setBookingData(prev => ({
+        ...prev,
+        startDate: data.value,
+        // Reset ทั้ง daysCount และ cremationDate เมื่อเปลี่ยนวันเริ่มงาน
+        daysCount: null,
+        cremationDate: null
+      }));
+    } else if (data.type === 'days') {
+      setBookingData(prev => ({
+        ...prev,
+        daysCount: data.value,
+        // Reset เฉพาะ cremationDate เมื่อเปลี่ยนจำนวนวัน
+        cremationDate: null
+      }));
+    } else if (data.type === 'cremationDate') {
+      setBookingData(prev => ({
+        ...prev,
+        cremationDate: data.value
+      }));
+    }
+
+  };
+
+  // ฟังก์ชันคำนวณราคารวม
+  const calculateTotalCost = () => {
+    let total = costData.reduce((sum, item) => sum + item.price, 0);
+    return total;
+  };
+
+  return (
+    <div className="booking-container my-16 mx-16 mb-16">
+      <h1 className="font-prompt font-bold text-white text-4xl mb-10">วัดดูยูมีน</h1>
+
+      <div className="flex justify-center mb-10">
+        <Calendar />
+      </div>
+
+      <div className="all-section grid grid-cols-3 gap-8">
+        <LeftSection 
+          bookingData={bookingData} 
+          onDateSelect={handleDateSelect}
+        />
+        <RightSection 
+          totalCost={calculateTotalCost()} 
+          bookingData={bookingData}
+        />
+      </div>
+    </div>
+  );
+};
+
+const LeftSection = ({ bookingData, onDateSelect }) => {
+  return (
+    <div className="section1 col-span-2">
+
+      <SelectDate 
+        label="วันเริ่มจัดงาน"
+        onSelect={onDateSelect}
+        startDate={bookingData.startDate}
+      />
+      <SelectDate 
+        label="จำนวนวันสวด"
+        suffix="วัน"
+        onSelect={onDateSelect}
+        startDate={bookingData.startDate}
+        daysCount={bookingData.daysCount}
+        disabled={!bookingData.startDate} // ปิด ถ้ายังไม่ได้เลือกวันเริ่มงาน
+      />
+      <SelectDate 
+        label="วันเริ่มฌาปณกิจ"
+        onSelect={onDateSelect}
+        startDate={bookingData.startDate}
+        daysCount={bookingData.daysCount}
+        disabled={!bookingData.startDate || !bookingData.daysCount} //ปิด ถ้ายังไม่ได้เลือกวันเริ่มงานหรือจำนวนวัน
+      />
+
+      {/* ส่วนเลือกศาลา */}
+      <h2 className="mb-5 font-bold text-[32px] text-white">ศาลา</h2>
+      <SlickSaLa />
+
+      {/* ส่วนกำหนดการ */}
+      <h3 className="text-white mt-10 ml-[20px] text-[32px] font-bold">
+        กำหนดการสวดอภิธรรมศพ
+      </h3>
+      <Timeline />
+
+      {/* ส่วน Addon */}
+      <div className="mx-5">
+        <AddonWat title={"บริการระหว่างอภิธรรมศพ"} addonList={addonData} />
+      </div>
+    </div>
+  );
+};
+
+const RightSection = ({ totalCost, bookingData }) => {
+  // รวมราคาทั้งหมด
+  const getUpdatedCostData = () => {
+    let updatedCosts = [...costData];
+    
+    return updatedCosts;
+  };
+
   return (
     <div className="section2 col-span-1">
-      <CostDetails />
+      <CostDetails costData={getUpdatedCostData()} />
       <PaymentSection totalCost={totalCost} />
     </div>
   );
 };
 
-const CostDetails = () => {
+const CostDetails = ({ costData }) => {
   return (
-    <>
-      <Section title="ค่าใช้จ่ายทั้งหมด">
-        <CostItem label="สิ่งที่วัดเตรียมให้" items={costData.slice(0, 1)} />
-        <CostItem label="สินค้าและบริการ" items={costData.slice(1, 4)} />
-        <CostItem label="ศาลา" items={costData.slice(4, 5)} />
-        <CostItem label="กำหนดการสวดอภิธรรม" items={costData.slice(5)} />
-      </Section>
-    </>
+    <Section title="ค่าใช้จ่ายทั้งหมด">
+      <CostItem label="สิ่งที่วัดเตรียมให้" items={costData.slice(0, 1)} />
+      <CostItem label="สินค้าและบริการ" items={costData.slice(1, 4)} />
+      <CostItem label="ศาลา" items={costData.slice(4, 5)} />
+      <CostItem label="กำหนดการสวดอภิธรรม" items={costData.slice(5)} />
+    </Section>
   );
 };
 
 const PaymentSection = ({ totalCost }) => {
+
+  const handlePayment = () => {
+    console.log('ดำเนินการชำระเงิน:', totalCost);
+
+  };
+
   return (
     <>
-      <hr  className="my-10"/>
+      <hr className="my-10 border-[#AD957B]"/>
       <Section title="วิธีการชำระเงิน">
         <PaymentOptions />
         <div className="grid grid-cols-2 text-white mt-10 mb-10">
           <div className="ml-5">
             <div>ยอดชำระเงินทั้งหมด</div>
-            <div className="total font-bold">{totalCost} $</div>
+            <div className="total font-bold text-2xl">
+              {totalCost.toLocaleString()} บาท
+            </div>
           </div>
           <div className="confirm-payment text-white align-middle">
-            <button type="button">ยืนยันการชำระเงิน</button>
+            <button 
+              type="button"
+              onClick={handlePayment}
+              className="bg-[#AD957B] hover:bg-[#C5AD91] px-6 py-3 rounded-xl transition-colors duration-200"
+            >
+              ยืนยันการชำระเงิน
+            </button>
           </div>
         </div>
       </Section>
@@ -153,31 +223,13 @@ const CostItem = ({ label, items }) => {
     <>
       <div className="font-bold text-white mt-5">{label}</div>
       {items.map((item, index) => (
-        <div key={index} className="grid grid-cols-2 text-white">
+        <div key={index} className="grid grid-cols-2 text-white py-2">
           <div className="flex ml-3">-{item.title}</div>
-          <div className="flex justify-end">{item.price} $</div>
+          <div className="flex justify-end">{item.price.toLocaleString()} บาท</div>
         </div>
       ))}
     </>
   );
 };
-
-const SelectDate = ({ label, date, suffix = "" }) => {
-  return (
-    <div className="grid grid-cols-3 items-center whitespace-nowrap mb-16">
-      <h2 className="font-prompt text-white font-bold text-2xl">{label}</h2>
-      <div className="pick-date flex justify-between items-center rounded-xl">
-        <div className="date text-white">{date}</div>
-        <div className="text-white">
-          <FontAwesomeIcon icon={faCaretDown} />
-        </div>
-      </div>
-      {suffix && (
-        <h2 className="font-prompt text-white font-bold text-2xl">{suffix}</h2>
-      )}
-    </div>
-  );
-};
-
 
 export default Booking;
