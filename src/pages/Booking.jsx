@@ -149,7 +149,7 @@ const LeftSection = ({ bookingData, onDateSelect }) => {
 };
 
 const RightSection = ({ totalCost, bookingData }) => {
-  // ฟังก์ชันสำหรับรวมราคาทั้งหมด
+  // รวมราคาทั้งหมด
   const getUpdatedCostData = () => {
     let updatedCosts = [...costData];
     
