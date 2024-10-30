@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { UploadImage } from '../services/imageupload';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {faEye,faEyeSlash} from "@fortawesome/free-solid-svg-icons";
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
@@ -15,6 +17,11 @@ const EditProfile = ({ isOpen, onClose }) => {
   const [showEmailPasswordForm, setShowEmailPasswordForm] = useState(false);
   const token = sessionStorage.getItem("access_token");
   const current_id = sessionStorage.getItem("currentUser_id");
+  const [showPassword, setShowPassword] = useState(0);
+
+  const togglepassword = () => {
+    setShowPassword(!showPassword)
+  }
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -41,29 +48,39 @@ const EditProfile = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   const save_profile = async () => {
-    // console.log(firstname, lastname, phone, email, password);
-    // console.log(`${backendUrl}/users/${current_id}`);
-    const profile_link = await UploadImage(profileImg);
+    console.log(firstname, lastname, phone, email, password);
+    const profile_link = null;
+
+    if (profileImg) {
+      try {
+        profile_link = await UploadImage(profileImg);
+      } catch (err) {
+        console.error("Image upload failed:", err);
+        return;
+      }
+    }
+
+    const updatedData = {
+      firstname: firstname,
+      lastname: lastname,
+      phoneNumber: phone,
+      email: email,
+      password: password
+    };
+
+    if (profile_link) {
+      updatedData.profile_img = profile_link;
+    }
+
 
     try {
-      const response = await axios.put(`${backendUrl}/users/${current_id}`, 
-        {
-          firstname: firstname,
-          lastname: lastname,
-          phoneNumber: phone,
-          profile_img: profile_link,
-          email: email,
-          password: password
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      );
+      const response = await axios.put(`${backendUrl}/users/${current_id}`,updatedData);
       console.log("Profile updated successfully:", response.data);
       onClose();
     } catch (err) {
       console.error("Error updating profile:", err);
     }
+    
   };
 
 
@@ -183,13 +200,22 @@ const EditProfile = ({ isOpen, onClose }) => {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            <div className="mb-4">
+            <div className="relative mb-4">
               <label className="block text-white">Password:</label>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
+                id = "password"
                 className="w-full p-2 border rounded"
                 placeholder="Enter new password"
               />
+              <button className="absolute bottom-2 right-4" onClick={togglepassword}>
+                {
+                  showPassword ? 
+                  <FontAwesomeIcon icon={faEye}></FontAwesomeIcon>
+                  :
+                  <FontAwesomeIcon icon={faEyeSlash}></FontAwesomeIcon>
+                }
+                </button>
             </div>
 
             <div className="flex justify-between">
