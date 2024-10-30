@@ -49,7 +49,6 @@ const Profile = () => {
           <img src={require('../Assets/profile.png')} alt='profile' width={100} height={100} className='w-28 h-28 rounded-full  ' />)}
           <div>
             <p className='text-3xl text-center text-[#AD957B] font-bold'>{user.firstName} {user.lastName}</p>
-            <p className='text-sm text-[#484848]'>Nick Name</p>
           </div>
           <div className='flew flex-col'>
             <div className='flex'>

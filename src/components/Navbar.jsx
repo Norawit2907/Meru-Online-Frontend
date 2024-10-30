@@ -27,6 +27,16 @@ const Navbar = () => {
     }
   };
 
+  const handleDelete = async (notificationId) => {
+    try {
+      const response = await axios.delete(`${backendUrl}/notification/${notificationId}`);
+      setNotifications(notifications.filter(notification => notification.id !== notificationId));
+      console.log(response.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   // const notifications = [
   //   { title: "New Reservation Alert", date: "12 Mar 2021" },
   //   { title: "Connect to your facebook account.", date: "12 Mar 2021" },
@@ -35,7 +45,6 @@ const Navbar = () => {
   // ];
 
   const toggleNotifications = () => {
-    fetchNotifications();
     setShowNotifications(!showNotifications);
   };
 
@@ -61,7 +70,7 @@ const Navbar = () => {
   useEffect(() => {
     const token = sessionStorage.getItem("access_token");
     const role = sessionStorage.getItem("role");
-
+    fetchNotifications();
     if (token) {
       setLoginState(true);
       if (role === "watuser") {
@@ -116,6 +125,7 @@ const Navbar = () => {
                       <NotificationCard
                         title={notifications.title}
                         date={formatDateToThai(notifications.updatedAt)}
+                        ondel={() => handleDelete(notifications._id)}
                       />
                       {index < notifications.length - 1 && <hr className="mx-4" />}
                     </div>

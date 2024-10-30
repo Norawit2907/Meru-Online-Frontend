@@ -82,7 +82,7 @@ const Reservation = () => {
     alert('เวลาที่ผ่านไปแล้ว ไม่สามารถย้อนกลับมาได้ โปรดดูแลคนที่คุณรักให้ดี');
     try {
       const response = await axios.put(`${backendUrl}/reserves/${reservation._id}`, {
-        status: 'reject',
+        status: 'passed',
         sender: 'user'
       });
       fetchReservationsAndWats();
