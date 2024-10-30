@@ -4,19 +4,37 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 import NotificationCard from "./์NotificationCard";
 import "../styles/Navbar.css";
+import axios from 'axios';
+
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const Navbar = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [loginState, setLoginState] = useState(false)
+  const [notifications, setNotifications] = useState([]);
 
-  const notifications = [
-    { title: "New Reservation Alert", date: "12 Mar 2021" },
-    { title: "Connect to your facebook account.", date: "12 Mar 2021" },
-    { title: "You have rejected the reservation.", date: "12 Mar 2021" },
-    { title: "John Doe cancelled the reservations.", date: "12 Mar 2021" },
-  ];
+  const current_id = sessionStorage.getItem("currentUser_id")
+
+
+  const fetchNotifications = async () => {
+    try {
+      const response = await axios.get(`${backendUrl}/notification/user/${current_id}`);
+      setNotifications(response.data);
+      console.log(response.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // const notifications = [
+  //   { title: "New Reservation Alert", date: "12 Mar 2021" },
+  //   { title: "Connect to your facebook account.", date: "12 Mar 2021" },
+  //   { title: "You have rejected the reservation.", date: "12 Mar 2021" },
+  //   { title: "John Doe cancelled the reservations.", date: "12 Mar 2021" },
+  // ];
 
   const toggleNotifications = () => {
+    fetchNotifications();
     setShowNotifications(!showNotifications);
   };
 
@@ -29,6 +47,15 @@ const Navbar = () => {
       window.location.href = "/login"
     }
   }
+
+  const formatDateToThai = (isoDate) => {
+    const date = new Date(isoDate);
+    const day = date.getDate();
+    const monthNames = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
+    const month = monthNames[date.getMonth()];
+    const year = date.getFullYear() + 543;
+    return `${day} ${month} ${year}`;
+  };
 
   useEffect(()=>{
     const token = sessionStorage.getItem("access_token")
@@ -63,12 +90,12 @@ const Navbar = () => {
                 <div className="flex text-[20px] text-[#AD957B] bg-[#292725] p-4 font-bold rounded-t-lg">
                   All Notifications
                 </div>
-                <div className="bg-[#1C1C1C]">
-                  {notifications.map((notification, index) => (
+                <div className="bg-[#1C1C1C] flex flex-col-reverse">
+                  {notifications.map((notifications, index) => (
                     <div key={index}>
                       <NotificationCard
-                        title={notification.title}
-                        date={notification.date}
+                        title={notifications.title}
+                        date={formatDateToThai(notifications.updatedAt)}
                       />
 
                       {index < notifications.length - 1 && (
