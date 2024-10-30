@@ -15,7 +15,7 @@ import { GetWatData } from "../services/getWatDataById";
 
 const Carousel = () => {
     const [watData, setWatData] = useState({picture: []});
-    const wat_id = '671fec855a531995fe412828'
+    const wat_id = '672297957e3025849fd4c274'
 
     useEffect(() => {
         const fetchWatData = async () => {

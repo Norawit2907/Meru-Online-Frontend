@@ -7,7 +7,7 @@ import { GetCremationsDays } from "../services/getCremationsDays";
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [watData, setWatData] = useState([]);
-  const wat_id = '671fec855a531995fe412828';
+  const wat_id = '672297957e3025849fd4c274';
   const [reservationDays, setReservationDays] = useState({});
   const [cremationDays, setCremationDays] = useState({});
 
