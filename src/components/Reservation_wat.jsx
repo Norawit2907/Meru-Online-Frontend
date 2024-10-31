@@ -93,7 +93,9 @@ const Reservationwat = () => {
         wat_id: reservation.wat_id,
         user_id: reservation.user_id,
         status: 'reject',
-        sender: 'user'
+        sender: 'user',
+        reservation_date: reservation.reservation_date,
+        cremation_date: reservation.cremation_date,
       });
       // console.log(response)
       fetchReservations();
@@ -110,7 +112,9 @@ const Reservationwat = () => {
         wat_id: reservation.wat_id,
         user_id: reservation.user_id,
         status: 'accept',
-        sender: 'user'
+        sender: 'user',
+        reservation_date: reservation.reservation_date,
+        cremation_date: reservation.cremation_date,
       });
       // console.log(response)
       fetchReservations();
@@ -125,7 +129,9 @@ const Reservationwat = () => {
         wat_id: reservation.wat_id,
         user_id: reservation.user_id,
         status: 'passed',
-        sender: 'wat'
+        sender: 'wat',
+        reservation_date: reservation.reservation_date,
+        cremation_date: reservation.cremation_date,
       });
       fetchReservations();
       alert('คุณได้ทำการ Skip เวลางานนี้แล้ว');

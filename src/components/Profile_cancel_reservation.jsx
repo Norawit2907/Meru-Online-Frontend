@@ -28,13 +28,15 @@ const ProfileCancelReservation = ({ isOpen, onClose, reservation }) => {
               wat_id: reservation.wat_id,
               user_id: reservation.user_id,
               status: 'reject',
-              sender: 'wat'
+              sender: 'wat',
+              reservation_date: reservation.reservation_date,
+              cremation_date: reservation.cremation_date,
           });
           onClose();
       } catch (err) {
         console.error(err);
       }
-      
+
     }
     };
   

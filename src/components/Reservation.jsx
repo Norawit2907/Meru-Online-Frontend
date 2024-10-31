@@ -85,7 +85,9 @@ const Reservation = () => {
         wat_id: reservation.wat_id,
         user_id: reservation.user_id,
         status: 'passed',
-        sender: 'wat'
+        sender: 'wat',
+        reservation_date: reservation.reservation_date,
+        cremation_date: reservation.cremation_date,
       });
       fetchReservationsAndWats();
     } catch (err) {
