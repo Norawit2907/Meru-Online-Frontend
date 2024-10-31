@@ -16,6 +16,7 @@ import { GetWatData } from "../services/getWatDataById";
 import { useParams } from "react-router-dom";
 import { GetWatAddons } from "../services/getWatAddons";
 import { GetReservesDays } from "../services/getReservationDays";
+import { GetSalaDays } from "../services/getSalaDays";
 
 const costData = [
   { head: "สิ่งที่วัดเตรียมให้", title: "รถแห่เสียงดังๆเผื่อศพตื่นมาเต้น", price: 5000 },
@@ -65,6 +66,8 @@ const Booking = () => {
   const [onSelectByDate, setonSelectByDate] = useState([]);
   const [onSelectService, setonSelectService] = useState([]);
   const [reservationDays, setReservationDays] = useState({});
+  
+
   const [allAddons, setAllAddons] = useState([]);
   const filteredSelectByDate = onSelectByDate.filter(item => item !== null);
   // Get pavilion cost safely, default to 0 if undefined or NaN
@@ -125,10 +128,10 @@ const Booking = () => {
       try {
         const result = await GetWatAddons(wat_id);
         const filteredPavilion = result.filter(
-          (addon) => addon.catalog === "ศาลา"
+          (addon) => addon.catalog === "sala"
         );
         setPavilionData(filteredPavilion);
-        console.log("Fetched Wat Addons:", result);
+        console.log("Fetched Wat addons:", result);
       } catch (error) {
         console.error("Failed to fetch Wat addons:", error);
       }
@@ -142,6 +145,7 @@ const Booking = () => {
         // console.error("Failed to fetch Reservation:", error);
       }
     };
+    
     fetchWatReservation();
     fetchWatData();
     fetchWatAddons();
@@ -218,9 +222,13 @@ const LeftSection = ({
 }) => {
   const wat_id = useParams().id;
   const [pavilionData, setPavilionData] = useState([]);
+  const [showpavilionData, setshowPavilionData] = useState([]);
+  const [test, settest] = useState([]);
   const [addonsData, setAddonsData] = useState([]);
   const [addonsService, setAddonsService] = useState([]);
-  console.log(reservationData)
+  const [salaDays, setSalaDays] = useState({});
+  console.log("pav", pavilionData)
+  // console.log(salaDays)
   let TilelineData = [];
   if (bookingData.startDate && bookingData.daysCount) {
     const startDate = new Date(bookingData.startDate);
@@ -229,6 +237,13 @@ const LeftSection = ({
       const currentDate = new Date(startDate);
       currentDate.setDate(startDate.getDate() + i);
       const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
+      const formattedDate2 = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')}`;
+      // console.log(formattedDate2,pavilionData.find((pavilion) => pavilion.name !== salaDays[formattedDate2]));
+      // setPavilionData(pavilionData.find((pavilion) => pavilion.name !== salaDays[formattedDate2]));
+      // const selectedPavilion = pavilionData.filter(
+      //   (pavilion) => pavilion.name !== salaDays[formattedDate2]
+      // );
+      // setPavilionData(selectedPavilion);
       TilelineData.push(
         {
           date: formattedDate,
@@ -238,19 +253,30 @@ const LeftSection = ({
     }
   }
   useEffect(() => {
+    if (bookingData.startDate && bookingData.daysCount) {
+      const startDate = new Date(bookingData.startDate);
+      const formattedDate2 = `${startDate.getFullYear()}-${(startDate.getMonth() + 1).toString().padStart(2, '0')}-${(startDate.getDate()).toString().padStart(2, '0')}`;
+      
+      const filteredPavilionData = pavilionData.filter(
+        (pavilion) => pavilion.name !== salaDays[formattedDate2]
+      );
+
+      setshowPavilionData(filteredPavilionData);
+    }
+  }, [bookingData, salaDays]);
+  useEffect(() => {
     const fetchWatAddons = async () => {
       try {
         const result = await GetWatAddons(wat_id);
         const filteredPavilion = result.filter(
-          (addon) => addon.catalog === "ศาลา"
+          (addon) => addon.catalog === "sala"
         );
         const filteredAddons = result.filter(
-          (addon) => addon.catalog !== "ศาลา"
+          (addon) => addon.catalog === "food"
         );
         const filteredServices = result.filter(
-          (addon) => addon.catalog === "สินค้าและบริการ"
+          (addon) => addon.catalog !== "sala" && addon.catalog !== "food"
         );
-
         setAddonsData(filteredAddons);
         setPavilionData(filteredPavilion);
         setAddonsService(filteredServices);
@@ -261,6 +287,16 @@ const LeftSection = ({
         console.error("Failed to fetch Wat addons:", error);
       }
     };
+    const fetchWatSalaDays = async () => {
+      try {
+        const result = await GetSalaDays(wat_id);
+        setSalaDays(result);
+        // console.log("Fetched Wat Reservation:", result);
+      } catch (error) {
+        // console.error("Failed to fetch Reservation:", error);
+      }
+    };
+    fetchWatSalaDays();
     fetchWatAddons();
   }, [wat_id]);
 
@@ -295,7 +331,7 @@ const LeftSection = ({
 
       {/* ส่วนเลือกศาลา */}
       <h2 className="mb-5 font-bold text-[32px] text-white">ศาลา</h2>
-      <SlickSaLa pavilion={pavilionData} onSelect={onSelectPavilion} />
+      <SlickSaLa pavilion={showpavilionData} onSelect={onSelectPavilion} />
 
       {/* ส่วนกำหนดการ */}
       <h3 className="text-white mt-10 ml-[20px] text-[32px] font-bold">กำหนดการสวดอภิธรรมศพ</h3>
@@ -344,11 +380,9 @@ const CostItem = ({ label, items }) => {
       {items.map((item, index) => (
         <><div key={index} className="grid grid-cols-2 text-white py-2">
           <div className="flex ml-3 text-xs sm:text-sm md:text-base lg:text-lg overflow-hidden text-ellipsis whitespace-nowrap h-10 md:h-12 lg:h-14 items-center">-{item.name}</div>
-          <div className="flex justify-end">{item.cost} บาท</div>
-        </div><div className="flex justify-end  text-xs sm:text-sm md:text-base lg:text-lg overflow-hidden text-ellipsis whitespace-nowrap h-10 md:h-12 lg:h-14 items-center">
-            {item.price.toLocaleString()} บาท</div></>
-
-
+          <div className="flex justify-end text-xs sm:text-sm md:text-base lg:text-lg overflow-hidden text-ellipsis whitespace-nowrap h-10 md:h-12 lg:h-14 items-center">{item.cost} บาท</div>
+        </div>
+        </>
         ))}
 
     </>
