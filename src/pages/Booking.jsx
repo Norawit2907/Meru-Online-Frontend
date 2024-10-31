@@ -224,7 +224,7 @@ const LeftSection = ({
   const [pavilionData, setPavilionData] = useState([]);
   const [addonsData, setAddonsData] = useState([]);
   const [addonsService, setAddonsService] = useState([]);
-
+  console.log(reservationData)
   let TilelineData = [];
   if (bookingData.startDate && bookingData.daysCount) {
     const startDate = new Date(bookingData.startDate);
