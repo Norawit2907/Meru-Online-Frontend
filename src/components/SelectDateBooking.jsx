@@ -75,31 +75,6 @@ const SelectDateBooking = ({
   const daysOptions = ["1", "3", "5", "7"];
   console.log(reservationData);
 
-  // Mock reservation data
-  const mockReservationData = {
-    "2024-10-15": 3,
-    "2024-10-16": 3,
-    "2024-10-17": 3,
-    "2024-10-10": 2,
-    "2024-10-11": 1,
-    "2024-10-20": 2,
-    "2024-10-21": 2,
-    "2024-10-25": 1,
-    "2024-10-28": 2,
-    "2024-10-29": 3,
-    "2024-10-30": 3,
-    "2024-11-05": 3,
-    "2024-11-06": 3,
-    "2024-11-07": 2,
-    "2024-11-12": 1,
-    "2024-11-15": 3,
-    "2024-11-16": 2,
-    "2024-11-20": 3,
-    "2024-11-25": 1,
-    "2024-11-28": 3,
-  };
-
-  const MAX_WORKLOAD = 3; // Maximum bookings per day
 
   const isStartDate = label === "วันเริ่มจัดงาน";
   const isSelectDays = label === "จำนวนวันสวด";
@@ -123,17 +98,28 @@ const SelectDateBooking = ({
   }, [startDate, daysCount, isStartDate, isSelectDays, isCremationDate]);
 
   const isDateFullyBooked = (date) => {
-    if(reservationData){
-    
-    const formattedDate = date.toISOString().split('T')[0]; // Get date in YYYY-MM-DD format
-    const bookingsForDate = reservationData[formattedDate]; // Access bookings for that date
-    console.log(bookingsForDate, formattedDate);
-    // Check if bookings exist for the date and compare with maxWorkload
-    return bookingsForDate === maxWorkload;
-    }
-    else{
+
+    if (!reservationData || !maxWorkload) {
       return false;
     }
+  
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+
+    const bookingsForDate = reservationData[formattedDate] || 0;
+  
+    // // Log เพื่อ debug
+    // console.log('Checking bookings:', {
+    //   date: formattedDate,
+    //   bookings: bookingsForDate,
+    //   maxWorkload,
+    //   isFull: bookingsForDate >= maxWorkload
+    // });
+
+    return bookingsForDate >= maxWorkload;
   };
 
   const calculateAllowedCremationDates = () => {
@@ -182,7 +168,7 @@ const SelectDateBooking = ({
       setError(getErrorMessage());
       return;
     }
-
+  
     if (isDateSelectable(date)) {
       setSelectedDate(date);
       setShowCalendar(false);

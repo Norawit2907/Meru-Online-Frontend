@@ -147,33 +147,6 @@ const Booking = () => {
     fetchWatAddons();
   }, [wat_id]);
 
-  // Mock reservation data
-  const mockReservationData = {
-    // October 2024
-    "2024-10-15": 3,
-    "2024-10-16": 3,
-    "2024-10-17": 3,
-    "2024-10-10": 2,
-    "2024-10-11": 1,
-    "2024-10-20": 2,
-    "2024-10-21": 2,
-    "2024-10-25": 1,
-    "2024-10-28": 2,
-    "2024-10-29": 3,
-    "2024-10-30": 3,
-    // November 2024
-    "2024-11-05": 3,
-    "2024-11-06": 3,
-    "2024-11-07": 2,
-    "2024-11-12": 1,
-    "2024-11-15": 3,
-    "2024-11-16": 2,
-    "2024-11-20": 3,
-    "2024-11-25": 1,
-    "2024-11-28": 3,
-  };
-
-  const MAX_WORKLOAD = 3;
   // State SelectDate
   const handleDateSelect = (data) => {
     if (data.type === "startDate") {
@@ -197,8 +170,6 @@ const Booking = () => {
     }
   };
 
-
-
   // ฟังก์ชันคำนวณราคารวม
   const calculateTotalCost = () => {
     let total = costData.reduce((sum, item) => sum + item.price, 0);
@@ -213,7 +184,7 @@ const Booking = () => {
         <BookingCalendar />
       </div>
 
-      <div className="all-section grid grid-cols-3 gap-8">
+      <div className="all-section grid grid-cols-1 xl:grid-cols-3 lg:grid-cols-1 gap-8">
         <LeftSection
           bookingData={bookingData}
           onDateSelect={handleDateSelect}
@@ -294,7 +265,7 @@ const LeftSection = ({
   }, [wat_id]);
 
   return (
-    <div className="section1 col-span-2">
+    <div className="section1 col-span-1 xl:col-span-2">
       <SelectDate
         label="วันเริ่มจัดงาน"
         onSelect={onDateSelect}
@@ -369,13 +340,17 @@ const CostDetails = ({ costData, pavilionCost, dateCost, serviceCost }) => {
 const CostItem = ({ label, items }) => {
   return (
     <>
-      <div className="font-bold text-white mt-5">{label}</div>
+      <div className="font-bold text-white mt-5 text-lg md:text-xl lg:text-2xl overflow-hidden text-ellipsis whitespace-nowrap">{label}</div>
       {items.map((item, index) => (
-        <div key={index} className="grid grid-cols-2 text-white py-2">
-          <div className="flex ml-3">-{item.name}</div>
+        <><div key={index} className="grid grid-cols-2 text-white py-2">
+          <div className="flex ml-3 text-xs sm:text-sm md:text-base lg:text-lg overflow-hidden text-ellipsis whitespace-nowrap h-10 md:h-12 lg:h-14 items-center">-{item.name}</div>
           <div className="flex justify-end">{item.cost} บาท</div>
-        </div>
-      ))}
+        </div><div className="flex justify-end  text-xs sm:text-sm md:text-base lg:text-lg overflow-hidden text-ellipsis whitespace-nowrap h-10 md:h-12 lg:h-14 items-center">
+            {item.price.toLocaleString()} บาท</div></>
+
+
+        ))}
+
     </>
   );
 };
