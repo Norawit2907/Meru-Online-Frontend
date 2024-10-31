@@ -44,7 +44,10 @@ const Userregister = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const profile_link = await UploadImage(profileImage);
+    let profile_link = ""
+    if(profileImage){
+      profile_link = await UploadImage(profileImage);
+    }
     
     if(formValue.password === confirmpassword){
       console.log('user')

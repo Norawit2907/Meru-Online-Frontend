@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
-import Calendar from 'react-calendar';
 import Searchbar from '../components/Searchbar';
-import '../styles/Result.css';
 import Watcard from '../components/Watcard';
 import { GetWatCard } from '../services/search';
 
@@ -46,26 +43,31 @@ const Result = () => {
     };
 
     return (    
-    <div className="w-3/4 mx-auto my-20">
-        <Searchbar onSearch={(query) => {}} initialQuery={query} initialDate={date} />
-        <p className='font-bold text-[#AD957B] text-4xl mb-4'>ผลลัพธ์การค้นหาวัด</p>
-        <div className='grid grid-cols-4 gap-5 gap-y-10'>
-            {
-                watData ?
-                watData.map((wat) =>(
-                    <Watcard id={wat.id} image={wat.picture[0]} title={wat.name} minprice={wat.min_cost} maxprice={wat.max_cost} location={wat.location} />
-                ))
-                :
-                null
-            }
-            <Watcard image='/temple.jpg' title="วัดอรุณราชวรารามราชวรมหาวิหาร" minprice="1000" maxprice="5000" location="เลขที่ 34 ถนนวังเดิม แขวงวัดอรุณเขตบางกอกใหญ่ กรุงเทพมหานคร 10600"/>
+        <div className="w-3/4 mx-auto my-20 relative">
+            <div className="relative z-50">  {/* เพิ่ม wrapper div พร้อม z-index สูง */}
+                <Searchbar onSearch={(query) => {}} initialQuery={query} initialDate={date} />
+            </div>
+            <p className='font-bold text-[#AD957B] text-4xl mb-4'>ผลลัพธ์การค้นหาวัด</p>
+            <div className='grid grid-cols-4 gap-4 relative z-0'>  {/* ลด z-index ของ grid container */}
+                {
+                    watData ?
+                    watData.map((wat) =>(
+                        <Watcard 
+                            key={wat.id}
+                            id={wat.id} 
+                            image={wat.picture[0].url} 
+                            title={wat.name} 
+                            minprice={wat.min_cost} 
+                            maxprice={wat.max_cost} 
+                            location={wat.location} 
+                        />
+                    ))
+                    :
+                    null
+                }
+            </div>
         </div>
-        
-        
-    </div>
-
-       
-    );
-};
+        );
+    };
 
 export default Result;

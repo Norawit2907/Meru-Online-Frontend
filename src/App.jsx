@@ -29,13 +29,14 @@ const App = () => {
             <Route path="/watpage1" element={<Watpage1/>} />
             <Route path="/watpage1" element={<Watpage1/>} />
             <Route path="/watpage1/:id" element={<Watpage1/>} />
-            <Route path="/watpage2" element={<Watpage2/>} />
+            <Route path="/watpage2/:id" element={<Watpage2/>} />
             <Route path="/editwat" element={<EditWat/>}/>
             <Route path="/login" element={<Login />} />
             <Route path="/userregister" element={<Userregister />} />
             <Route path="/watregister" element={<Watregister />} />
             {/* <Route path="/booking" element={<Booking/>} /> */}
             <Route path="/reservationwat" element={<Reservationwat/>} />
+            <Route path="/booking/:id" element={<Booking/>} />
 
           </Routes>
         </main>

@@ -74,6 +74,8 @@ const EditProfile = ({ isOpen, onClose }) => {
     try {
       const response = await axios.put(`${backendUrl}/users/${current_id}`,updatedData);
       console.log("Profile updated successfully:", response.data);
+      sessionStorage.setItem("currentUser_profileimg", profile_link);
+      window.location.reload();
       onClose();
     } catch (err) {
       console.error("Error updating profile:", err);
