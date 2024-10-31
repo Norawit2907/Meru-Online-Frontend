@@ -28,7 +28,7 @@ export async function UserLogin(email, password) {
     
     }
     catch (err){
-        alert("login failed!!")
+        alert("Incorrect Email or Password!!")
         console.log(err);
         return false
     }
