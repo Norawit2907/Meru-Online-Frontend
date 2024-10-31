@@ -60,7 +60,7 @@ const Carousel = () => {
                     (
                         <SwiperSlide key={index}>
                             <img
-                                src={image}
+                                src={image.url}
                                 alt={`Slide ${index + 1}`}
                                 className="w-full h-full object-contain rounded-[16px]"
                             />
