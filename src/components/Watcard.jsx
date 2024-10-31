@@ -8,20 +8,20 @@ const Watcard = ({ id, image, title, minprice, maxprice, location }) => {
     <div>
       <Link to={`/watpage1/${id}`}>
         <button>
-          <div className="relative w-full h-128  rounded-xl object-contain ">
+          <div className="relative w-full aspect-w-4 aspect-h-3 rounded-xl ">
             <div className="z-0 absolute inset-0 bg-gradient-to-t from-black to-70% rounded-xl"></div>
             <img
               src={image}
               alt="img pic."
-              className="w-full h-full rounded-xl"
+              
+              className="z-0 w-full h-full object-contain rounded-xl"
             />
-
-            <div className="absolute bottom-0 left-0 p-4 pr-2">
+            <div className="absolute flex flex-col items-start justify-start bottom-0 w-full p-4">
               <p className="text-2xl font-bold text-white line-clamp-1">
                 {title}
               </p>
               <p className="text-md  text-white line-clamp-1">
-                ${minprice} - {maxprice} บาท.-
+                ${minprice.toLocaleString()} - {maxprice.toLocaleString()} บาท.-
               </p>
             </div>
           </div>

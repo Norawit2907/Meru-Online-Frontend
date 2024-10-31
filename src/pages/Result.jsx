@@ -49,15 +49,18 @@ const Result = () => {
     <div className="w-3/4 mx-auto my-20">
         <Searchbar onSearch={(query) => {}} initialQuery={query} initialDate={date} />
         <p className='font-bold text-[#AD957B] text-4xl mb-4'>ผลลัพธ์การค้นหาวัด</p>
-        <div className='grid grid-cols-4 gap-5 gap-y-10'>
+        <div className='grid grid-cols-4 gap-4'>
             {
                 watData ?
                 watData.map((wat) =>(
-                    <Watcard id={wat.id} image={wat.picture[0]} title={wat.name} minprice={wat.min_cost} maxprice={wat.max_cost} location={wat.location} />
+                    <Watcard id={wat.id} image={wat.picture[0].url} title={wat.name} minprice={wat.min_cost} maxprice={wat.max_cost} location={wat.location} />
                 ))
                 :
                 null
             }
+            <Watcard image='/temple.jpg' title="วัดอรุณราชวรารามราชวรมหาวิหาร" minprice="1000" maxprice="5000" location="เลขที่ 34 ถนนวังเดิม แขวงวัดอรุณเขตบางกอกใหญ่ กรุงเทพมหานคร 10600"/>
+            <Watcard image='/temple.jpg' title="วัดอรุณราชวรารามราชวรมหาวิหาร" minprice="1000" maxprice="5000" location="เลขที่ 34 ถนนวังเดิม แขวงวัดอรุณเขตบางกอกใหญ่ กรุงเทพมหานคร 10600"/>
+            <Watcard image='/temple.jpg' title="วัดอรุณราชวรารามราชวรมหาวิหาร" minprice="1000" maxprice="5000" location="เลขที่ 34 ถนนวังเดิม แขวงวัดอรุณเขตบางกอกใหญ่ กรุงเทพมหานคร 10600"/>
             <Watcard image='/temple.jpg' title="วัดอรุณราชวรารามราชวรมหาวิหาร" minprice="1000" maxprice="5000" location="เลขที่ 34 ถนนวังเดิม แขวงวัดอรุณเขตบางกอกใหญ่ กรุงเทพมหานคร 10600"/>
         </div>
         
