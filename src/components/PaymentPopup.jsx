@@ -3,7 +3,7 @@ import { X, Upload, AlertCircle } from 'lucide-react';
 
 const PaymentPopup = ({ isOpen, onClose, totalCost, selectedPaymentMethod }) => {
   const [slipImage, setSlipImage] = useState(null);
-//   const [showError, setShowError] = useState(false);
+  const [showError, setShowError] = useState(false);
 
   if (!isOpen) return null;
 
