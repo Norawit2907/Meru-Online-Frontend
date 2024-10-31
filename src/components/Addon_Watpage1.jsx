@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const AddonWat = ({ title, addonList }) => {
+const AddonWat = ({ title, addonList ,setonSelectService}) => {
     const [selectedIndexes, setSelectedIndexes] = useState(new Set());
 
     const toggleSelect = (index) => {
@@ -11,6 +11,10 @@ const AddonWat = ({ title, addonList }) => {
             newSelected.add(index);
         }
         setSelectedIndexes(newSelected);
+
+        // Update the onSelectService based on selected indexes
+        const updatedServices = Array.from(newSelected).map(i => addonList[i]);
+        setonSelectService(updatedServices); // Update the parent state
     };
 
     return (
@@ -57,17 +61,17 @@ const AddonWat = ({ title, addonList }) => {
 
                         <div
                             className="h-[225px] bg-cover bg-no-repeat rounded-t-[8px]"
-                            style={{ backgroundImage: `url(${addon.imageUrl})` }}
+                            style={{ backgroundImage: `url(${addon.image})` }}
                         ></div>
                         <div className="mx-[20px] mt-2 h-[117px]">
                             <h1 className="text-white text-[20px] font-semibold">
-                                {addon.title}
+                                {addon.name}
                             </h1>
                             <p className="text-[14px] text-[#AD957B] py-2">
                                 {addon.description}
                             </p>
                             <p className="text-[25px] font-[500] text-white">
-                                {addon.price}
+                                {addon.cost} .-/ชุด
                             </p>
                         </div>
                     </div>

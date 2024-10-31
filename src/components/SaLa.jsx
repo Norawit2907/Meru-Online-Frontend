@@ -38,7 +38,7 @@ const costData = [
   },
 ];
 
-const SlickSaLa = ({pavilion}) => {
+const SlickSaLa = ({pavilion, onSelect}) => {
   const [selectedServiceIndex, setSelectedServiceIndex] = useState(null);
   const [currentGroup, setCurrentGroup] = useState(0);
   const scrollContainerRef = useRef(null);
@@ -78,7 +78,9 @@ const SlickSaLa = ({pavilion}) => {
                     ? 'ring-4 ring-[#AD957B] shadow-lg' 
                     : ''
                 }`}
-                onClick={() => setSelectedServiceIndex(index)}
+                onClick={() =>{ 
+                  setSelectedServiceIndex(index) 
+                  onSelect(item)}}
               >
                 <div className="relative w-full h-[120px]">
                   <img 

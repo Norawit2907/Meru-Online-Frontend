@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 const timelineItems = [
   {
@@ -77,14 +77,29 @@ const timelineItems = [
     ],
   },
 ];
+let onselect = [];
+const Timeline = ({ timelineData, setonSelectByDate }) => {
+  const [onselect, setOnSelect] = useState(new Array(timelineData.length).fill(null));
 
-const Timeline = ({ timelineData }) => {
+  useEffect(() => {
+    setOnSelect(new Array(timelineData.length).fill(null)); // Reset onselect when timelineData changes
+  }, [timelineData.length]);
+
+  const handleSelect = (index, service, date) => {
+    const newSelection = [...onselect];
+    newSelection[index] = {
+      date: date,
+      service: service,
+    };
+    setOnSelect(newSelection);
+    setonSelectByDate(newSelection);
+  };
   return (
     <section className="h-auto flex justify-center pt-4 sm:pt-6 md:pt-10">
       <div className="w-[95%] sm:w-[90%] max-w-[1000px] relative">
         <ul className="ml-2 md:ml-4">
           {timelineData.map((item, index) => (
-            <TimelineItem key={index} date={item.date} services={item.services} isLast={index === timelineItems.length - 1} />
+            <TimelineItem key={index} date={item.date} id={index} services={item.services} isLast={index === timelineItems.length - 1} onselect={handleSelect} />
           ))}
         </ul>
       </div>
@@ -92,11 +107,10 @@ const Timeline = ({ timelineData }) => {
   );
 };
 
-const TimelineItem = ({ date, services, isLast }) => {
+const TimelineItem = ({ date, id, services, isLast, onselect }) => {
   const [selectedServiceIndex, setSelectedServiceIndex] = useState(null);
   const [currentGroup, setCurrentGroup] = useState(0);
   const scrollContainerRef = useRef(null);
-
   const totalGroups = Math.ceil(services.length / 3);
 
   const scroll = (direction) => {
@@ -142,10 +156,15 @@ const TimelineItem = ({ date, services, isLast }) => {
               <div key={index} className="flex-none">
                 <div
                   className={`w-[240px] bg-[#292725] rounded-lg cursor-pointer transition-all duration-200 scale-90 hover:scale-95 ${selectedServiceIndex === index
-                      ? 'ring-4 ring-[#E9C649] scale-100 shadow-lg'
-                      : ''
+                    ? 'ring-4 ring-[#E9C649] scale-100 shadow-lg'
+                    : ''
                     }`}
-                  onClick={() => setSelectedServiceIndex(index)}
+                  onClick={() => {
+                    setSelectedServiceIndex(index);
+                    onselect(id, service, date);
+
+                  }
+                  }
                 >
                   <div className="relative w-full h-[120px]">
                     <div
@@ -156,7 +175,7 @@ const TimelineItem = ({ date, services, isLast }) => {
                   <div className="p-2 sm:p-3">
                     <h1 className="text-white text-base sm:text-lg font-semibold line-clamp-1">{service.name}</h1>
                     <p className="text-[#AD957B] text-xs sm:text-sm py-1 line-clamp-2">{service.description}</p>
-                    <p className="text-white text-lg sm:text-xl font-medium">{service.cost}</p>
+                    <p className="text-white text-lg sm:text-xl font-medium">{service.cost} บ.</p>
                   </div>
                 </div>
               </div>

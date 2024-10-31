@@ -15,6 +15,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { GetWatData } from "../services/getWatDataById";
 import { useParams } from "react-router-dom";
 import { GetWatAddons } from "../services/getWatAddons";
+import { GetReservesDays } from "../services/getReservationDays";
 
 const costData = [
   { head: "สิ่งที่วัดเตรียมให้", title: "รถแห่เสียงดังๆเผื่อศพตื่นมาเต้น", price: 5000 },
@@ -48,6 +49,7 @@ const addonData = [
   },
 ];
 
+
 const Booking = () => {
   const [bookingData, setBookingData] = useState({
     startDate: null,
@@ -57,6 +59,33 @@ const Booking = () => {
   const wat_id = useParams().id;
   const [watData, setWatData] = useState([]);
   const [pavilionData, setPavilionData] = useState([]);
+  const [onSelectPavilion, setonSelectPavilion] = useState(null);
+  const [onSelectByDate, setonSelectByDate] = useState([]);
+  const [onSelectService, setonSelectService] = useState([]);
+  const [reservationDays, setReservationDays] = useState({});
+  const filteredSelectByDate = onSelectByDate.filter(item => item !== null);
+  // Get pavilion cost safely, default to 0 if undefined or NaN
+  const pavilionCost = isNaN(onSelectPavilion?.cost) ? 0 : onSelectPavilion.cost || 0;
+
+  // Calculate total service cost from filteredSelectByDate
+  const ByDateCost = filteredSelectByDate
+    .map(item => item.service?.cost || 0) // Safely access cost, default to 0
+    .reduce((sum, item) => sum + (isNaN(item) ? 0 : item), 0); // Replace NaN with 0 during sum
+
+  // Calculate total service cost from onSelectService
+  const ByServiceCost = onSelectService
+    .map(item => item.cost || 0) // Safely access cost, default to 0
+    .reduce((sum, cost) => sum + (isNaN(cost) ? 0 : cost), 0); // Replace NaN with 0 during sum
+
+  const totalCost = pavilionCost + ByDateCost + ByServiceCost;
+  console.log("onSelectPavilion", onSelectPavilion);
+  console.log("onSelectByDate", onSelectByDate.filter(item => item !== null));
+  console.log("onSelectService", onSelectService);
+
+
+  console.log("pavilionCost", pavilionCost);
+  console.log("ByDateCost", ByDateCost);
+  console.log("ByServiceCost", ByServiceCost);
 
   useEffect(() => {
     const fetchWatData = async () => {
@@ -80,6 +109,16 @@ const Booking = () => {
         console.error("Failed to fetch Wat addons:", error);
       }
     };
+    const fetchWatReservation = async () => {
+      try {
+        const result = await GetReservesDays(wat_id);
+        setReservationDays(result);
+        // console.log("Fetched Wat Reservation:", result);
+      } catch (error) {
+        // console.error("Failed to fetch Reservation:", error);
+      }
+    };
+    fetchWatReservation();
     fetchWatData();
     fetchWatAddons();
   }, [wat_id]);
@@ -154,12 +193,18 @@ const Booking = () => {
         <LeftSection
           bookingData={bookingData}
           onDateSelect={handleDateSelect}
-          reservationData={mockReservationData}
+          reservationData={reservationDays}
           maxWorkload={watData.max_workload}
+          onSelectPavilion={setonSelectPavilion}
+          onSelectByDate={setonSelectByDate}
+          onSelectService={setonSelectService}
         />
         <RightSection
-          totalCost={calculateTotalCost()}
+          totalCost={totalCost}
           bookingData={bookingData}
+          pavilionCost={onSelectPavilion}
+          dateCost={filteredSelectByDate}
+          serviceCost={onSelectService}
         />
       </div>
     </div>
@@ -170,15 +215,20 @@ const LeftSection = ({
   bookingData,
   onDateSelect,
   reservationData,
-  maxWorkload
+  maxWorkload,
+  onSelectPavilion,
+  onSelectByDate,
+  onSelectService
 }) => {
   const wat_id = useParams().id;
   const [pavilionData, setPavilionData] = useState([]);
   const [addonsData, setAddonsData] = useState([]);
+  const [addonsService, setAddonsService] = useState([]);
+
   let TilelineData = [];
   if (bookingData.startDate && bookingData.daysCount) {
     const startDate = new Date(bookingData.startDate);
-  
+
     for (let i = 0; i < bookingData.daysCount; i++) {
       const currentDate = new Date(startDate);
       currentDate.setDate(startDate.getDate() + i);
@@ -201,8 +251,14 @@ const LeftSection = ({
         const filteredAddons = result.filter(
           (addon) => addon.catalog !== "ศาลา"
         );
+        const filteredServices = result.filter(
+          (addon) => addon.catalog === "สินค้าและบริการ"
+        );
+
         setAddonsData(filteredAddons);
         setPavilionData(filteredPavilion);
+        setAddonsService(filteredServices);
+
         console.log("Fetched Wat Addons:", result);
         console.log("Fetched Wat FilteredAddons:", filteredAddons);
       } catch (error) {
@@ -243,21 +299,21 @@ const LeftSection = ({
 
       {/* ส่วนเลือกศาลา */}
       <h2 className="mb-5 font-bold text-[32px] text-white">ศาลา</h2>
-      <SlickSaLa pavilion={pavilionData} bookingData={bookingData} />
+      <SlickSaLa pavilion={pavilionData} onSelect={onSelectPavilion} />
 
       {/* ส่วนกำหนดการ */}
       <h3 className="text-white mt-10 ml-[20px] text-[32px] font-bold">กำหนดการสวดอภิธรรมศพ</h3>
-      <Timeline timelineData={TilelineData} />
+      <Timeline timelineData={TilelineData} setonSelectByDate={onSelectByDate} />
 
       {/* ส่วน Addon */}
       <div className="mx-5">
-        <AddonWat title={"บริการระหว่างอภิธรรมศพ"} addonList={addonData} />
+        <AddonWat title={"สินค้าและบริการ"} addonList={addonsService} setonSelectService={onSelectService} />
       </div>
     </div>
   );
 };
 
-const RightSection = ({ totalCost, bookingData }) => {
+const RightSection = ({ totalCost, bookingData, pavilionCost, dateCost, serviceCost }) => {
   // รวมราคาทั้งหมด
   const getUpdatedCostData = () => {
     let updatedCosts = [...costData];
@@ -267,19 +323,20 @@ const RightSection = ({ totalCost, bookingData }) => {
 
   return (
     <div className="section2 col-span-1">
-      <CostDetails costData={getUpdatedCostData()} />
+      <CostDetails costData={getUpdatedCostData()} pavilionCost={pavilionCost} dateCost={dateCost} serviceCost={serviceCost} />
       <PaymentSection totalCost={totalCost} bookingData={bookingData} />
     </div>
   );
 };
 
-const CostDetails = ({ costData }) => {
+const CostDetails = ({ costData, pavilionCost, dateCost, serviceCost }) => {
+  console.log("dateCostDetails", dateCost);
   return (
     <Section title="ค่าใช้จ่ายทั้งหมด">
-      <CostItem label="สิ่งที่วัดเตรียมให้" items={costData.slice(0, 1)} />
-      <CostItem label="สินค้าและบริการ" items={costData.slice(1, 4)} />
-      <CostItem label="ศาลา" items={costData.slice(4, 5)} />
-      <CostItem label="กำหนดการสวดอภิธรรม" items={costData.slice(5)} />
+      {/* <CostItem label="สิ่งที่วัดเตรียมให้" items={costData.slice(0, 1)} /> */}
+      <CostPavilion label="ศาลา" items={pavilionCost} />
+      <CostByDate label="กำหนดการสวดอภิธรรม" items={dateCost} />
+      <CostItem label="สินค้าและบริการ" items={serviceCost} />
     </Section>
   );
 };
@@ -290,10 +347,44 @@ const CostItem = ({ label, items }) => {
       <div className="font-bold text-white mt-5">{label}</div>
       {items.map((item, index) => (
         <div key={index} className="grid grid-cols-2 text-white py-2">
-          <div className="flex ml-3">-{item.title}</div>
-          <div className="flex justify-end">{item.price.toLocaleString()} บาท</div>
+          <div className="flex ml-3">-{item.name}</div>
+          <div className="flex justify-end">{item.cost} บาท</div>
         </div>
       ))}
+    </>
+  );
+};
+
+const CostByDate = ({ label, items }) => {
+  return (
+    <>
+      <div className="font-bold text-white mt-5">{label}</div>
+      {items.map((item, index) => (
+        <div key={index} className="grid grid-cols-2 text-white py-2">
+          <div className="flex ml-3">-{item.date}</div>
+          <div className="flex justify-end">{item.service?.cost} บาท</div>
+        </div>
+      ))}
+    </>
+  );
+};
+
+
+const CostPavilion = ({ label, items }) => {
+  console.log("CostPavilion", items);
+  return (
+    <>
+      {items ? (
+        <>
+          <div className="font-bold text-white mt-5">{label}</div>
+          <div className="grid grid-cols-2 text-white py-2">
+            <div className="flex ml-3">-{items.name}</div>
+            <div className="flex justify-end">{items.cost} บาท</div>
+          </div>
+        </>
+      ) : (
+        <div className="font-bold text-white mt-5">{label}</div>
+      )}
     </>
   );
 };
