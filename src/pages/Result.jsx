@@ -43,25 +43,31 @@ const Result = () => {
     };
 
     return (    
-    <div className="w-3/4 mx-auto my-20">
-        <Searchbar onSearch={(query) => {}} initialQuery={query} initialDate={date} />
-        <p className='font-bold text-[#AD957B] text-4xl mb-4'>ผลลัพธ์การค้นหาวัด</p>
-        <div className='grid grid-cols-4 gap-4'>
-            {
-                watData ?
-                watData.map((wat) =>(
-                    <Watcard id={wat.id} image={wat.picture[0].url} title={wat.name} minprice={wat.min_cost} maxprice={wat.max_cost} location={wat.location} />
-                ))
-                :
-                null
-            }
+        <div className="w-3/4 mx-auto my-20 relative">
+            <div className="relative z-50">  {/* เพิ่ม wrapper div พร้อม z-index สูง */}
+                <Searchbar onSearch={(query) => {}} initialQuery={query} initialDate={date} />
+            </div>
+            <p className='font-bold text-[#AD957B] text-4xl mb-4'>ผลลัพธ์การค้นหาวัด</p>
+            <div className='grid grid-cols-4 gap-4 relative z-0'>  {/* ลด z-index ของ grid container */}
+                {
+                    watData ?
+                    watData.map((wat) =>(
+                        <Watcard 
+                            key={wat.id}
+                            id={wat.id} 
+                            image={wat.picture[0].url} 
+                            title={wat.name} 
+                            minprice={wat.min_cost} 
+                            maxprice={wat.max_cost} 
+                            location={wat.location} 
+                        />
+                    ))
+                    :
+                    null
+                }
+            </div>
         </div>
-        
-        
-    </div>
-
-       
-    );
-};
+        );
+    };
 
 export default Result;
