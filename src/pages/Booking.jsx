@@ -344,11 +344,9 @@ const CostItem = ({ label, items }) => {
       {items.map((item, index) => (
         <><div key={index} className="grid grid-cols-2 text-white py-2">
           <div className="flex ml-3 text-xs sm:text-sm md:text-base lg:text-lg overflow-hidden text-ellipsis whitespace-nowrap h-10 md:h-12 lg:h-14 items-center">-{item.name}</div>
-          <div className="flex justify-end">{item.cost} บาท</div>
-        </div><div className="flex justify-end  text-xs sm:text-sm md:text-base lg:text-lg overflow-hidden text-ellipsis whitespace-nowrap h-10 md:h-12 lg:h-14 items-center">
-            {item.price.toLocaleString()} บาท</div></>
-
-
+          <div className="flex justify-end text-xs sm:text-sm md:text-base lg:text-lg overflow-hidden text-ellipsis whitespace-nowrap h-10 md:h-12 lg:h-14 items-center">{item.cost} บาท</div>
+        </div>
+        </>
         ))}
 
     </>

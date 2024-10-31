@@ -61,7 +61,7 @@ const AddonWat = ({ title, addonList ,setonSelectService}) => {
 
                         <div
                             className="h-[180px] sm: bg-cover bg-no-repeat rounded-t-[8px]"
-                            style={{ backgroundImage: `url(${addon.imageUrl})` }}
+                            style={{ backgroundImage: `url(${addon.image})` }}
                         ></div>
                         <div className="mx-[20px] mt-2 h-[140px] sm:h-[117px]">
                             <h1 className="text-white text-[16px] sm:text-[20px] font-semibold">
@@ -70,7 +70,7 @@ const AddonWat = ({ title, addonList ,setonSelectService}) => {
                             <p className="text-[12px] sm:text-[14px] text-[#AD957B] py-2">
                                 {addon.description}
                             </p>
-                            <p className="text-[18px] sm: text-[25px] font-[500] text-white">
+                            <p className="text-[18px] sm:text-[25px] font-[500] text-white">
                                 {addon.cost} .-/ชุด
                             </p>
                         </div>
