@@ -13,13 +13,17 @@ const Navbar = () => {
   const [loginState, setLoginState] = useState(false)
   const [notifications, setNotifications] = useState([]);
   const [ShowWATnav, setShowWATnav] = useState(false);
+  let current_id = sessionStorage.getItem("currentUser_id")
+  const watid = sessionStorage.getItem("wat_id")
+  const role = sessionStorage.getItem("role")
 
-  const current_id = sessionStorage.getItem("currentUser_id")
-
-
+  
   const fetchNotifications = async () => {
     try {
-      const response = await axios.get(`${backendUrl}/notification/user/${current_id}`);
+      if (role === "wat") {
+        current_id = watid
+      }
+      const response = await axios.get(`${backendUrl}/notification/owner/${current_id}`);
       setNotifications(response.data);
       console.log(response.data);
     } catch (err) {
@@ -35,6 +39,7 @@ const Navbar = () => {
     } catch (err) {
       console.error(err);
     }
+    fetchNotifications();
   };
 
   // const notifications = [
@@ -98,7 +103,7 @@ const Navbar = () => {
             <Link to="/EditWat" className="text-white text-lg ml-10">
               Edit Wat
             </Link>
-            <Link to="/Booking" className="text-white text-lg ml-10">
+            <Link to="/reservationwat" className="text-white text-lg ml-10">
               Reservation
             </Link>
             <Link to="/Watpage1" className="text-white text-lg ml-10">
@@ -115,11 +120,11 @@ const Navbar = () => {
               <FontAwesomeIcon icon={faBell} className="text-2xl" />
             </button>
             {showNotifications && (
-              <div className="absolute right-0 mt-2 w-[1000px] h-auto rounded shadow-lg z-10">
-                <div className="flex text-[20px] text-[#AD957B] bg-[#292725] p-4 font-bold rounded-t-lg">
+              <div className="show-noti right-1/3 fixed mt-[2%] w-[30%] rounded shadow-lg z-10">
+                <div className="noti-head  text-[20px] text-[#AD957B] bg-[#292725] p-4 font-bold rounded-t-lg">
                   All Notifications
                 </div>
-                <div className="bg-[#1C1C1C] flex flex-col-reverse">
+                <div className="noti overflow-auto max-h-[400px] rounded-b-lg bg-[#1C1C1C] flex flex-col-reverse">
                   {notifications.map((notifications, index) => (
                     <div key={index}>
                       <NotificationCard
