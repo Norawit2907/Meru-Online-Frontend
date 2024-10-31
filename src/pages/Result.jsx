@@ -58,10 +58,6 @@ const Result = () => {
                 :
                 null
             }
-            <Watcard image='/temple.jpg' title="วัดอรุณราชวรารามราชวรมหาวิหาร" minprice="1000" maxprice="5000" location="เลขที่ 34 ถนนวังเดิม แขวงวัดอรุณเขตบางกอกใหญ่ กรุงเทพมหานคร 10600"/>
-            <Watcard image='/temple.jpg' title="วัดอรุณราชวรารามราชวรมหาวิหาร" minprice="1000" maxprice="5000" location="เลขที่ 34 ถนนวังเดิม แขวงวัดอรุณเขตบางกอกใหญ่ กรุงเทพมหานคร 10600"/>
-            <Watcard image='/temple.jpg' title="วัดอรุณราชวรารามราชวรมหาวิหาร" minprice="1000" maxprice="5000" location="เลขที่ 34 ถนนวังเดิม แขวงวัดอรุณเขตบางกอกใหญ่ กรุงเทพมหานคร 10600"/>
-            <Watcard image='/temple.jpg' title="วัดอรุณราชวรารามราชวรมหาวิหาร" minprice="1000" maxprice="5000" location="เลขที่ 34 ถนนวังเดิม แขวงวัดอรุณเขตบางกอกใหญ่ กรุงเทพมหานคร 10600"/>
         </div>
         
         
