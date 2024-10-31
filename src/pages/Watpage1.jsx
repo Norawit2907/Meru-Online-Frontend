@@ -116,45 +116,43 @@ const Watpage1 = () => {
                 <Carousel />
             </div>
 
-            <div className="w-full flex flex-col lg:flex-row justify-acent my-[40px]">
-                <div className="left w-full lg:w-3/5 flex flex-col items-center gap-4">
-                    {/* wat-info-section */}
-                        <div className="flex- flex-col mb-8 lg:mb-0">
-                            <h1 className="text-[#AD957B] text-[36px] md:text-[50px] font-bold">{watData.name}</h1>
-                            <p className="text-white text-[16px] md:text-[18px] py-4 indent-6 md:indent-12">
-                                {watData.description}
-                            </p>
-                            <ul className="text-white text-[16px] md:text-[18px] list-disc list-inside">
-                                <li>4 ศาลา</li>
-                                <li>2 ศาลาร้อน</li>
-                                <li>2 ศาลาเย็น</li>
-                            </ul>
-                        </div>
+            <div className="w-full flex flex-col lg:flex-row justify-center justify-acent my-[40px]">
+                <div className="left w-full lg:w-3/5 flex flex-col items-start  ml-4 lg:ml-8">
+                    <div className="flex flex-col mb-8 lg:mb-0">
+                        <h1 className="text-[#AD957B] text-[36px] md:text-[50px] font-bold">{watData.name}</h1>
+                        <p className="text-white text-[16px] md:text-[18px] py-4 indent-6 md:indent-12">
+                            {watData.description}
+                        </p>
+                        <ul className="text-white text-[16px] md:text-[18px] list-disc list-inside">
+                            <li>4 ศาลา</li>
+                            <li>2 ศาลาร้อน</li>
+                            <li>2 ศาลาเย็น</li>
+                        </ul>
+                    </div>
 
-          {/* wat-calendar-section */}
-          <div className="w-[675px] h-[696.25px] bg-[#1C1C1C] rounded-[10px] mb-10 flex justify-center items-center">
-            <Calendar />
-          </div>
+                    {/* wat-calendar-section */}
+                    <div className="w-[675px] h-[696.25px] bg-[#1C1C1C] rounded-[10px] mb-10 flex flex-col items-start">
+                        <Calendar />
+                    </div>
 
-                    {/* wat-location-section */}
-                    <div className="w-[835px] mb-10 flex flex-col items-center gap-4" >
-                        <div>
+                                    {/* wat-location-section */}
+                                    <div className="w-[835px] mb-10 flex flex-col items-center gap-4">
+                    <div>
                             <iframe
-                                src={ `https://www.google.com/maps?q=${latitude},${longitude}&z=16&output=embed`} 
+                                src={`https://www.google.com/maps?q=${latitude},${longitude}&z=16&output=embed`} 
                                 width="675"
                                 height="250"
                                 allowfullscreen=""
                                 loading="lazy"
                                 referrerpolicy="no-referrer-when-downgrade">
                             </iframe>
-                            {/* <Google_map latitude={latitude} longtitude={longitude} /> */}
-                            
-                            <div className=" text-white ">
-                                <h1 className="py-4 text-[18px] ">สถานที่ตั้ง</h1>
+                            <div className="text-white">
+                                <h1 className="py-4 text-[18px]">สถานที่ตั้ง</h1>
                                 <p className="text-[16px]">{watAddress.address}<br />รหัสไปรษณีย์ {watAddress.postalCode}</p>
                             </div>
                         </div>
                     </div>
+
 
                     {/* wat-add-on-section */}
                     <div className="flex flex-col items-start">
@@ -163,43 +161,41 @@ const Watpage1 = () => {
                         <Addon title={"สินค้าและบริการ (ลูกค้าเลือกจ่าย)"} addonList={filteredAddonsCat3} />
                     </div>
                 </div>
-                <div className="right w-full lg:w-2/5 flex flex-col items-center gap-4">         
-                    <div className="w-full lg:w-[375px] h-[220px] md:h-[266px] bg-[#292725] rounded-[10px] flex flex-col justify-between py-4 px-6 md:px-8">
-                        <div className="flex flex-col text-white gap-4 md:gap-5">
-                            <p className="text-[16px] md:text-[18px] font-bold">CONTACT INFO</p>
-                            <p className="text-[14px] md:text-[15px]">Phone: {watData.phoneNumber}</p>
-                            <p className="text-[14px] md:text-[15px]">Facebook: {watData.Facebook}</p>
-                            <p className="text-[14px] md:text-[15px]">Location: {watAddress.address}</p>
-                        </div>
-                        <div className="flex justify-center">
-                            <img src="/socialmedialinks.png" alt="Social Media Links" />
-                        </div>
-                    </div>
 
-          <div className="w-full lg:w-[375px] h-[220px] md:h-[266px] bg-[#292725] rounded-[10px] flex flex-col justify-between py-4 px-6 md:px-8">
-            <div className="flex flex-col text-white gap-4 md:gap-5">
-              <p className="text-[16px] md:text-[18px] font-bold">
-                ${watData.min_cost} - ${watData.max_cost}
-              </p>
-              <p className="text-[14px] md:text-[15px]">
-                Short Period: $ 1000{" "}
-              </p>
-              <p className="text-[14px] md:text-[15px]">
-                Medium Period: $ 2000
-              </p>
-              <p className="text-[14px] md:text-[15px]">Long Period: $ 2000</p>
+                    <div className="right w-full lg:w-1/5 flex flex-col items-center gap-4">         
+                        <div className="w-full h-[220px] md:h-[200px] bg-[#292725] rounded-[10px] flex flex-col justify-between py-4 px-6 md:px-8 lg:ml-5">
+                            <div className="flex flex-col text-white gap-4 md:gap-5">
+                                <p className="text-[16px] md:text-[18px] font-bold">CONTACT INFO</p>
+                                <p className="text-[14px] md:text-[15px]">Phone: {watData.phoneNumber}</p>
+                                <p className="text-[14px] md:text-[15px]">Facebook: {watData.Facebook}</p>
+                                <p className="text-[14px] md:text-[15px]">Location: {watAddress.address}</p>
+                            </div>
+                        </div>
+
+                    <div className="w-full h-[220px] md:h-[220px] bg-[#292725] rounded-[10px] flex flex-col justify-between py-4 px-6 md:px-8 lg:ml-5">
+                        <div className="flex flex-col text-white gap-4 md:gap-5">
+                        <p className="text-[16px] md:text-[18px] font-bold">
+                            ${watData.min_cost} - ${watData.max_cost}
+                        </p>
+                        <p className="text-[14px] md:text-[15px]">
+                            Short Period: $ 1000{" "}
+                        </p>
+                        <p className="text-[14px] md:text-[15px]">
+                            Medium Period: $ 2000
+                        </p>
+                        <p className="text-[14px] md:text-[15px]">Long Period: $ 2000</p>
+                        </div>
+                        {loginState && ShowBooking && (
+                        <Link
+                            to={`/booking/${wat_id}`}
+                            className="flex justify-center items-center bg-[#AD957B] text-white text-[16px] md:text-[18px] font-bold rounded-full py-2"
+                        >
+                            <button>Book Now</button>
+                        </Link>
+                        )}
+                    </div>
             </div>
-            {loginState && ShowBooking && (
-              <Link
-                to={`/booking/${wat_id}`}
-                className="flex justify-center items-center bg-[#AD957B] text-white text-[16px] md:text-[18px] font-bold rounded-full py-2"
-              >
-                <button>Book Now</button>
-              </Link>
-            )}
-          </div>
         </div>
-      </div>
     </div>
   );
 };
