@@ -63,7 +63,9 @@ const SelectDateBooking = ({
   onSelect,
   startDate = null, 
   daysCount = null, 
-  disabled = false   
+  disabled = false,
+  reservationData,
+  maxWorkload
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedDays, setSelectedDays] = useState(null);
@@ -71,6 +73,7 @@ const SelectDateBooking = ({
   const [selectedDate, setSelectedDate] = useState(null);
   const [error, setError] = useState(""); 
   const daysOptions = ["1", "3", "5", "7"];
+  console.log(reservationData);
 
   // Mock reservation data
   const mockReservationData = {
@@ -120,8 +123,17 @@ const SelectDateBooking = ({
   }, [startDate, daysCount, isStartDate, isSelectDays, isCremationDate]);
 
   const isDateFullyBooked = (date) => {
-    const formattedDate = date.toISOString().split('T')[0];
-    return mockReservationData[formattedDate] === MAX_WORKLOAD;
+    if(reservationData){
+    
+    const formattedDate = date.toISOString().split('T')[0]; // Get date in YYYY-MM-DD format
+    const bookingsForDate = reservationData[formattedDate]; // Access bookings for that date
+    console.log(bookingsForDate, formattedDate);
+    // Check if bookings exist for the date and compare with maxWorkload
+    return bookingsForDate === maxWorkload;
+    }
+    else{
+      return false;
+    }
   };
 
   const calculateAllowedCremationDates = () => {
@@ -141,6 +153,7 @@ const SelectDateBooking = ({
   
     // Check if date is fully booked
     if (isDateFullyBooked(date)) {
+      console.log("Date is fully booked",date.toISOString().split('T')[0]);
       return false;
     }
 
