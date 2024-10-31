@@ -1,14 +1,14 @@
 import React, {useState} from "react";
 import Calendar from "../components/Calendar";
-import PaymentOptions from "../components/PaymentOption";
+import { Section } from "../components/PaymentBooking/SectionBooking";
 import SlickSaLa from "../components/SaLa";
 import AddonWat from "../components/Addon_Watpage1";
 import Timeline from "../components/TimelineBooking";
 import SelectDate from "../components/SelectDateBooking";
-import PaymentPopup from "../components/PaymentPopup";
+
+import PaymentSection from "../components/PaymentBooking/PaymentSection";
 
 
-import { AlertCircle } from 'lucide-react';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -161,7 +161,7 @@ const RightSection = ({ totalCost, bookingData }) => {
   return (
     <div className="section2 col-span-1">
       <CostDetails costData={getUpdatedCostData()} />
-      <PaymentSection totalCost={totalCost} />
+      <PaymentSection totalCost={totalCost} bookingData={bookingData} />
     </div>
   );
 };
@@ -177,85 +177,8 @@ const CostDetails = ({ costData }) => {
   );
 };
 
-const PaymentSection = ({ totalCost }) => {
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
-  const [showError, setShowError] = useState(false);
-
-  const handlePayment = () => {
-    if (!selectedPaymentMethod) {
-      setShowError(true);
-
-      setTimeout(() => setShowError(false), 3000);
-      return;
-    }
-    setShowError(false);
-    setIsPopupOpen(true);
-  };
-
-  const handlePaymentMethodSelect = (method) => {
-    setSelectedPaymentMethod(method);
-    setShowError(false);
-  };
-
-  return (
-    <>
-      <hr className="my-10 border"/>
-      <Section title="วิธีการชำระเงิน">
-        <PaymentOptions onSelect={handlePaymentMethodSelect} />
-        
-        {/* Error Message */}
-        {showError && (
-          <div className="mt-4 p-3 bg-red-900/50 border border-red-500 rounded-lg flex items-center gap-2 text-red-200">
-            <AlertCircle size={18} />
-            <p>กรุณาเลือกวิธีการชำระเงินก่อนดำเนินการ</p>
-          </div>
-        )}
-
-        <div className="grid grid-cols-2 text-white mt-10 mb-10">
-          <div className="ml-5">
-            <div>ยอดชำระเงินทั้งหมด</div>
-            <div className="total font-bold text-2xl text-[#E9C649]">
-              {totalCost.toLocaleString()} บาท
-            </div>
-          </div>
-          <div className="confirm-payment text-white align-middle">
-            <button 
-              type="button"
-              onClick={handlePayment}
-              className={`px-6 py-3 rounded-xl transition-colors duration-200 w-full h-full cursor-pointer
-                ${selectedPaymentMethod 
-                  ? 'bg-[#AD957B]' 
-                  : 'bg-zinc-600'}`}
-            >
-              ยืนยันการชำระเงิน
-            </button>
-          </div>
-        </div>
-      </Section>
-
-      {selectedPaymentMethod && (
-        <PaymentPopup 
-          isOpen={isPopupOpen}
-          onClose={() => setIsPopupOpen(false)}
-          totalCost={totalCost}
-          selectedPaymentMethod={selectedPaymentMethod}
-        />
-      )}
-    </>
-  );
-};
 
 
-
-const Section = ({ title, children }) => {
-  return (
-    <div className="block justify-end w-full h-auto mb-10">
-      <h3 className="font-prompt font-bold text-[#AD957B] text-3xl mb-10">{title}</h3>
-      {children}
-    </div>
-  );
-};
 
 const CostItem = ({ label, items }) => {
   return (
