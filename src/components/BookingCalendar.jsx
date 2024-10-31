@@ -1,4 +1,4 @@
-// BookingCalendar.jsx
+//Mock Data for Booking
 import React, { useState } from "react";
 
 const BookingCalendar = ({ reservationData, maxWorkload = 3 }) => {
