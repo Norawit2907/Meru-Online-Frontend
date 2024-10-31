@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Bell, LogOut, LogIn } from "lucide-react";
 import NotificationCard from "./NotificationCard";
 import axios from "axios";
 
-
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
-
 
 const Navbar = () => {
   const [showNotifications, setShowNotifications] = useState(false);
@@ -14,17 +12,38 @@ const Navbar = () => {
   const [notifications, setNotifications] = useState([]);
   const [ShowWATnav, setShowWATnav] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  let current_id = sessionStorage.getItem("currentUser_id")
-  const watid = sessionStorage.getItem("wat_id")
-  const role = sessionStorage.getItem("role")
+  let current_id = sessionStorage.getItem("currentUser_id");
+  const watid = sessionStorage.getItem("wat_id");
+  const role = sessionStorage.getItem("role");
 
-  
+  const notificationRef = useRef(null);
+  const location = useLocation();
+
+  useEffect(() => {
+    setShowNotifications(false);
+  },[location]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (notificationRef.current && !notificationRef.current.contains(event.target)) {
+        setShowNotifications(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   const fetchNotifications = async () => {
     try {
       if (role === "wat") {
-        current_id = watid
+        current_id = watid;
       }
-      const response = await axios.get(`${backendUrl}/notification/owner/${current_id}`);
+      const response = await axios.get(
+        `${backendUrl}/notification/owner/${current_id}`,
+      );
       setNotifications(response.data);
       console.log(response.data);
     } catch (err) {
@@ -34,13 +53,18 @@ const Navbar = () => {
 
   const handleDelete = async (notificationId) => {
     try {
-      const response = await axios.delete(`${backendUrl}/notification/${notificationId}`);
-      if (response.data.length >=1) {
-        setNotifications(notifications.filter(notification => notification.id !== notificationId));
+      const response = await axios.delete(
+        `${backendUrl}/notification/${notificationId}`,
+      );
+      if (response.data.length >= 1) {
+        setNotifications(
+          notifications.filter(
+            (notification) => notification.id !== notificationId,
+          ),
+        );
       }
       console.log(response.data);
     } catch (err) {
-
       console.error(err.response.data.message);
     }
     fetchNotifications();
@@ -55,7 +79,7 @@ const Navbar = () => {
       sessionStorage.clear();
       setLoginState(false);
       setShowWATnav(false);
-      window.location.href = "/"; 
+      window.location.href = "/";
     } else {
       window.location.href = "/login";
     }
@@ -64,7 +88,20 @@ const Navbar = () => {
   const formatDateToThai = (isoDate) => {
     const date = new Date(isoDate);
     const day = date.getDate();
-    const monthNames = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
+    const monthNames = [
+      "ม.ค.",
+      "ก.พ.",
+      "มี.ค.",
+      "เม.ย.",
+      "พ.ค.",
+      "มิ.ย.",
+      "ก.ค.",
+      "ส.ค.",
+      "ก.ย.",
+      "ต.ค.",
+      "พ.ย.",
+      "ธ.ค.",
+    ];
     const month = monthNames[date.getMonth()];
     const year = date.getFullYear() + 543;
     return `${day} ${month} ${year}`;
@@ -88,6 +125,9 @@ const Navbar = () => {
     const handleScroll = () => {
       const offset = window.scrollY;
       setIsScrolled(offset > 50);
+    
+
+    
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -97,13 +137,17 @@ const Navbar = () => {
   return (
     <nav
       className={`fixed top-0 w-full p-4 flex justify-between items-center z-[9999] bg-[#312F32] 
-        ${isScrolled ? 'shadow-lg' : ''}`}
+        ${isScrolled ? "shadow-lg" : ""}`}
     >
       <div className="flex justify-between items-center">
         <div className="flex items-center mr-2 font-['Old_Standard_TT'] transition-transform duration-300 hover:scale-105">
-          <img src="../logo.png" alt="Logo" className="w-[70px] h-[70px] sm:w-[60px] sm:h-[60px]" />
-          <Link 
-            to="/" 
+          <img
+            src="../logo.png"
+            alt="Logo"
+            className="w-[70px] h-[70px] sm:w-[60px] sm:h-[60px]"
+          />
+          <Link
+            to="/"
             className="text-6xl ml-4 text-white hover:text-[#AD957B] transition-colors duration-300 
               sm:text-4xl sm:ml-2 tracking-wide font-medium whitespace-nowrap"
           >
@@ -113,8 +157,14 @@ const Navbar = () => {
         {loginState && ShowWATnav && (
           <div className="hidden md:flex justify-between items-center font-sans text-lg text-white ml-10">
             {["EditWat", "Reservation", "MyWat"].map((item) => (
-              <Link key={item} to={item === "MyWat" ? `/Watpage1/${watid}` : `/${item}`} className="ml-8 relative group">
-                <span className="hover:text-[#AD957B] transition-colors duration-300">{item === "MyWat" ? "My Wat" : item}</span>
+              <Link
+                key={item}
+                to={item === "MyWat" ? `/Watpage1/${watid}` : `/${item}`}
+                className="ml-8 relative group"
+              >
+                <span className="hover:text-[#AD957B] transition-colors duration-300">
+                  {item === "MyWat" ? "My Wat" : item}
+                </span>
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#AD957B] transition-all duration-300 group-hover:w-full"></span>
               </Link>
             ))}
@@ -124,7 +174,7 @@ const Navbar = () => {
 
       <div className="flex items-center gap-[35px] sm:gap-[15px]">
         {loginState && (
-          <div className="relative mt-[5px]">
+          <div className="relative mt-[5px]" ref={notificationRef}>
             <button
               className="text-white p-2 rounded-full hover:bg-[#AD957B] transition-colors duration-300"
               onClick={toggleNotifications}
@@ -173,9 +223,7 @@ const Navbar = () => {
           </div>
         )}
 
-        <p className="text-white hidden sm:block">
-          {sessionStorage.getItem("currentUser_username")}
-        </p>
+
 
         <button
           onClick={handlebutton}
@@ -196,12 +244,20 @@ const Navbar = () => {
           )}
         </button>
 
-        <div className="flex items-center">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center">
+            <p className="text-white font-bold hidden sm:block">
+              {sessionStorage.getItem("currentUser_username")}
+            </p>
+          </div>
           {loginState && sessionStorage.getItem("role") !== "wat" && (
             <Link to="/Profile">
               <button className="relative group p-1 rounded-full overflow-hidden transition-transform duration-300 hover:scale-110">
                 <img
-                  src={sessionStorage.getItem("currentUser_profileimg") || "/defaultprofile.jpg"}
+                  src={
+                    sessionStorage.getItem("currentUser_profileimg") ||
+                    "/defaultprofile.jpg"
+                  }
                   alt="User"
                   className="w-[40px] h-[40px] sm:w-[35px] sm:h-[35px] rounded-full object-cover"
                 />
