@@ -1,13 +1,14 @@
 import React from 'react';
 import { X } from 'lucide-react';
 
-const NotificationCard = ({ title, date, ondel }) => {
+const NotificationCard = ({ title, date, ondel, description }) => {
   return (
     <div className="p-4 sm:p-3 flex justify-between items-start group transition-all duration-200">
       <div className="flex-grow pr-4 sm:pr-2">
         <p className="text-[16px] sm:text-[14px] text-[#AD957B] font-medium mb-1 leading-tight line-clamp-2">
           {title}
         </p>
+        <p className="text-[12px] sm:text-[11px] text-gray-400">{description}</p>
         <p className="text-[12px] sm:text-[11px] text-gray-400">
           {date}
         </p>

@@ -82,8 +82,12 @@ const Reservation = () => {
     alert('เวลาที่ผ่านไปแล้ว ไม่สามารถย้อนกลับมาได้ โปรดดูแลคนที่คุณรักให้ดี');
     try {
       const response = await axios.put(`${backendUrl}/reserves/${reservation._id}`, {
+        wat_id: reservation.wat_id,
+        user_id: reservation.user_id,
         status: 'passed',
-        sender: 'user'
+        sender: 'wat',
+        reservation_date: reservation.reservation_date,
+        cremation_date: reservation.cremation_date,
       });
       fetchReservationsAndWats();
     } catch (err) {
