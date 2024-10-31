@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Section } from "./SectionBooking";
-import PaymentPopup from "../PaymentPopup";
-import PaymentOptions from "../PaymentOption";
+import PaymentPopup from "./PaymentPopup";
+import PaymentOptions from "./PaymentOption";
 import ErrorMessage from "./ErrorMessage";
 import TotalAmount from "./TotalAmount";
 import PaymentButton from "./PaymentButton";
