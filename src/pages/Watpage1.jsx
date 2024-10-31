@@ -117,13 +117,13 @@ const Watpage1 = () => {
   
 
     return (
-        <div className="mx-4 mt-8 md:mx-[77px] md:mt-[70px] overflow-x-hidden">
-            <div className="w-full h-auto md:h-[440px] flex flex-col md:flex-row gap-[20px]">
-                    <Carousel />
+        <div className="mx-4 mt-8 md:mx-[77px] md:mt-[70px] items-center overflow-x-hidden">
+            <div className="w-full h-auto lg:w-12/12  md:h-[350px] flex flex-col items-center md:flex-row ">
+                <Carousel />
             </div>
 
-            <div className="w-full flex flex-col lg:flex-row justify-between my-[40px]">
-                <div className="left w-full lg:w-3/5">
+            <div className="w-full flex flex-col lg:flex-row justify-acent my-[40px]">
+                <div className="left w-full lg:w-3/5 flex flex-col items-center gap-4">
                     {/* wat-info-section */}
                         <div className="flex- flex-col mb-8 lg:mb-0">
                             <h1 className="text-[#AD957B] text-[36px] md:text-[50px] font-bold">{watData.name}</h1>
@@ -144,7 +144,7 @@ const Watpage1 = () => {
                     </div>
 
                     {/* wat-location-section */}
-                    <div className="w-[835px] mb-10" >
+                    <div className="w-[835px] mb-10 flex flex-col items-center gap-4" >
                         <div>
                             <iframe
                                 src={ `https://www.google.com/maps?q=${latitude},${longitude}&z=16&output=embed`} 
@@ -156,7 +156,7 @@ const Watpage1 = () => {
                             </iframe>
                             {/* <Google_map latitude={latitude} longtitude={longitude} /> */}
                             
-                            <div className=" text-white">
+                            <div className=" text-white ">
                                 <h1 className="py-4 text-[18px] ">สถานที่ตั้ง</h1>
                                 <p className="text-[16px]">{watAddress.address}<br />รหัสไปรษณีย์ {watAddress.postalCode}</p>
                             </div>
@@ -164,36 +164,38 @@ const Watpage1 = () => {
                     </div>
 
                     {/* wat-add-on-section */}
-                    <Addon title={"ศาลาที่มีให้"} addonList={filteredAddonsCat1} />
-                    <Addon title={"บริการระหว่างอภิธรรมศพ"} addonList={filteredAddonsCat2} />
-                    <Addon title={"สินค้าและบริการ (ลูกค้าเลือกจ่าย)"} addonList={filteredAddonsCat3} />
+                    <div className="flex flex-col items-start">
+                        <Addon title={"ศาลาที่มีให้"} addonList={filteredAddonsCat1} />
+                        <Addon title={"บริการระหว่างอภิธรรมศพ"} addonList={filteredAddonsCat2} />
+                        <Addon title={"สินค้าและบริการ (ลูกค้าเลือกจ่าย)"} addonList={filteredAddonsCat3} />
+                    </div>
                 </div>
                 <div className="right w-full lg:w-2/5 flex flex-col items-center gap-4">         
-                <div className="w-full lg:w-[375px] h-[220px] md:h-[266px] bg-[#292725] rounded-[10px] flex flex-col justify-between py-4 px-6 md:px-8">
-                    <div className="flex flex-col text-white gap-4 md:gap-5">
-                        <p className="text-[16px] md:text-[18px] font-bold">CONTACT INFO</p>
-                        <p className="text-[14px] md:text-[15px]">Phone: {watData.phoneNumber}</p>
-                        <p className="text-[14px] md:text-[15px]">Facebook: {watData.Facebook}</p>
-                        <p className="text-[14px] md:text-[15px]">Location: {watAddress.address}</p>
+                    <div className="w-full lg:w-[375px] h-[220px] md:h-[266px] bg-[#292725] rounded-[10px] flex flex-col justify-between py-4 px-6 md:px-8">
+                        <div className="flex flex-col text-white gap-4 md:gap-5">
+                            <p className="text-[16px] md:text-[18px] font-bold">CONTACT INFO</p>
+                            <p className="text-[14px] md:text-[15px]">Phone: {watData.phoneNumber}</p>
+                            <p className="text-[14px] md:text-[15px]">Facebook: {watData.Facebook}</p>
+                            <p className="text-[14px] md:text-[15px]">Location: {watAddress.address}</p>
+                        </div>
+                        <div className="flex justify-center">
+                            <img src="/socialmedialinks.png" alt="Social Media Links" />
+                        </div>
                     </div>
-                    <div className="flex justify-center">
-                        <img src="/socialmedialinks.png" alt="Social Media Links" />
-                    </div>
-                </div>
 
-                <div className="w-full lg:w-[375px] h-[220px] md:h-[266px] bg-[#292725] rounded-[10px] flex flex-col justify-between py-4 px-6 md:px-8">
-                    <div className="flex flex-col text-white gap-4 md:gap-5">
-                        <p className="text-[16px] md:text-[18px] font-bold">${watData.min_cost} - ${watData.max_cost}</p>
-                        <p className="text-[14px] md:text-[15px]">Short Period: $ 1000 </p>
-                        <p className="text-[14px] md:text-[15px]">Medium Period: $ 2000</p>
-                        <p className="text-[14px] md:text-[15px]">Long Period: $ 2000</p>
+                    <div className="w-full lg:w-[375px] h-[220px] md:h-[266px] bg-[#292725] rounded-[10px] flex flex-col justify-between py-4 px-6 md:px-8">
+                        <div className="flex flex-col text-white gap-4 md:gap-5">
+                            <p className="text-[16px] md:text-[18px] font-bold">${watData.min_cost} - ${watData.max_cost}</p>
+                            <p className="text-[14px] md:text-[15px]">Short Period: $ 1000 </p>
+                            <p className="text-[14px] md:text-[15px]">Medium Period: $ 2000</p>
+                            <p className="text-[14px] md:text-[15px]">Long Period: $ 2000</p>
+                        </div>
+                        {loginState && ShowBooking && (
+                            <button className="bg-[#AD957B] text-white text-[16px] md:text-[18px] font-bold rounded-[20px] py-2">
+                                Book Now
+                            </button>
+                        )}
                     </div>
-                    {loginState && ShowBooking && (
-                        <button className="bg-[#AD957B] text-white text-[16px] md:text-[18px] font-bold rounded-[20px] py-2">
-                            Book Now
-                        </button>
-                    )}
-                </div>
             </div>
 
             </div>
