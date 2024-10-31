@@ -140,6 +140,13 @@ const EditWat = () => {
                   url: link,
               };
           }
+          else{
+            return {
+              name: item.name,
+              url: item.url
+            }
+          }
+          
           return null;
       })
   );
