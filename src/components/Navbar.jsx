@@ -15,7 +15,7 @@ const Navbar = () => {
   const [ShowWATnav, setShowWATnav] = useState(false);
 
   const current_id = sessionStorage.getItem("currentUser_id")
-
+  const wat_id = sessionStorage.getItem("wat_id")
 
   const fetchNotifications = async () => {
     try {
@@ -98,10 +98,10 @@ const Navbar = () => {
             <Link to="/EditWat" className="text-white text-lg ml-10">
               Edit Wat
             </Link>
-            <Link to="/Booking" className="text-white text-lg ml-10">
+            <Link to="/" className="text-white text-lg ml-10">
               Reservation
             </Link>
-            <Link to="/Watpage1" className="text-white text-lg ml-10">
+            <Link to={`/Watpage1/${wat_id}`} className="text-white text-lg ml-10">
               My Wat
             </Link>
           </div>
