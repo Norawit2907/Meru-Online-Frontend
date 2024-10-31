@@ -1,15 +1,17 @@
-import React, {useState} from "react";
-import Calendar from "../components/Calendar";
-import PaymentOptions from "../components/PaymentOption";
+import React, { useState, useEffect } from "react";
+// import Calendar from "../components/Calendar";
+import BookingCalendar from "../components/BookingCalendar";
+import { Section } from "../components/PaymentBooking/SectionBooking";
 import SlickSaLa from "../components/SaLa";
 import AddonWat from "../components/Addon_Watpage1";
 import Timeline from "../components/TimelineBooking";
 import SelectDate from "../components/SelectDateBooking";
 
-import "../styles/Booking.css";
+
+import PaymentSection from "../components/PaymentBooking/PaymentSection";
+
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
 
 const costData = [
   { head: "สิ่งที่วัดเตรียมให้", title: "รถแห่เสียงดังๆเผื่อศพตื่นมาเต้น", price: 5000 },
@@ -44,38 +46,63 @@ const addonData = [
 ];
 
 const Booking = () => {
-
   const [bookingData, setBookingData] = useState({
     startDate: null,
     daysCount: null,
-    cremationDate: null
+    cremationDate: null,
   });
 
-  // State SelectDate
-  const handleDateSelect = (data) => {
-    if (data.type === 'startDate') {
-      setBookingData(prev => ({
+ // Mock reservation data
+ const mockReservationData = {
+  // October 2024
+  "2024-10-15": 3,
+  "2024-10-16": 3,
+  "2024-10-17": 3,
+  "2024-10-10": 2,
+  "2024-10-11": 1,
+  "2024-10-20": 2,
+  "2024-10-21": 2,
+  "2024-10-25": 1,
+  "2024-10-28": 2,
+  "2024-10-29": 3,
+  "2024-10-30": 3,
+  // November 2024
+  "2024-11-05": 3,
+  "2024-11-06": 3,
+  "2024-11-07": 2,
+  "2024-11-12": 1,
+  "2024-11-15": 3,
+  "2024-11-16": 2,
+  "2024-11-20": 3,
+  "2024-11-25": 1,
+  "2024-11-28": 3,
+};
+
+const MAX_WORKLOAD = 3;
+   // State SelectDate
+   const handleDateSelect = (data) => {
+    if (data.type === "startDate") {
+      setBookingData((prev) => ({
         ...prev,
         startDate: data.value,
-        // Reset ทั้ง daysCount และ cremationDate เมื่อเปลี่ยนวันเริ่มงาน
         daysCount: null,
-        cremationDate: null
+        cremationDate: null,
       }));
-    } else if (data.type === 'days') {
-      setBookingData(prev => ({
+    } else if (data.type === "days") {
+      setBookingData((prev) => ({
         ...prev,
         daysCount: data.value,
-        // Reset เฉพาะ cremationDate เมื่อเปลี่ยนจำนวนวัน
-        cremationDate: null
+        cremationDate: null,
       }));
-    } else if (data.type === 'cremationDate') {
-      setBookingData(prev => ({
+    } else if (data.type === "cremationDate") {
+      setBookingData((prev) => ({
         ...prev,
-        cremationDate: data.value
+        cremationDate: data.value,
       }));
     }
-
   };
+
+
 
   // ฟังก์ชันคำนวณราคารวม
   const calculateTotalCost = () => {
@@ -88,46 +115,61 @@ const Booking = () => {
       <h1 className="font-prompt font-bold text-white text-4xl mb-10">วัดดูยูมีน</h1>
 
       <div className="flex justify-center mb-10">
-        <Calendar />
+        <BookingCalendar 
+          reservationData={mockReservationData}
+          maxWorkload={MAX_WORKLOAD}
+        />
       </div>
 
       <div className="all-section grid grid-cols-3 gap-8">
         <LeftSection 
           bookingData={bookingData} 
-          onDateSelect={handleDateSelect}
+          onDateSelect={handleDateSelect} 
+          reservationData={mockReservationData}
+          maxWorkload={MAX_WORKLOAD}
         />
         <RightSection 
           totalCost={calculateTotalCost()} 
-          bookingData={bookingData}
+          bookingData={bookingData} 
         />
       </div>
     </div>
   );
 };
 
-const LeftSection = ({ bookingData, onDateSelect }) => {
+const LeftSection = ({ 
+  bookingData, 
+  onDateSelect, 
+  reservationData,
+  maxWorkload 
+}) => {
   return (
     <div className="section1 col-span-2">
-
       <SelectDate 
-        label="วันเริ่มจัดงาน"
-        onSelect={onDateSelect}
+        label="วันเริ่มจัดงาน" 
+        onSelect={onDateSelect} 
         startDate={bookingData.startDate}
+        reservationData={reservationData}
+        maxWorkload={maxWorkload}
       />
-      <SelectDate 
+      <SelectDate
         label="จำนวนวันสวด"
         suffix="วัน"
         onSelect={onDateSelect}
         startDate={bookingData.startDate}
         daysCount={bookingData.daysCount}
-        disabled={!bookingData.startDate} // ปิด ถ้ายังไม่ได้เลือกวันเริ่มงาน
+        disabled={!bookingData.startDate}
+        reservationData={reservationData}
+        maxWorkload={maxWorkload}
       />
-      <SelectDate 
+      <SelectDate
         label="วันเริ่มฌาปณกิจ"
         onSelect={onDateSelect}
         startDate={bookingData.startDate}
         daysCount={bookingData.daysCount}
-        disabled={!bookingData.startDate || !bookingData.daysCount} //ปิด ถ้ายังไม่ได้เลือกวันเริ่มงานหรือจำนวนวัน
+        disabled={!bookingData.startDate || !bookingData.daysCount}
+        reservationData={reservationData}
+        maxWorkload={maxWorkload}
       />
 
       {/* ส่วนเลือกศาลา */}
@@ -135,9 +177,7 @@ const LeftSection = ({ bookingData, onDateSelect }) => {
       <SlickSaLa />
 
       {/* ส่วนกำหนดการ */}
-      <h3 className="text-white mt-10 ml-[20px] text-[32px] font-bold">
-        กำหนดการสวดอภิธรรมศพ
-      </h3>
+      <h3 className="text-white mt-10 ml-[20px] text-[32px] font-bold">กำหนดการสวดอภิธรรมศพ</h3>
       <Timeline />
 
       {/* ส่วน Addon */}
@@ -152,14 +192,14 @@ const RightSection = ({ totalCost, bookingData }) => {
   // รวมราคาทั้งหมด
   const getUpdatedCostData = () => {
     let updatedCosts = [...costData];
-    
+
     return updatedCosts;
   };
 
   return (
     <div className="section2 col-span-1">
       <CostDetails costData={getUpdatedCostData()} />
-      <PaymentSection totalCost={totalCost} />
+      <PaymentSection totalCost={totalCost} bookingData={bookingData} />
     </div>
   );
 };
@@ -172,49 +212,6 @@ const CostDetails = ({ costData }) => {
       <CostItem label="ศาลา" items={costData.slice(4, 5)} />
       <CostItem label="กำหนดการสวดอภิธรรม" items={costData.slice(5)} />
     </Section>
-  );
-};
-
-const PaymentSection = ({ totalCost }) => {
-
-  const handlePayment = () => {
-    console.log('ดำเนินการชำระเงิน:', totalCost);
-
-  };
-
-  return (
-    <>
-      <hr className="my-10 border-[#AD957B]"/>
-      <Section title="วิธีการชำระเงิน">
-        <PaymentOptions />
-        <div className="grid grid-cols-2 text-white mt-10 mb-10">
-          <div className="ml-5">
-            <div>ยอดชำระเงินทั้งหมด</div>
-            <div className="total font-bold text-2xl">
-              {totalCost.toLocaleString()} บาท
-            </div>
-          </div>
-          <div className="confirm-payment text-white align-middle">
-            <button 
-              type="button"
-              onClick={handlePayment}
-              className="bg-[#AD957B] hover:bg-[#C5AD91] px-6 py-3 rounded-xl transition-colors duration-200"
-            >
-              ยืนยันการชำระเงิน
-            </button>
-          </div>
-        </div>
-      </Section>
-    </>
-  );
-};
-
-const Section = ({ title, children }) => {
-  return (
-    <div className="block justify-end w-full h-auto mb-10">
-      <h3 className="font-prompt font-bold text-white text-3xl mb-10">{title}</h3>
-      {children}
-    </div>
   );
 };
 

@@ -49,8 +49,11 @@ const calendarStyles = `
   .react-calendar__month-view__days__day--weekend {
     color: #ff8b8b;
   }
-  .react-calendar__month-view__days__day--neighboringMonth {
-    color: #666;
+  .react-calendar__tile--fully-booked {
+    background: rgba(173, 149, 123, 0.3) !important;
+    color: #666 !important;
+    text-decoration: line-through;
+    cursor: not-allowed;
   }
 `;
 
@@ -69,30 +72,58 @@ const SelectDateBooking = ({
   const [error, setError] = useState(""); 
   const daysOptions = ["1", "3", "5", "7"];
 
-  const isSelectDays = label === "จำนวนวันสวด";
+  // Mock reservation data
+  const mockReservationData = {
+    "2024-10-15": 3,
+    "2024-10-16": 3,
+    "2024-10-17": 3,
+    "2024-10-10": 2,
+    "2024-10-11": 1,
+    "2024-10-20": 2,
+    "2024-10-21": 2,
+    "2024-10-25": 1,
+    "2024-10-28": 2,
+    "2024-10-29": 3,
+    "2024-10-30": 3,
+    "2024-11-05": 3,
+    "2024-11-06": 3,
+    "2024-11-07": 2,
+    "2024-11-12": 1,
+    "2024-11-15": 3,
+    "2024-11-16": 2,
+    "2024-11-20": 3,
+    "2024-11-25": 1,
+    "2024-11-28": 3,
+  };
+
+  const MAX_WORKLOAD = 3; // Maximum bookings per day
+
   const isStartDate = label === "วันเริ่มจัดงาน";
+  const isSelectDays = label === "จำนวนวันสวด";
   const isCremationDate = label === "วันเริ่มฌาปณกิจ";
 
-
   const isDisabled = () => {
-    if (isStartDate) return false; // เลือกวันจัดงานก่อน
-    if (isSelectDays && !startDate) return true; // เลือกจำนวนวันต่อ
-    if (isCremationDate && (!startDate || !daysCount)) return true; // ต้องเลือกทั้งวันเริ่มและจำนวนวัน
+    if (isStartDate) return false;
+    if (isSelectDays && !startDate) return true;
+    if (isCremationDate && (!startDate || !daysCount)) return true;
     return disabled;
   };
 
+  useEffect(() => {
+    if (isStartDate && startDate !== undefined) {
+      setSelectedDate(startDate);
+    } else if (isSelectDays && daysCount !== undefined) {
+      setSelectedDays(daysCount);
+    } else if (isCremationDate) {
+      setSelectedDate(null);
+    }
+  }, [startDate, daysCount, isStartDate, isSelectDays, isCremationDate]);
 
-    useEffect(() => {
-      if (isStartDate && startDate !== undefined) {
-        setSelectedDate(startDate);
-      } else if (isSelectDays && daysCount !== undefined) {
-        setSelectedDays(daysCount);
-      } else if (isCremationDate) {
-        setSelectedDate(null); // reset วันเผา เมื่อเปลี่ยนจำนวนวัดสวด
-      }
-    }, [startDate, daysCount, isStartDate, isSelectDays, isCremationDate]);
+  const isDateFullyBooked = (date) => {
+    const formattedDate = date.toISOString().split('T')[0];
+    return mockReservationData[formattedDate] === MAX_WORKLOAD;
+  };
 
-  // เลือกวันเผาหลังจากสวดเสร็จ
   const calculateAllowedCremationDates = () => {
     if (!startDate || !daysCount) return null;
     
@@ -105,8 +136,13 @@ const SelectDateBooking = ({
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     
-    const lockDays = new Date(today);
-    lockDays.setDate(today.getDate() + 1);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+  
+    // Check if date is fully booked
+    if (isDateFullyBooked(date)) {
+      return false;
+    }
 
     if (isCremationDate) {
       const minCremationDate = calculateAllowedCremationDates();
@@ -114,7 +150,7 @@ const SelectDateBooking = ({
       return date >= minCremationDate;
     }
     
-    return date.getTime() === today.getTime() || date.getTime() >= lockDays.getTime();
+    return date.getTime() >= tomorrow.getTime();
   };
 
   const handleDaySelect = (day) => {
@@ -159,7 +195,6 @@ const SelectDateBooking = ({
     }
   };
 
-  // error
   const getErrorMessage = () => {
     if (isSelectDays && !startDate) {
       return "กรุณาเลือกวันเริ่มจัดงานก่อน";
@@ -216,7 +251,6 @@ const SelectDateBooking = ({
             </span>
           </div>
 
-          {/* Error message */}
           {error && (
             <div className="absolute -bottom-6 left-0 text-red-400 text-sm flex items-center gap-1">
               <FontAwesomeIcon icon={faCircleExclamation} className="w-4 h-4" />
@@ -224,7 +258,6 @@ const SelectDateBooking = ({
             </div>
           )}
 
-          {/* Dropdown for days selection */}
           {isSelectDays && isOpen && !isDisabled() && (
             <div className="absolute top-full mt-2 w-full bg-[#292725] border border-[#AD957B] rounded-xl shadow-lg overflow-hidden z-50">
               {daysOptions.map((day) => (
@@ -239,7 +272,6 @@ const SelectDateBooking = ({
             </div>
           )}
 
-          {/* Calendar popup */}
           {(isStartDate || isCremationDate) && showCalendar && !isDisabled() && (
             <div className="absolute top-full mt-2 left-1/2 transform -translate-x-1/2 z-50">
               <div className="bg-[#292725] border border-[#AD957B] rounded-xl p-2 shadow-xl">
@@ -261,8 +293,9 @@ const SelectDateBooking = ({
                     
                     if (view === 'month') {
                       const isBlocked = !isDateSelectable(date);
+                      const isFullyBooked = isDateFullyBooked(date);
                       
-                      if (isBlocked) {
+                      if (isBlocked || isFullyBooked) {
                         classes.push('text-gray-500 cursor-not-allowed opacity-50 line-through');
                       } else {
                         classes.push('text-white');
@@ -278,6 +311,10 @@ const SelectDateBooking = ({
                       
                       if (date.toDateString() === new Date().toDateString()) {
                         classes.push('bg-[#AD957B]/30');
+                      }
+
+                      if (isFullyBooked) {
+                        classes.push('react-calendar__tile--fully-booked');
                       }
                     }
                     
