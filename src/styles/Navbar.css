@@ -80,3 +80,17 @@
 .navbar .Profile-buttons button:hover {
     opacity: 0.8;
 }
+
+.noti::-webkit-scrollbar {
+    width: 12px; /* Width of the scrollbar */
+  }
+  
+.noti::-webkit-scrollbar-track {
+    background: #1c1c1c; /* Background of the scrollbar track */
+    border-radius: 0.5rem;
+  }
+
+.noti::-webkit-scrollbar-thumb {
+    background: #3b3939; /* Color of the scrollbar thumb */
+    border-radius: 6px; /* Round the corners of the scrollbar thumb */
+}

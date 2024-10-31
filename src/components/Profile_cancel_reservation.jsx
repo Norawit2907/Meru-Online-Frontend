@@ -25,13 +25,18 @@ const ProfileCancelReservation = ({ isOpen, onClose, reservation }) => {
     } else {
       try {
           const response = await axios.put(`${backendUrl}/reserves/${reservation._id}`, {
+              wat_id: reservation.wat_id,
+              user_id: reservation.user_id,
               status: 'reject',
-              sender: 'user'
+              sender: 'wat',
+              reservation_date: reservation.reservation_date,
+              cremation_date: reservation.cremation_date,
           });
           onClose();
       } catch (err) {
         console.error(err);
       }
+
     }
     };
   

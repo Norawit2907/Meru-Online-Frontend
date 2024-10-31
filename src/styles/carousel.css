@@ -8,32 +8,13 @@
 }
 
 :root {
-  --primary: #6a59ff;
-  --white: #ffffff;
-  --bg: #f5f5f5;
+  --primary: #AD957B;
+  --white: #AD957B;
+  --bg: #AD957B;
 }
 
 html {
-  font-size: 62.5%;
   scroll-behavior: smooth;
-}
-
-@media (min-width: 1440px) {
-  html {
-    zoom: 1.5;
-  }
-}
-
-@media (min-width: 2560px) {
-  html {
-    zoom: 1.7;
-  }
-}
-
-@media (min-width: 3860px) {
-  html {
-    zoom: 2.5;
-  }
 }
 
 ::-webkit-scrollbar {
@@ -54,11 +35,6 @@ html {
   background: #f9f9f9;
 }
 
-body {
-  font-size: 1.6rem;
-  background: var(--bg);
-}
-
 .container {
   max-width: 124rem;
   padding: 4rem 1rem;
@@ -74,7 +50,7 @@ body {
 .swiper_container {
   height: 52rem;
   padding: 2rem 0;
-  position: relative;
+  position: center;
 }
 
 .swiper-slide {
@@ -97,12 +73,12 @@ body {
   }
 }
 
-.swiper-slide img {
+/* .swiper-slide img {
   width: 37rem;
   height: 42rem;
   border-radius: 2rem;
   object-fit: cover;
-}
+} */
 
 .swiper-slide-shadow-left,
 .swiper-slide-shadow-right {
@@ -111,86 +87,47 @@ body {
 
 .slidercontroller {
   position: relative;
-  bottom: 2rem;
+  bottom: 1rem; /* Adjust this value as needed */
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 1rem; /* Adds space between arrows and pagination */
+}
+
+.slidercontroller .swiper-button-prev,
+.slidercontroller .swiper-button-next {
+  font-size: 1.5rem; /* Change this to adjust size */
+  width: 3rem; /* Increased width for easier clicking */
+  height: 3rem; /* Increased height for easier clicking */
+  color: #AD957B; /* Arrow color */
+  cursor: pointer; /* Make it clear that these are clickable */
+  display: flex; /* To allow flex properties for centering icon */
+  align-items: center; /* Center the icon vertically */
+  justify-content: center; /* Center the icon horizontally */
+}
+
+.slidercontroller .swiper-button-prev {
+  margin-right: 0.5rem; /* Space between left arrow and pagination */
 }
 
 .slidercontroller .swiper-button-next {
-  left: 58% !important;
-  transform: translateX(-58%) !important;
-}
-
-/* @media (max-width: 1440px) {
-    .slidercontroller .swiper-button-next {
-      left: 70% !important;
-      transform: translateX(-70%) !important;
-    }
-  } */
-  
-@media (max-width: 990px) {
-  .slidercontroller .swiper-button-next {
-    left: 70% !important;
-    transform: translateX(-70%) !important;
-  }
-}
-
-@media (max-width: 450px) {
-  .slidercontroller .swiper-button-next {
-    left: 80% !important;
-    transform: translateX(-80%) !important;
-  }
-}
-
-@media (max-width: 990px) {
-  .slidercontroller .swiper-button-prev {
-    left: 30% !important;
-    transform: translateX(-30%) !important;
-  }
-}
-
-@media (max-width: 450px) {
-  .slidercontroller .swiper-button-prev {
-    left: 20% !important;
-    transform: translateX(-20%) !important;
-  }
-}
-
-.slidercontroller .slider-arrow {
-  background: var(--white);
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 50%;
-  left: 42%;
-  transform: translateX(-42%);
-  filter: drop-shadow(0px 8px 24px rgba(18, 28, 53, 0.1));
-}
-
-.slidercontroller .slider-arrow ion-icon {
-  font-size: 2rem;
-  color: #222224;
-}
-
-.slidercontroller .slider-arrow::after {
-  content: '';
+  margin-left: 0.5rem; /* Space between right arrow and pagination */
 }
 
 .swiper-pagination {
+  display: flex; /* Align pagination items horizontally */
+  justify-content: center;
+  gap: 0.5rem; /* Space between pagination bullets */
   position: relative;
-  width: 15rem !important;
-  bottom: 1rem;
+  bottom: 0; /* Align pagination with arrows */
 }
 
 .swiper-pagination .swiper-pagination-bullet {
-  filter: drop-shadow(0px 8px 24px rgba(18, 28, 53, 0.1));
+  filter: drop-shadow(0px 8px 24px #AD957B);
+  width: 1rem; /* Bullet width */
+  height: 1rem; /* Bullet height */
 }
 
 .swiper-pagination .swiper-pagination-bullet-active {
-  background: var(--primary);
-}
-
-.swiper-button-prev,
-.swiper-button-next {
-    color: white !important;
+  background: #AD957B;
 }
