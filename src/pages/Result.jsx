@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
-import Calendar from 'react-calendar';
 import Searchbar from '../components/Searchbar';
-import '../styles/Result.css';
 import Watcard from '../components/Watcard';
 import { GetWatCard } from '../services/search';
 

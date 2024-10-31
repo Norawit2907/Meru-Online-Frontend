@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Addon from "../components/Addon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { Reorder, motion, useDragControls } from "framer-motion";
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Reorder } from "framer-motion";
 import {
+  
   getAddressByWatId,
   getWatById,
   updateAddressByWatId,

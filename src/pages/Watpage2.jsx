@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { GetWatAddress } from "../services/address";
 import { GetWatData } from "../services/getWatDataById";
 import { GetWatAddons } from "../services/getWatAddons";
+import { useParams } from "react-router-dom";
 
 const addonData = [
   {
@@ -29,6 +30,13 @@ const addonData = [
 ];
 
 const Watpage2 = () => {
+
+    const  wat_id  = useParams().id;
+    const [watAddress, setWatAddress] = useState([]);
+    const [watAddons, setWatAddons] = useState([]);
+    const [filteredAddonsCat1, setFilteredAddonsCat1] = useState([]);
+    const [filteredAddonsCat2, setFilteredAddonsCat2] = useState([]);
+    const [filteredAddonsCat3, setFilteredAddonsCat3] = useState([]);
   const wat_id = "6719a16461c391e42b756b76";
   const [watAddress, setWatAddress] = useState([]);
   const [watAddons, setWatAddons] = useState([]);
