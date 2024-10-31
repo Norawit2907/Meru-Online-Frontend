@@ -140,14 +140,14 @@ const Navbar = () => {
             {showNotifications && (
               <div
                 className="absolute right-0 mt-2 w-screen max-w-[95vw] sm:max-w-[90vw] md:max-w-[600px] 
-                  lg:max-w-[800px] xl:max-w-[1000px] bg-[#1C1C1C] rounded-lg shadow-xl 
+                  lg:max-w-[800px] xl:max-w-[800px] bg-[#1C1C1C] rounded-lg shadow-xl 
                   z-[10000] overflow-hidden transform -translate-x-1/2 left-1/2 
                   md:transform-none md:left-auto"
               >
                 <div className="flex text-[20px] sm:text-[16px] text-[#AD957B] bg-[#292725] p-4 font-bold">
                   การแจ้งเตือนของคุณ
                 </div>
-                <div className="bg-[#1C1C1C] flex flex-col-reverse max-h-[80vh] overflow-y-auto">
+                <div className="bg-[#1C1C1C] flex flex-col-reverse max-h-[40vh] overflow-y-auto">
                   {notifications.map((notification, index) => (
                     <div
                       key={notification._id}
