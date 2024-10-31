@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 const Watcard = ({ id, image, title, minprice, maxprice, location }) => {
   return (
-    <div className="w-full">
+    <div className="w-full z-0">
       <Link to={`/watpage1/${id}`}>
         <button className="w-full">
           <div className="relative w-full h-64 rounded-xl overflow-hidden">
