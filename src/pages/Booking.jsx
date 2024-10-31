@@ -123,33 +123,6 @@ const Booking = () => {
     fetchWatAddons();
   }, [wat_id]);
 
-  // Mock reservation data
-  const mockReservationData = {
-    // October 2024
-    "2024-10-15": 3,
-    "2024-10-16": 3,
-    "2024-10-17": 3,
-    "2024-10-10": 2,
-    "2024-10-11": 1,
-    "2024-10-20": 2,
-    "2024-10-21": 2,
-    "2024-10-25": 1,
-    "2024-10-28": 2,
-    "2024-10-29": 3,
-    "2024-10-30": 3,
-    // November 2024
-    "2024-11-05": 3,
-    "2024-11-06": 3,
-    "2024-11-07": 2,
-    "2024-11-12": 1,
-    "2024-11-15": 3,
-    "2024-11-16": 2,
-    "2024-11-20": 3,
-    "2024-11-25": 1,
-    "2024-11-28": 3,
-  };
-
-  const MAX_WORKLOAD = 3;
   // State SelectDate
   const handleDateSelect = (data) => {
     if (data.type === "startDate") {
@@ -172,8 +145,6 @@ const Booking = () => {
       }));
     }
   };
-
-
 
   // ฟังก์ชันคำนวณราคารวม
   const calculateTotalCost = () => {
