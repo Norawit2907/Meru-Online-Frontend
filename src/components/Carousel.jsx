@@ -11,20 +11,21 @@ import { EffectCoverflow, Pagination, Navigation } from 'swiper/modules';
 import { useState } from "react";
 import { useEffect } from "react";
 import { GetWatData } from "../services/getWatDataById";
+import { useParams } from "react-router-dom";
 
 
 const Carousel = () => {
     const [watData, setWatData] = useState({picture: []});
-    const wat_id = '671fec855a531995fe412828'
+    const  wat_id  = useParams().id;
 
     useEffect(() => {
         const fetchWatData = async () => {
             try {
                 const result = await GetWatData(wat_id);
                 setWatData(result);
-                console.log("Fetched Wat Data:", result);
+                // console.log("Fetched Wat Data:", result);
             } catch (error) {
-                console.error("Failed to fetch Wat data:", error);
+                // console.error("Failed to fetch Wat data:", error);
             }
         };
 
