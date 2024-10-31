@@ -43,7 +43,10 @@ const EditProfile = ({ isOpen, onClose }) => {
   const save_profile = async () => {
     // console.log(firstname, lastname, phone, email, password);
     // console.log(`${backendUrl}/users/${current_id}`);
-    const profile_link = await UploadImage(profileImg);
+    let profile_link = ""
+    if(profileImg){
+      profile_link = await UploadImage(profileImg);
+    }
 
     try {
       const response = await axios.put(`${backendUrl}/users/${current_id}`, 
@@ -60,6 +63,8 @@ const EditProfile = ({ isOpen, onClose }) => {
         }
       );
       console.log("Profile updated successfully:", response.data);
+      sessionStorage.setItem("currentUser_profileimg", profile_link);
+      window.location.reload();
       onClose();
     } catch (err) {
       console.error("Error updating profile:", err);

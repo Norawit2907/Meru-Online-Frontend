@@ -2,40 +2,43 @@ import React, { useState, useEffect } from "react";
 import { GetWatData } from "../services/getWatDataById";
 import { GetReservesDays } from "../services/getReservationDays";
 import { GetCremationsDays } from "../services/getCremationsDays";
+import { useParams } from "react-router-dom";
 
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [watData, setWatData] = useState([]);
-  const wat_id = "671fec855a531995fe412828";
+  const  wat_id  = useParams().id;
+
   const [reservationDays, setReservationDays] = useState({});
   const [cremationDays, setCremationDays] = useState({});
 
   useEffect(() => {
+    
     const fetchWatData = async () => {
       try {
         const result = await GetWatData(wat_id);
         setWatData(result);
-        console.log("Fetched Wat Data:", result);
+        // console.log("Fetched Wat Data:", result);
       } catch (error) {
-        console.error("Failed to fetch Wat data:", error);
+        // console.error("Failed to fetch Wat data:", error);
       }
     };
     const fetchWatReservation = async () => {
       try {
         const result = await GetReservesDays(wat_id);
         setReservationDays(result);
-        console.log("Fetched Wat Reservation:", result);
+        // console.log("Fetched Wat Reservation:", result);
       } catch (error) {
-        console.error("Failed to fetch Reservation:", error);
+        // console.error("Failed to fetch Reservation:", error);
       }
     };
     const fetchWatCremations = async () => {
       try {
         const result = await GetCremationsDays(wat_id);
         setCremationDays(result);
-        console.log("Fetched Wat Cremation:", result);
+        // console.log("Fetched Wat Cremation:", result);
       } catch (error) {
-        console.error("Failed to fetch Cremation:", error);
+        // console.error("Failed to fetch Cremation:", error);
       }
     };
     fetchWatCremations();
@@ -56,7 +59,7 @@ const Calendar = () => {
     ));
   };
 
-  console.log(currentDate.getMonth(), currentDate.getFullYear());
+  // console.log(currentDate.getMonth(), currentDate.getFullYear())
 
   const renderDays = () => {
     const days = [];

@@ -148,7 +148,7 @@ const Navbar = () => {
           {loginState && sessionStorage.getItem("role") !== "wat" ? ( 
             <Link to="/Profile">
               <button className="text-white">
-                <img src={sessionStorage.getItem("currentUser_profileimg")} alt="User" className="h-8" />
+                <img src={sessionStorage.getItem("currentUser_profileimg") ? sessionStorage.getItem("currentUser_profileimg") : "/defaultprofile.jpg" } alt="User" className="h-8" />
               </button>
             </Link>
           ) : null}

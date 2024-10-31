@@ -5,6 +5,7 @@ import Calendar from "../components/Calendar";
 import { GetWatAddress } from "../services/address";
 import { GetWatData } from "../services/getWatDataById";
 import { GetWatAddons } from "../services/getWatAddons";
+import { useParams } from "react-router-dom";
 
 
 const Watpage1 = () => {
@@ -19,7 +20,7 @@ const Watpage1 = () => {
     //   getwat("670d4074f2bd50c27ade5db0")
     // },[])
 
-    const wat_id = '671fec855a531995fe412828'
+    
 
     const [loginState, setLoginState] = useState(false);
     const [ShowBooking, setBooking ] = useState(false);
@@ -32,14 +33,17 @@ const Watpage1 = () => {
     const [latitude, setLatitude] = useState('');
     const [longitude, setLongitude] = useState('');
 
+    const wat_id = useParams().id;
     useEffect(() => {
+        // console.log(wat_id);
+        
         const fetchWatData = async () => {
             try {
                 const result = await GetWatData(wat_id);
                 setWatData(result);
-                console.log("Fetched Wat Data:", result);
+                // console.log("Fetched Wat Data:", result);
             } catch (error) {
-                console.error("Failed to fetch Wat data:", error);
+                // console.error("Failed to fetch Wat data:", error);
             }
         };
         const fetchWatAddress = async () => {
@@ -48,9 +52,9 @@ const Watpage1 = () => {
                 setWatAddress(result);
                 setLatitude(result.latitude);
                 setLongitude(result.longtitude);
-                console.log("Fetched Wat Address:", result);
+                // console.log("Fetched Wat Address:", result);
             } catch (error) {
-                console.error("Failed to fetch Wat address:", error);
+                // console.error("Failed to fetch Wat address:", error);
             }
         };
 
@@ -72,9 +76,9 @@ const Watpage1 = () => {
                 setFilteredAddonsCat1(filtered);
                 setFilteredAddonsCat2(filtered_2);
                 setFilteredAddonsCat3(filtered_3);
-                console.log("Fetched Wat Addons:", result);
+                // console.log("Fetched Wat Addons:", result);
             } catch (error) {
-                console.error("Failed to fetch Wat addons:", error);
+                // console.error("Failed to fetch Wat addons:", error);
             }
         };
 
@@ -94,7 +98,7 @@ const Watpage1 = () => {
         
             if (token) {
               setLoginState(true);
-              if (role === "wat") {
+              if (role === "user") {
                 setBooking(true);
               }
             } else {
