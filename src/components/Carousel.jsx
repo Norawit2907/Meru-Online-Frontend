@@ -43,7 +43,7 @@ const Carousel = () => {
                 coverflowEffect={{
                     rotate: 0,
                     stretch: 0,
-                    depth: 100,
+                    depth: 250,
                     modifier: 2.5,
                 }}
                 pagination={{ el: '.swiper-pagination', clickable: true }}
@@ -65,15 +65,14 @@ const Carousel = () => {
                     </SwiperSlide>
                 ))}
 
-                <div className="slidercontroller">
-                    <div className="swiper-button-prev slider-arrow text-[#AD957B]">
-                        <ion-icon name="chevron-back-outline"></ion-icon>
+                <div className="slidercontroller flex items-center justify-center">
+                    <div className="swiper-button-prev slider-arrow mr-2 cursor-pointer">
                     </div>
-                    <div className="swiper-button-next slider-arrow text-[#AD957B]">
-                        <ion-icon name="arrow-forward-outline"></ion-icon>
+                    <div className="swiper-button-next slider-arrow ml-2 cursor-pointer">
                     </div>
                     <div className="swiper-pagination absolute bottom-2 w-full text-center text-[#AD957B]"></div>
                 </div>
+
             </Swiper>
         </div>
     );
