@@ -52,7 +52,8 @@ const Navbar = () => {
     if (loginState) {
       sessionStorage.clear();
       setLoginState(false);
-      setShowWATnav(false); 
+      setShowWATnav(false);
+      window.location.href = "/"; 
     } else {
       window.location.href = "/login";
     }
