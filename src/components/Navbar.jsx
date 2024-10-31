@@ -2,12 +2,18 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Bell, LogOut, LogIn } from "lucide-react";
 import NotificationCard from "./NotificationCard";
+import axios from "axios";
+
+
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 
 const Navbar = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [loginState, setLoginState] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [ShowWATnav, setShowWATnav] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   let current_id = sessionStorage.getItem("currentUser_id")
   const watid = sessionStorage.getItem("wat_id")
   const role = sessionStorage.getItem("role")
@@ -29,10 +35,13 @@ const Navbar = () => {
   const handleDelete = async (notificationId) => {
     try {
       const response = await axios.delete(`${backendUrl}/notification/${notificationId}`);
-      setNotifications(notifications.filter(notification => notification.id !== notificationId));
+      if (response.data.length >=1) {
+        setNotifications(notifications.filter(notification => notification.id !== notificationId));
+      }
       console.log(response.data);
     } catch (err) {
-      console.error(err);
+
+      console.error(err.response.data.message);
     }
     fetchNotifications();
   };
@@ -104,7 +113,7 @@ const Navbar = () => {
         {loginState && ShowWATnav && (
           <div className="hidden md:flex justify-between items-center font-sans text-lg text-white ml-10">
             {["EditWat", "Reservation", "MyWat"].map((item) => (
-              <Link key={item} to={item === "MyWat" ? `/Watpage1/${wat_id}` : `/${item}`} className="ml-8 relative group">
+              <Link key={item} to={item === "MyWat" ? `/Watpage1/${watid}` : `/${item}`} className="ml-8 relative group">
                 <span className="hover:text-[#AD957B] transition-colors duration-300">{item === "MyWat" ? "My Wat" : item}</span>
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#AD957B] transition-all duration-300 group-hover:w-full"></span>
               </Link>
@@ -151,10 +160,10 @@ const Navbar = () => {
                       `}
                     >
                       <NotificationCard
-                        description={notifications.description}
-                        title={notifications.title}
-                        date={formatDateToThai(notifications.updatedAt)}
-                        ondel={() => handleDelete(notifications._id)}
+                        description={notification.description}
+                        title={notification.title}
+                        date={formatDateToThai(notification.updatedAt)}
+                        ondel={() => handleDelete(notification._id)}
                       />
                     </div>
                   ))}
