@@ -242,13 +242,13 @@ const LeftSection = ({
       try {
         const result = await GetWatAddons(wat_id);
         const filteredPavilion = result.filter(
-          (addon) => addon.catalog === "ศาลา"
+          (addon) => addon.catalog === "sala"
         );
         const filteredAddons = result.filter(
-          (addon) => addon.catalog !== "ศาลา"
+          (addon) => addon.catalog === "food"
         );
         const filteredServices = result.filter(
-          (addon) => addon.catalog === "สินค้าและบริการ"
+          (addon) => addon.catalog !== "sala" && addon.catalog !== "food"
         );
 
         setAddonsData(filteredAddons);

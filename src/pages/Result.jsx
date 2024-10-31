@@ -17,7 +17,7 @@ const Result = () => {
         async function getwat(query, startDate, endDate) {
             const result = await GetWatCard(query, startDate, endDate);
             setWatData(result)
-            console.log(watData)
+            console.log(result)
         }
         
         getwat(query, startDate, endDate)
@@ -28,6 +28,7 @@ const Result = () => {
             const result = await GetWatCard(query, startDate, endDate);
             setWatData(result)
             console.log(watData)
+            console.log(result)
         }
         
         getwat(query, startDate, endDate)
@@ -55,7 +56,7 @@ const Result = () => {
                         <Watcard 
                             key={wat.id}
                             id={wat.id} 
-                            image={wat.picture[0].url} 
+                            image={wat.picture[0]} 
                             title={wat.name} 
                             minprice={wat.min_cost} 
                             maxprice={wat.max_cost} 

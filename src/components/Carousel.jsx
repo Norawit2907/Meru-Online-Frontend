@@ -58,7 +58,7 @@ const Carousel = () => {
                 {watData.picture.map((image, index) => (
                     <SwiperSlide key={index} className=" flex flex-col items-center gap-4 h-[250px]">
                         <img
-                            src={image.url}
+                            src={image}
                             alt={`Slide ${index + 1}`}
                             className="w-6/12 md:w-full lg:h-[300px] object-cover rounded-[16px]" // Adjusted width here
                         />
