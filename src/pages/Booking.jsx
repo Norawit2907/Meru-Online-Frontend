@@ -113,15 +113,16 @@ const MAX_WORKLOAD = 3;
   return (
     <div className="booking-container my-16 mx-16 mb-16">
       <h1 className="font-prompt font-bold text-white text-4xl mb-10">วัดดูยูมีน</h1>
-
+    
       <div className="flex justify-center mb-10">
         <BookingCalendar 
           reservationData={mockReservationData}
           maxWorkload={MAX_WORKLOAD}
         />
       </div>
-
-      <div className="all-section grid grid-cols-3 gap-8">
+    
+      {/* Adjust grid layout based on screen width */}
+      <div className="all-section grid grid-cols-1 xl:grid-cols-3 lg:grid-cols-1 gap-8">
         <LeftSection 
           bookingData={bookingData} 
           onDateSelect={handleDateSelect} 
@@ -135,74 +136,72 @@ const MAX_WORKLOAD = 3;
       </div>
     </div>
   );
-};
-
-const LeftSection = ({ 
-  bookingData, 
-  onDateSelect, 
-  reservationData,
-  maxWorkload 
-}) => {
-  return (
-    <div className="section1 col-span-2">
-      <SelectDate 
-        label="วันเริ่มจัดงาน" 
-        onSelect={onDateSelect} 
-        startDate={bookingData.startDate}
-        reservationData={reservationData}
-        maxWorkload={maxWorkload}
-      />
-      <SelectDate
-        label="จำนวนวันสวด"
-        suffix="วัน"
-        onSelect={onDateSelect}
-        startDate={bookingData.startDate}
-        daysCount={bookingData.daysCount}
-        disabled={!bookingData.startDate}
-        reservationData={reservationData}
-        maxWorkload={maxWorkload}
-      />
-      <SelectDate
-        label="วันเริ่มฌาปณกิจ"
-        onSelect={onDateSelect}
-        startDate={bookingData.startDate}
-        daysCount={bookingData.daysCount}
-        disabled={!bookingData.startDate || !bookingData.daysCount}
-        reservationData={reservationData}
-        maxWorkload={maxWorkload}
-      />
-
-      {/* ส่วนเลือกศาลา */}
-      <h2 className="mb-5 font-bold text-[32px] text-white">ศาลา</h2>
-      <SlickSaLa />
-
-      {/* ส่วนกำหนดการ */}
-      <h3 className="text-white mt-10 ml-[20px] text-[32px] font-bold">กำหนดการสวดอภิธรรมศพ</h3>
-      <Timeline />
-
-      {/* ส่วน Addon */}
-      <div className="mx-5">
-        <AddonWat title={"บริการระหว่างอภิธรรมศพ"} addonList={addonData} />
-      </div>
-    </div>
-  );
-};
-
-const RightSection = ({ totalCost, bookingData }) => {
-  // รวมราคาทั้งหมด
-  const getUpdatedCostData = () => {
-    let updatedCosts = [...costData];
-
-    return updatedCosts;
   };
-
-  return (
-    <div className="section2 col-span-1">
-      <CostDetails costData={getUpdatedCostData()} />
-      <PaymentSection totalCost={totalCost} bookingData={bookingData} />
-    </div>
-  );
-};
+  
+  const LeftSection = ({ 
+    bookingData, 
+    onDateSelect, 
+    reservationData,
+    maxWorkload 
+  }) => {
+    return (
+      <div className="section1 col-span-1 xl:col-span-2">
+        <SelectDate 
+          label="วันเริ่มจัดงาน" 
+          onSelect={onDateSelect} 
+          startDate={bookingData.startDate}
+          reservationData={reservationData}
+          maxWorkload={maxWorkload}
+        />
+        <SelectDate
+          label="จำนวนวันสวด"
+          suffix="วัน"
+          onSelect={onDateSelect}
+          startDate={bookingData.startDate}
+          daysCount={bookingData.daysCount}
+          disabled={!bookingData.startDate}
+          reservationData={reservationData}
+          maxWorkload={maxWorkload}
+        />
+        <SelectDate
+          label="วันเริ่มฌาปณกิจ"
+          onSelect={onDateSelect}
+          startDate={bookingData.startDate}
+          daysCount={bookingData.daysCount}
+          disabled={!bookingData.startDate || !bookingData.daysCount}
+          reservationData={reservationData}
+          maxWorkload={maxWorkload}
+        />
+  
+        {/* ส่วนเลือกศาลา */}
+        <h2 className="mb-5 font-bold text-[32px] text-white">ศาลา</h2>
+        <SlickSaLa />
+  
+        {/* ส่วนกำหนดการ */}
+        <h3 className="text-white mt-10 ml-[20px] text-[32px] font-bold">กำหนดการสวดอภิธรรมศพ</h3>
+        <Timeline />
+  
+        {/* ส่วน Addon */}
+        <div className="mx-5">
+          <AddonWat title={"บริการระหว่างอภิธรรมศพ"} addonList={addonData} />
+        </div>
+      </div>
+    );
+  };
+  
+  const RightSection = ({ totalCost, bookingData }) => {
+    const getUpdatedCostData = () => {
+      let updatedCosts = [...costData];
+      return updatedCosts;
+    };
+  
+    return (
+      <div className="section2 col-span-1">
+        <CostDetails costData={getUpdatedCostData()} />
+        <PaymentSection totalCost={totalCost} bookingData={bookingData} />
+      </div>
+    );
+  }
 
 const CostDetails = ({ costData }) => {
   return (
@@ -218,13 +217,19 @@ const CostDetails = ({ costData }) => {
 const CostItem = ({ label, items }) => {
   return (
     <>
-      <div className="font-bold text-white mt-5">{label}</div>
-      {items.map((item, index) => (
-        <div key={index} className="grid grid-cols-2 text-white py-2">
-          <div className="flex ml-3">-{item.title}</div>
-          <div className="flex justify-end">{item.price.toLocaleString()} บาท</div>
+    <div className="font-bold text-white mt-5 text-lg md:text-xl lg:text-2xl overflow-hidden text-ellipsis whitespace-nowrap">
+      {label}
+    </div>
+    {items.map((item, index) => (
+      <div key={index} className="grid grid-cols-2 text-white py-2">
+        <div className="flex ml-3 text-xs sm:text-sm md:text-base lg:text-lg overflow-hidden text-ellipsis whitespace-nowrap h-10 md:h-12 lg:h-14 items-center">
+          -{item.title}
         </div>
-      ))}
+        <div className="flex justify-end text-xs sm:text-sm md:text-base lg:text-lg overflow-hidden text-ellipsis whitespace-nowrap h-10 md:h-12 lg:h-14 items-center">
+          {item.price.toLocaleString()} บาท
+        </div>
+      </div>
+    ))}
     </>
   );
 };
