@@ -1,12 +1,14 @@
 import React, {useState} from "react";
 import Calendar from "../components/Calendar";
-import PaymentOptions from "../components/PaymentOption";
+import { Section } from "../components/PaymentBooking/SectionBooking";
 import SlickSaLa from "../components/SaLa";
 import AddonWat from "../components/Addon_Watpage1";
 import Timeline from "../components/TimelineBooking";
 import SelectDate from "../components/SelectDateBooking";
 
-import "../styles/Booking.css";
+import PaymentSection from "../components/PaymentBooking/PaymentSection";
+
+
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -159,7 +161,7 @@ const RightSection = ({ totalCost, bookingData }) => {
   return (
     <div className="section2 col-span-1">
       <CostDetails costData={getUpdatedCostData()} />
-      <PaymentSection totalCost={totalCost} />
+      <PaymentSection totalCost={totalCost} bookingData={bookingData} />
     </div>
   );
 };
@@ -175,48 +177,8 @@ const CostDetails = ({ costData }) => {
   );
 };
 
-const PaymentSection = ({ totalCost }) => {
 
-  const handlePayment = () => {
-    console.log('ดำเนินการชำระเงิน:', totalCost);
 
-  };
-
-  return (
-    <>
-      <hr className="my-10 border-[#AD957B]"/>
-      <Section title="วิธีการชำระเงิน">
-        <PaymentOptions />
-        <div className="grid grid-cols-2 text-white mt-10 mb-10">
-          <div className="ml-5">
-            <div>ยอดชำระเงินทั้งหมด</div>
-            <div className="total font-bold text-2xl">
-              {totalCost.toLocaleString()} บาท
-            </div>
-          </div>
-          <div className="confirm-payment text-white align-middle">
-            <button 
-              type="button"
-              onClick={handlePayment}
-              className="bg-[#AD957B] hover:bg-[#C5AD91] px-6 py-3 rounded-xl transition-colors duration-200"
-            >
-              ยืนยันการชำระเงิน
-            </button>
-          </div>
-        </div>
-      </Section>
-    </>
-  );
-};
-
-const Section = ({ title, children }) => {
-  return (
-    <div className="block justify-end w-full h-auto mb-10">
-      <h3 className="font-prompt font-bold text-white text-3xl mb-10">{title}</h3>
-      {children}
-    </div>
-  );
-};
 
 const CostItem = ({ label, items }) => {
   return (

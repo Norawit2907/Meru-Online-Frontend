@@ -49,9 +49,8 @@ const calendarStyles = `
   .react-calendar__month-view__days__day--weekend {
     color: #ff8b8b;
   }
-  .react-calendar__month-view__days__day--neighboringMonth {
-    color: #666;
-  }
+  
+  
 `;
 
 const SelectDateBooking = ({ 
@@ -105,16 +104,16 @@ const SelectDateBooking = ({
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     
-    const lockDays = new Date(today);
-    lockDays.setDate(today.getDate() + 1);
-
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+  
     if (isCremationDate) {
       const minCremationDate = calculateAllowedCremationDates();
       if (!minCremationDate) return false;
       return date >= minCremationDate;
     }
     
-    return date.getTime() === today.getTime() || date.getTime() >= lockDays.getTime();
+    return date.getTime() >= tomorrow.getTime(); // เปลี่ยนจาก >= today เป็น >= tomorrow
   };
 
   const handleDaySelect = (day) => {
