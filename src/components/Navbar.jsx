@@ -42,13 +42,6 @@ const Navbar = () => {
     fetchNotifications();
   };
 
-  // const notifications = [
-  //   { title: "New Reservation Alert", date: "12 Mar 2021" },
-  //   { title: "Connect to your facebook account.", date: "12 Mar 2021" },
-  //   { title: "You have rejected the reservation.", date: "12 Mar 2021" },
-  //   { title: "John Doe cancelled the reservations.", date: "12 Mar 2021" },
-  // ];
-
   const toggleNotifications = () => {
     setShowNotifications(!showNotifications);
   };
@@ -128,6 +121,7 @@ const Navbar = () => {
                   {notifications.map((notifications, index) => (
                     <div key={index}>
                       <NotificationCard
+                        description={notifications.description}
                         title={notifications.title}
                         date={formatDateToThai(notifications.updatedAt)}
                         ondel={() => handleDelete(notifications._id)}

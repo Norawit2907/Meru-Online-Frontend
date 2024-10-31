@@ -10,6 +10,7 @@ const Reservationwat = () => {
   const [wats, setWats] = useState({});
   const [watspic, setWatspic] = useState({});
   const [user, setUser] = useState({});
+  const [userpic, setUserpic] = useState({});
   const curresnt_id = sessionStorage.getItem("currentUser_id")
   // console.log(curresnt_id)
 
@@ -51,15 +52,18 @@ const Reservationwat = () => {
     }
   };
 
-  const fetchUsernames = async () => {
+  const fetchUsers = async () => {
     const usernamesMap = {};
+    const userpicmap = {};
     for (const reservation of reservations) {
       const users = await getUserById(reservation.user_id);
       if (users) {
-        usernamesMap[reservation.user_id] = users;
+        usernamesMap[reservation.user_id] = users.firstName;
+        userpicmap[reservation.user_id] = users.profile_img;
       }
       console.log(users)
     }
+    setUserpic(userpicmap);
     setUser(usernamesMap);
   };
   
@@ -73,7 +77,7 @@ const Reservationwat = () => {
   }, [wats]);
 
   useEffect(() => {
-    fetchUsernames();
+    fetchUsers();
   }, [reservations]);
   
 
@@ -159,7 +163,7 @@ const Reservationwat = () => {
               <div className="flex flex-col w-full justify-center gap-3 ">
                 <div className="flex gap-2">
                   <img src={watspic} alt="wat_pic" width={100} height={100} className="rounded-lg object-cover"/>
-                  <p className="font-bold text-xl text-[#AD957B]">{user[reservation.user_id].firstNmae}</p>
+                  {/* <p className="font-bold text-xl text-[#AD957B]">{user[reservation.user_id]}</p> */}
                 </div>
                 <div className="flex flex-col">
                   <div className="flex">
