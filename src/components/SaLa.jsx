@@ -38,7 +38,7 @@ const costData = [
   },
 ];
 
-const SlickSaLa = () => {
+const SlickSaLa = ({pavilion}) => {
   const [selectedServiceIndex, setSelectedServiceIndex] = useState(null);
   const [currentGroup, setCurrentGroup] = useState(0);
   const scrollContainerRef = useRef(null);
@@ -70,7 +70,7 @@ const SlickSaLa = () => {
           className="flex overflow-x-auto scrollbar-hide gap-2 scroll-smooth"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
-          {costData.map((item, index) => (
+          {pavilion.map((item, index) => (
             <div key={index} className="flex-none">
               <div 
                 className={`w-[240px] bg-[#292725] rounded-lg cursor-pointer transition-all duration-200 scale-95 hover:scale-[0.97] ${
@@ -82,20 +82,20 @@ const SlickSaLa = () => {
               >
                 <div className="relative w-full h-[120px]">
                   <img 
-                    src={item.imageUrl} 
+                    src={item.image} 
                     alt={item.title}
                     className="absolute inset-0 w-full h-full object-cover rounded-t-lg"
                   />
                 </div>
                 <div className="p-3">
                   <h1 className="text-white text-sm font-medium">
-                    {item.title}
+                    {item.name}
                   </h1>
                   <p className="text-[#AD957B] text-xs">
                     {item.description}
                   </p>
                   <p className="text-white text-base font-medium">
-                    {item.price}
+                    {item.cost}
                     <span className="text-xs ml-1">.- /ชุด</span>
                   </p>
                 </div>

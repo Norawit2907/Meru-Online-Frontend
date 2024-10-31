@@ -78,12 +78,12 @@ const timelineItems = [
   },
 ];
 
-const Timeline = () => {
+const Timeline = ({ timelineData }) => {
   return (
     <section className="h-auto flex justify-center pt-4 sm:pt-6 md:pt-10">
       <div className="w-[95%] sm:w-[90%] max-w-[1000px] relative">
         <ul className="ml-2 md:ml-4">
-          {timelineItems.map((item, index) => (
+          {timelineData.map((item, index) => (
             <TimelineItem key={index} date={item.date} services={item.services} isLast={index === timelineItems.length - 1} />
           ))}
         </ul>
@@ -128,7 +128,7 @@ const TimelineItem = ({ date, services, isLast }) => {
       </div>
 
       <div className="w-[95%] sm:w-[90%] md:w-[85%] bg-white rounded-xl p-2 sm:p-3 md:p-4 ">
-        <div className="text-black text-lg sm:text-xl md:text-[24px] font-bold mb-2 sm:mb-3 md:mb-4 ml-2 underline ">
+        <div className="text-black text-lg sm:text-xl md:text-[24px] font-bold mb-2 sm:mb-3 md:mb-4 ml-2  ">
           วันที่ {date}
         </div>
 
@@ -140,24 +140,23 @@ const TimelineItem = ({ date, services, isLast }) => {
           >
             {services.map((service, index) => (
               <div key={index} className="flex-none">
- <div 
-                  className={`w-[240px] bg-[#292725] rounded-lg cursor-pointer transition-all duration-200 scale-90 hover:scale-95 ${
-                    selectedServiceIndex === index 
-                      ? 'ring-4 ring-[#E9C649] scale-100 shadow-lg' 
+                <div
+                  className={`w-[240px] bg-[#292725] rounded-lg cursor-pointer transition-all duration-200 scale-90 hover:scale-95 ${selectedServiceIndex === index
+                      ? 'ring-4 ring-[#E9C649] scale-100 shadow-lg'
                       : ''
-                  }`}
+                    }`}
                   onClick={() => setSelectedServiceIndex(index)}
                 >
                   <div className="relative w-full h-[120px]">
                     <div
                       className="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-t-lg"
-                      style={{ backgroundImage: `url(${service.imageUrl})` }}
+                      style={{ backgroundImage: `url(${service.image})` }}
                     />
                   </div>
                   <div className="p-2 sm:p-3">
-                    <h1 className="text-white text-base sm:text-lg font-semibold line-clamp-1">{service.title}</h1>
+                    <h1 className="text-white text-base sm:text-lg font-semibold line-clamp-1">{service.name}</h1>
                     <p className="text-[#AD957B] text-xs sm:text-sm py-1 line-clamp-2">{service.description}</p>
-                    <p className="text-white text-lg sm:text-xl font-medium">{service.price}</p>
+                    <p className="text-white text-lg sm:text-xl font-medium">{service.cost}</p>
                   </div>
                 </div>
               </div>
@@ -191,9 +190,8 @@ const TimelineItem = ({ date, services, isLast }) => {
             {Array.from({ length: totalGroups }).map((_, index) => (
               <div
                 key={index}
-                className={`w-2 h-2 rounded-full transition-colors duration-200 ${
-                  currentGroup === index ? "bg-[#AD957B]" : "bg-gray-300"
-                }`}
+                className={`w-2 h-2 rounded-full transition-colors duration-200 ${currentGroup === index ? "bg-[#AD957B]" : "bg-gray-300"
+                  }`}
               />
             ))}
 
