@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 
-const PaymentOptions = () => {
+const PaymentOptions = ({ onSelect }) => {
   const [selectedOption, setSelectedOption] = useState("");
 
   const handleOptionClick = () => {
-    setSelectedOption(currentOption => currentOption === "qr" ? "" : "qr");
+    const newValue = selectedOption === "qr" ? "" : "qr";
+    setSelectedOption(newValue);
+    onSelect(newValue); 
   };
 
   return (
