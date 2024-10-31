@@ -86,31 +86,31 @@ const Navbar = () => {
 
   return (
     <nav
-    className={`fixed top-0 w-full p-4 flex justify-between items-center z-50 transition-all duration-300 
-      ${isScrolled ? "bg-opacity-95 backdrop-blur-sm bg-[#312F32] shadow-lg" : "bg-[#312F32]"}`}
-  >
-    <div className="flex justify-between items-center">
-      <div className="flex items-center mr-2 font-['Old_Standard_TT'] transition-transform duration-300 hover:scale-105">
-        <img src="../logo.png" alt="Logo" className="w-[70px] h-[70px] sm:w-[60px] sm:h-[60px]" />
-        <Link 
-          to="/" 
-          className="text-6xl ml-4 text-white hover:text-[#AD957B] transition-colors duration-300 
-            sm:text-4xl sm:ml-2 tracking-wide font-medium whitespace-nowrap"
-        >
-          Meru-Online
-        </Link>
-      </div>
-      {loginState && ShowWATnav && (
-        <div className="hidden md:flex justify-between items-center font-sans text-lg text-white ml-10">
-          {["EditWat", "Reservation", "MyWat"].map((item) => (
-            <Link key={item} to={item === "MyWat" ? `/Watpage1/${wat_id}` : `/${item}`} className="ml-8 relative group">
-              <span className="hover:text-[#AD957B] transition-colors duration-300">{item === "MyWat" ? "My Wat" : item}</span>
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#AD957B] transition-all duration-300 group-hover:w-full"></span>
-            </Link>
-          ))}
+      className={`fixed top-0 w-full p-4 flex justify-between items-center z-[9999] bg-[#312F32] 
+        ${isScrolled ? 'shadow-lg' : ''}`}
+    >
+      <div className="flex justify-between items-center">
+        <div className="flex items-center mr-2 font-['Old_Standard_TT'] transition-transform duration-300 hover:scale-105">
+          <img src="../logo.png" alt="Logo" className="w-[70px] h-[70px] sm:w-[60px] sm:h-[60px]" />
+          <Link 
+            to="/" 
+            className="text-6xl ml-4 text-white hover:text-[#AD957B] transition-colors duration-300 
+              sm:text-4xl sm:ml-2 tracking-wide font-medium whitespace-nowrap"
+          >
+            Meru-Online
+          </Link>
         </div>
-      )}
-    </div>
+        {loginState && ShowWATnav && (
+          <div className="hidden md:flex justify-between items-center font-sans text-lg text-white ml-10">
+            {["EditWat", "Reservation", "MyWat"].map((item) => (
+              <Link key={item} to={item === "MyWat" ? `/Watpage1/${wat_id}` : `/${item}`} className="ml-8 relative group">
+                <span className="hover:text-[#AD957B] transition-colors duration-300">{item === "MyWat" ? "My Wat" : item}</span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#AD957B] transition-all duration-300 group-hover:w-full"></span>
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
 
       <div className="flex items-center gap-[35px] sm:gap-[15px]">
         {loginState && (
@@ -127,25 +127,27 @@ const Navbar = () => {
               )}
             </button>
 
-            {/* NOTI */}
             {showNotifications && (
               <div
-                className="absolute right-0 mt-2 w-screen max-w-[95vw] sm:max-w-[90vw] md:max-w-[600px] lg:max-w-[800px] xl:max-w-[1000px] 
-                  bg-[#1C1C1C] rounded-lg shadow-xl z-10 overflow-hidden 
-                  transform -translate-x-1/2 left-1/2 md:transform-none md:left-auto"
+                className="absolute right-0 mt-2 w-screen max-w-[95vw] sm:max-w-[90vw] md:max-w-[600px] 
+                  lg:max-w-[800px] xl:max-w-[1000px] bg-[#1C1C1C] rounded-lg shadow-xl 
+                  z-[10000] overflow-hidden transform -translate-x-1/2 left-1/2 
+                  md:transform-none md:left-auto"
               >
-                <div className="flex text-[20px] sm:text-[16px] text-[#AD957B] bg-[#292725] p-4 font-bold">การแจ้งเตือนของคุณ</div>
+                <div className="flex text-[20px] sm:text-[16px] text-[#AD957B] bg-[#292725] p-4 font-bold">
+                  การแจ้งเตือนของคุณ
+                </div>
                 <div className="bg-[#1C1C1C] flex flex-col-reverse max-h-[80vh] overflow-y-auto">
                   {notifications.map((notification, index) => (
                     <div
                       key={notification._id}
                       className={`
-                          relative 
-                          hover:bg-[#2A2A2A] 
-                          transition-colors 
-                          duration-200
-                          ${index < notifications.length - 1 ? "border-b border-[#3A3A3A]" : ""}
-                        `}
+                        relative 
+                        hover:bg-[#2A2A2A] 
+                        transition-colors 
+                        duration-200
+                        ${index < notifications.length - 1 ? "border-b border-[#3A3A3A]" : ""}
+                      `}
                     >
                       <NotificationCard
                         title={notification.title}
@@ -160,7 +162,9 @@ const Navbar = () => {
           </div>
         )}
 
-        <p className="text-white hidden sm:block">{sessionStorage.getItem("currentUser_username")}</p>
+        <p className="text-white hidden sm:block">
+          {sessionStorage.getItem("currentUser_username")}
+        </p>
 
         <button
           onClick={handlebutton}
