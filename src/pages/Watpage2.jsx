@@ -37,13 +37,6 @@ const Watpage2 = () => {
     const [filteredAddonsCat1, setFilteredAddonsCat1] = useState([]);
     const [filteredAddonsCat2, setFilteredAddonsCat2] = useState([]);
     const [filteredAddonsCat3, setFilteredAddonsCat3] = useState([]);
-  const wat_id = "6719a16461c391e42b756b76";
-  const [watAddress, setWatAddress] = useState([]);
-  const [watAddons, setWatAddons] = useState([]);
-  const [filteredAddonsCat1, setFilteredAddonsCat1] = useState([]);
-  const [filteredAddonsCat2, setFilteredAddonsCat2] = useState([]);
-  const [filteredAddonsCat3, setFilteredAddonsCat3] = useState([]);
-
   const [watData, setWatData] = useState([]);
 
   const [latitude, setLatitude] = useState("");

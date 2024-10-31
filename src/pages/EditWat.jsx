@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 import Addon from "../components/Addon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Reorder } from "framer-motion";
+
 import {
-  
   getAddressByWatId,
   getWatById,
   updateAddressByWatId,
   updateWat,
 } from "../services/wat";
 import { UploadImage } from "../services/imageupload";
+import CreateAddonPopup from "../components/CreateAddonPopup";
 
 const addonData = [
   {
@@ -57,8 +58,11 @@ const EditWat = () => {
     max_workload: 0,
   });
 
+  const [addonData, setAddonData] = useState([]);
   const [imagefiles, setimagefiles] = useState([]);
   const [pictures, setPictures] = useState([]);
+  const [popUpState, setPopUpState] = useState(0);
+  const [createAddonData, setCreateAddonData] = useState();
 
   const handleWatFormChange = (event) => {
     setWatForm({
@@ -582,7 +586,14 @@ const EditWat = () => {
             <h1 className="text-white text-[30px] pb-10">5.ค่าใช้จ่าย</h1>
             
             <h1 className="text-white text-[30px] pb-10">สิ่งของที่วัดเตรียมให้ (ลูกค้าต้องจ่าย)</h1>
-            <Addon/>
+            <div className="flex gap-4">
+              <button onClick={()=>{setPopUpState(1)}}>
+                <div className="flex justify-center items-center h-48 w-48 rounded-lg border-4 border-[#AD957B] border-dashed  p-10">
+                <FontAwesomeIcon icon={faPlus} className="text-3xl text-[#AD957B]"/>
+                </div>
+              </button>
+              <Addon addon={{name: "text", description: "something", cost:4000}}/>
+            </div>
             <h1 className="text-white text-[30px] pb-10">ศาลาที่มีให้</h1>
             <h1 className="text-white text-[30px] pb-10">บริการระหว่างอภิธรรมศพ</h1>
             <h1 className="text-white text-[30px] pb-10">สินค้าและบริการ (ลูกค้าเลือกจ่าย)</h1>
@@ -590,6 +601,16 @@ const EditWat = () => {
           </div>
         </div>
       </div>
+      {popUpState ?
+        <CreateAddonPopup 
+          isOpen={popUpState}
+          onClose={() => setPopUpState(false)}
+          catalog="สิ่งที่วัดเตรียมให้(ลูกค้าต้องจ่าย)"
+          setAddonData={setCreateAddonData}/>
+          :
+          null
+       }
+      
     </div>
   );
 };
