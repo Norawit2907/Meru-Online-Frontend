@@ -131,11 +131,9 @@ const Watpage1 = () => {
                     </div>
 
                     {/* wat-calendar-section */}
-                    <div className="w-[675px] h-[696.25px] bg-[#1C1C1C] rounded-[10px] mb-10 flex flex-col items-start">
+                    <div className="w-[675px] h-[696.25px] bg-[#1C1C1C] rounded-[10px] mb-10 flex flex-col items-center justify-center items-start">
                         <Calendar />
                     </div>
-
-                                    {/* wat-location-section */}
                                     <div className="w-[835px] mb-10 flex flex-col items-center gap-4">
                     <div>
                             <iframe
