@@ -55,9 +55,7 @@ const Navbar = () => {
     try {
       const response = await axios.delete(`${backendUrl}/notification/${notificationId}`);
       if (response.data.length >= 1) {
-        setNotifications(
-          notifications.filter((notification) => notification.id !== notificationId),
-        );
+        setNotifications(notifications.filter((notification) => notification.id !== notificationId));
       }
     } catch (err) {
       console.error(err.response.data.message);
@@ -83,20 +81,7 @@ const Navbar = () => {
   const formatDateToThai = (isoDate) => {
     const date = new Date(isoDate);
     const day = date.getDate();
-    const monthNames = [
-      "ม.ค.",
-      "ก.พ.",
-      "มี.ค.",
-      "เม.ย.",
-      "พ.ค.",
-      "มิ.ย.",
-      "ก.ค.",
-      "ส.ค.",
-      "ก.ย.",
-      "ต.ค.",
-      "พ.ย.",
-      "ธ.ค.",
-    ];
+    const monthNames = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
     const month = monthNames[date.getMonth()];
     const year = date.getFullYear() + 543;
     return `${day} ${month} ${year}`;
@@ -130,7 +115,6 @@ const Navbar = () => {
     <nav
       className={`fixed top-0 w-full p-4 px-10 flex justify-between items-center z-[9999] bg-[#312F32] ${isScrolled ? "shadow-lg" : ""}`}
     >
-
       <div className="flex items-center w-full">
         {/* Logo Section */}
         <div className="flex items-center font-['Old_Standard_TT'] transition-transform duration-300 hover:scale-105">
@@ -144,7 +128,7 @@ const Navbar = () => {
               xl:w-[70px] xl:h-[70px]    
               2xl:w-[75px] 2xl:h-[75px]   
             "
-            />
+          />
           <Link
             to="/"
             className="text-2xl ml-2       
@@ -164,15 +148,17 @@ const Navbar = () => {
 
         {loginState && ShowWATnav && (
           <div className="hidden lg:flex items-center font-sans text-lg text-white ml-8">
-            {["EditWat", "Reservation", "MyWat"].map((item) => (
+            {[
+              { key: "EditWat", text: "แก้ไขข้อมูลวัด" },
+              { key: "Reservation", text: "รายการจอง" },
+              { key: "MyWat", text: "วัดของฉัน" },
+            ].map((item) => (
               <Link
-                key={item}
-                to={item === "MyWat" ? `/Watpage1/${watid}` : `/${item}`}
+                key={item.key}
+                to={item.key === "MyWat" ? `/Watpage1/${watid}` : `/${item.key}`}
                 className="ml-6 relative group"
               >
-                <span className="hover:text-[#AD957B] transition-colors duration-300">
-                  {item === "MyWat" ? "My Wat" : item}
-                </span>
+                <span className="hover:text-[#AD957B] transition-colors duration-300">{item.text}</span>
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#AD957B] transition-all duration-300 group-hover:w-full"></span>
               </Link>
             ))}
@@ -197,7 +183,7 @@ const Navbar = () => {
 
               {showNotifications && (
                 <div
-                className={`
+                  className={`
                   absolute 
                   mt-2 
                   w-[400px] 
@@ -223,7 +209,8 @@ const Navbar = () => {
                   lg:w-[500px]      
                   xl:w-[600px]      
                   lg:top-[88px]
-                `}>
+                `}
+                >
                   <div className="flex text-[20px] sm:text-[16px] text-[#AD957B] bg-[#292725] p-4 font-bold">
                     การแจ้งเตือนของคุณ
                   </div>
@@ -272,17 +259,13 @@ const Navbar = () => {
           {loginState && (
             <div className="flex items-center gap-4">
               <div className="flex items-center">
-                <p className="text-white font-bold hidden sm:block">
-                  {sessionStorage.getItem("currentUser_username")}
-                </p>
+                <p className="text-white font-bold hidden sm:block">{sessionStorage.getItem("currentUser_username")}</p>
               </div>
               {sessionStorage.getItem("role") !== "wat" && (
                 <Link to="/Profile">
                   <button className="relative group p-1 rounded-full overflow-hidden transition-transform duration-300 hover:scale-110">
                     <img
-                      src={
-                        sessionStorage.getItem("currentUser_profileimg") || "/defaultprofile.jpg"
-                      }
+                      src={sessionStorage.getItem("currentUser_profileimg") || "/defaultprofile.jpg"}
                       alt="User"
                       className="w-[40px] h-[40px] sm:w-[35px] sm:h-[35px] rounded-full object-cover"
                     />
@@ -307,17 +290,21 @@ const Navbar = () => {
 
       {/* Mobile Menu - Only for WAT Users */}
       {loginState && ShowWATnav && isMobileMenuOpen && (
-        <div className="lg:hidden fixed top-[88px] right-0 w-full bg-[#312F32] shadow-lg">
+        <div className="lg:hidden fixed top-[75px] right-0 w-full bg-[#312F32] shadow-lg">
           <div className="flex flex-col p-4 space-y-4">
             <div className="flex flex-col space-y-4 text-white">
-              {["EditWat", "Reservation", "MyWat"].map((item) => (
+              {[
+                { key: "EditWat", text: "แก้ไขข้อมูลวัด" },
+                { key: "Reservation", text: "รายการจอง" },
+                { key: "MyWat", text: "วัดของฉัน" },
+              ].map((item) => (
                 <Link
-                  key={item}
-                  to={item === "MyWat" ? `/Watpage1/${watid}` : `/${item}`}
+                  key={item.key}
+                  to={item.key === "MyWat" ? `/Watpage1/${watid}` : `/${item.key}`}
                   className="hover:text-[#AD957B] transition-colors duration-300 text-lg"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  {item === "MyWat" ? "My Wat" : item}
+                  {item.text}
                 </Link>
               ))}
             </div>
