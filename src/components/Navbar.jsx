@@ -18,7 +18,6 @@ const Navbar = () => {
   const watid = sessionStorage.getItem("wat_id")
   const role = sessionStorage.getItem("role")
 
-  
   const fetchNotifications = async () => {
     try {
       if (role === "wat") {
@@ -31,6 +30,10 @@ const Navbar = () => {
       console.error(err);
     }
   };
+
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
 
   const handleDelete = async (notificationId) => {
     try {
@@ -73,7 +76,6 @@ const Navbar = () => {
   useEffect(() => {
     const token = sessionStorage.getItem("access_token");
     const role = sessionStorage.getItem("role");
-    fetchNotifications();
 
     if (token) {
       setLoginState(true);
@@ -92,7 +94,7 @@ const Navbar = () => {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [notifications]);
 
   return (
     <nav
