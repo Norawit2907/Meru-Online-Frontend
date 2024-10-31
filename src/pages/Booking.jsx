@@ -57,12 +57,15 @@ const Booking = () => {
     cremationDate: null,
   });
   const wat_id = useParams().id;
+  const current_id = sessionStorage.getItem("currentUser_id");
+
   const [watData, setWatData] = useState([]);
   const [pavilionData, setPavilionData] = useState([]);
   const [onSelectPavilion, setonSelectPavilion] = useState(null);
   const [onSelectByDate, setonSelectByDate] = useState([]);
   const [onSelectService, setonSelectService] = useState([]);
   const [reservationDays, setReservationDays] = useState({});
+  const [allAddons, setAllAddons] = useState([]);
   const filteredSelectByDate = onSelectByDate.filter(item => item !== null);
   // Get pavilion cost safely, default to 0 if undefined or NaN
   const pavilionCost = isNaN(onSelectPavilion?.cost) ? 0 : onSelectPavilion.cost || 0;
@@ -86,6 +89,27 @@ const Booking = () => {
   console.log("pavilionCost", pavilionCost);
   console.log("ByDateCost", ByDateCost);
   console.log("ByServiceCost", ByServiceCost);
+
+  const paymentPayload = {
+    wat_id: wat_id,
+    user_id: current_id,
+    sender: "user",
+    reservation_date: bookingData.startDate,
+    cremation_date: bookingData.cremationDate,
+    duration: bookingData.daysCount,
+    status: "pending",
+    price: totalCost,
+    addons: allAddons,
+    pictures: ""
+  }
+
+  useEffect(() => {
+    // Combine the selected values into allAddons
+    const combinedAddons = [onSelectPavilion, ...onSelectService, ...onSelectByDate];
+    setAllAddons(combinedAddons);
+  }, [onSelectPavilion, onSelectService, onSelectByDate]); // Run effect when these values change
+  
+  console.log("allAddons", allAddons);
 
   useEffect(() => {
     const fetchWatData = async () => {
@@ -160,7 +184,7 @@ const Booking = () => {
         <BookingCalendar />
       </div>
 
-      <div className="all-section grid grid-cols-3 gap-8">
+      <div className="all-section grid grid-cols-1 xl:grid-cols-3 lg:grid-cols-1 gap-8">
         <LeftSection
           bookingData={bookingData}
           onDateSelect={handleDateSelect}
@@ -176,6 +200,7 @@ const Booking = () => {
           pavilionCost={onSelectPavilion}
           dateCost={filteredSelectByDate}
           serviceCost={onSelectService}
+          paymentPayload={paymentPayload}
         />
       </div>
     </div>
@@ -240,7 +265,7 @@ const LeftSection = ({
   }, [wat_id]);
 
   return (
-    <div className="section1 col-span-2">
+    <div className="section1 col-span-1 xl:col-span-2">
       <SelectDate
         label="วันเริ่มจัดงาน"
         onSelect={onDateSelect}
@@ -284,7 +309,7 @@ const LeftSection = ({
   );
 };
 
-const RightSection = ({ totalCost, bookingData, pavilionCost, dateCost, serviceCost }) => {
+const RightSection = ({ totalCost, bookingData, pavilionCost, dateCost, serviceCost, paymentPayload }) => {
   // รวมราคาทั้งหมด
   const getUpdatedCostData = () => {
     let updatedCosts = [...costData];
@@ -295,7 +320,7 @@ const RightSection = ({ totalCost, bookingData, pavilionCost, dateCost, serviceC
   return (
     <div className="section2 col-span-1">
       <CostDetails costData={getUpdatedCostData()} pavilionCost={pavilionCost} dateCost={dateCost} serviceCost={serviceCost} />
-      <PaymentSection totalCost={totalCost} bookingData={bookingData} />
+      <PaymentSection totalCost={totalCost} bookingData={bookingData} paymentPayload={paymentPayload}/>
     </div>
   );
 };
@@ -315,13 +340,17 @@ const CostDetails = ({ costData, pavilionCost, dateCost, serviceCost }) => {
 const CostItem = ({ label, items }) => {
   return (
     <>
-      <div className="font-bold text-white mt-5">{label}</div>
+      <div className="font-bold text-white mt-5 text-lg md:text-xl lg:text-2xl overflow-hidden text-ellipsis whitespace-nowrap">{label}</div>
       {items.map((item, index) => (
-        <div key={index} className="grid grid-cols-2 text-white py-2">
-          <div className="flex ml-3">-{item.name}</div>
+        <><div key={index} className="grid grid-cols-2 text-white py-2">
+          <div className="flex ml-3 text-xs sm:text-sm md:text-base lg:text-lg overflow-hidden text-ellipsis whitespace-nowrap h-10 md:h-12 lg:h-14 items-center">-{item.name}</div>
           <div className="flex justify-end">{item.cost} บาท</div>
-        </div>
-      ))}
+        </div><div className="flex justify-end  text-xs sm:text-sm md:text-base lg:text-lg overflow-hidden text-ellipsis whitespace-nowrap h-10 md:h-12 lg:h-14 items-center">
+            {item.price.toLocaleString()} บาท</div></>
+
+
+        ))}
+
     </>
   );
 };
