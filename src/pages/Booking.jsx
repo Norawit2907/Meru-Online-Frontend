@@ -57,12 +57,15 @@ const Booking = () => {
     cremationDate: null,
   });
   const wat_id = useParams().id;
+  const current_id = sessionStorage.getItem("currentUser_id");
+
   const [watData, setWatData] = useState([]);
   const [pavilionData, setPavilionData] = useState([]);
   const [onSelectPavilion, setonSelectPavilion] = useState(null);
   const [onSelectByDate, setonSelectByDate] = useState([]);
   const [onSelectService, setonSelectService] = useState([]);
   const [reservationDays, setReservationDays] = useState({});
+  const [allAddons, setAllAddons] = useState([]);
   const filteredSelectByDate = onSelectByDate.filter(item => item !== null);
   // Get pavilion cost safely, default to 0 if undefined or NaN
   const pavilionCost = isNaN(onSelectPavilion?.cost) ? 0 : onSelectPavilion.cost || 0;
@@ -86,6 +89,27 @@ const Booking = () => {
   console.log("pavilionCost", pavilionCost);
   console.log("ByDateCost", ByDateCost);
   console.log("ByServiceCost", ByServiceCost);
+
+  const paymentPayload = {
+    wat_id: wat_id,
+    user_id: current_id,
+    sender: "user",
+    reservation_date: bookingData.startDate,
+    cremation_date: bookingData.cremationDate,
+    duration: bookingData.daysCount,
+    status: "pending",
+    price: totalCost,
+    addons: allAddons,
+    pictures: ""
+  }
+
+  useEffect(() => {
+    // Combine the selected values into allAddons
+    const combinedAddons = [onSelectPavilion, ...onSelectService, ...onSelectByDate];
+    setAllAddons(combinedAddons);
+  }, [onSelectPavilion, onSelectService, onSelectByDate]); // Run effect when these values change
+  
+  console.log("allAddons", allAddons);
 
   useEffect(() => {
     const fetchWatData = async () => {
@@ -205,6 +229,7 @@ const Booking = () => {
           pavilionCost={onSelectPavilion}
           dateCost={filteredSelectByDate}
           serviceCost={onSelectService}
+          paymentPayload={paymentPayload}
         />
       </div>
     </div>
@@ -313,7 +338,7 @@ const LeftSection = ({
   );
 };
 
-const RightSection = ({ totalCost, bookingData, pavilionCost, dateCost, serviceCost }) => {
+const RightSection = ({ totalCost, bookingData, pavilionCost, dateCost, serviceCost, paymentPayload }) => {
   // รวมราคาทั้งหมด
   const getUpdatedCostData = () => {
     let updatedCosts = [...costData];
@@ -324,7 +349,7 @@ const RightSection = ({ totalCost, bookingData, pavilionCost, dateCost, serviceC
   return (
     <div className="section2 col-span-1">
       <CostDetails costData={getUpdatedCostData()} pavilionCost={pavilionCost} dateCost={dateCost} serviceCost={serviceCost} />
-      <PaymentSection totalCost={totalCost} bookingData={bookingData} />
+      <PaymentSection totalCost={totalCost} bookingData={bookingData} paymentPayload={paymentPayload}/>
     </div>
   );
 };

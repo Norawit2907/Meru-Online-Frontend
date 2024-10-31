@@ -1,19 +1,43 @@
 import React, { useState } from 'react';
 import { X, Upload, AlertCircle } from 'lucide-react';
+import { UploadImage } from '../../services/imageupload';
+import { MakeReservation } from '../../services/postReservation';
 
-const PaymentPopup = ({ isOpen, onClose, totalCost, selectedPaymentMethod }) => {
+const PaymentPopup = ({ isOpen, onClose, totalCost, selectedPaymentMethod, paymentPayload }) => {
   const [slipImage, setSlipImage] = useState(null);
   const [showError, setShowError] = useState(false);
 
   if (!isOpen) return null;
 
-  const handleSubmitPayment = (e) => {
+  const handleSubmitPayment = async (e) => {
     e.preventDefault();
     if (!selectedPaymentMethod) {
       setShowError(true);
       return;
     }
-    console.log('Payment submitted with slip:', slipImage);
+    let slip_link = ""
+    if(slipImage){
+      slip_link = await UploadImage(slipImage);
+    }
+
+    const payment = {
+      ...paymentPayload,
+      pictures: slip_link,
+    }
+
+    try{
+      const response = await MakeReservation(payment);
+      if (response) {
+        alert("Reservation successful!"); // Alert the user
+        console.log(response); // Log the response data
+        window.location.href = '/'; // Redirect to the home page
+    }
+    }
+    catch(err){
+      console.log(err);
+    }
+
+    console.log('Payment submitted with slip:', payment);
     onClose();
   };
 
