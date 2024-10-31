@@ -1,13 +1,16 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
-const Addon = ({ addon, index }) => {
+const Addon = ({ addon, index, del }) => {
   return (
     <div
       key={index}
-      className="w-fit bg-[#484848] rounded-[8px]"
+      className="w-fit relative bg-[#484848] rounded-[8px]"
     >
+      <button onClick={()=>{del(addon)}} className="absolute -top-2 -right-2 h-fit w-fit p-1 px-2 bg-white rounded-full">
+      <FontAwesomeIcon icon={faXmark} className="text-3xl text-red-500"/>
+      </button>
       <div
         className="w-[260px] h-[160px] bg-cover bg-no-repeat rounded-t-[8px] lg:rounded-md"
         style={{ backgroundImage: `url(${addon.image})` }}

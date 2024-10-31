@@ -13,7 +13,7 @@ import {
 } from "../services/wat";
 import { UploadImage } from "../services/imageupload";
 import CreateAddonPopup from "../components/CreateAddonPopup";
-import { createAddon } from "../services/wat";
+import { createAddon, deleteAddon } from "../services/wat";
 
 const addonData = [
   {
@@ -142,10 +142,15 @@ const EditWat = () => {
     const imagelink = await UploadImage(image);
     const resdata = await createAddon(wat_id, name, imagelink, cost, catalog, description)
     if(resdata){
-      console.log("check",resdata);
+      console.log("created",resdata);
       setAddonData([...addonData, resdata])
     } 
     
+  }
+
+  const deleteAddonFromForm = async (addon) => {
+    setAddonData(addonData.filter(i => i.id != addon.id))
+    const resdata = await deleteAddon(addon.id);
   }
 
   
@@ -617,7 +622,7 @@ const EditWat = () => {
               </button>
               {addonData.filter(addon => addon.catalog === "watprovide")
               .map((addon) =>
-              <Addon addon={addon}/>
+              <Addon addon={addon} del={deleteAddonFromForm}/>
               )}
               
             </div>
@@ -631,7 +636,7 @@ const EditWat = () => {
               </button>
               {addonData.filter(addon => addon.catalog === "sala")
               .map((addon) =>
-              <Addon addon={addon}/>
+              <Addon addon={addon} del={deleteAddonFromForm}/>
               )}
             </div>
             
@@ -644,7 +649,7 @@ const EditWat = () => {
               </button>
               {addonData.filter(addon => addon.catalog === "food")
               .map((addon) =>
-              <Addon addon={addon}/>
+              <Addon addon={addon} del={deleteAddonFromForm}/>
               )}
             </div>
             
@@ -657,7 +662,7 @@ const EditWat = () => {
               </button>
               {addonData.filter(addon => addon.catalog === "goodandservice")
               .map((addon) =>
-              <Addon addon={addon}/>
+              <Addon addon={addon} del={deleteAddonFromForm}/>
               )}
             </div>
           </div>

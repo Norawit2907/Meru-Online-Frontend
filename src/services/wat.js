@@ -101,6 +101,24 @@ export async function createAddon(wat_id, name, image, cost, catalog, descriptio
     }
 }
 
+export async function deleteAddon(id){
+    try{
+        
+        const response = await axios.delete(`${backendUrl}/addons/${id}`)
+        if(response.status == 204){
+            console.log("check",response.data);
+            return response.data
+        }
+        else{
+            return false
+        }
+    }
+    catch(err){
+        console.log(err.response.data.message);
+        
+    }
+}
+
 export async function getAddressByWatId(wat_id){
     try{
         const response = await axios.get(`${backendUrl}/addresses/wat/${wat_id}`)
