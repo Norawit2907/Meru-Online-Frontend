@@ -23,9 +23,9 @@ const Calendar = () => {
       try {
         const result = await GetWatData(wat_id);
         setWatData(result);
-        // console.log("Fetched Wat Data:", result);
+        console.log("Fetched Wat Data Calendar:", result);
       } catch (error) {
-        // console.error("Failed to fetch Wat data:", error);
+        console.error("Failed to fetch Wat data:", error);
       }
     };
     const fetchWatReservation = async () => {
@@ -89,7 +89,6 @@ const Calendar = () => {
       if (reservationDays && formattedDate in reservationDays) {
         works = reservationDays[formattedDate]
       }
-
       days.push(
         <div key={day} className={`${works == watData.max_workload ? "bg-[#AD957B]":"bg-gray-700"} p-4 text-center rounded-lg`}>
           <p className="font-bold">{day}</p>

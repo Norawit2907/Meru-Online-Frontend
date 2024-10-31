@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { GetWatAddress } from "../services/address";
 import { GetWatData } from "../services/getWatDataById";
 import { GetWatAddons } from "../services/getWatAddons";
+import { useParams } from "react-router-dom";
 
 const addonData = [
     {
@@ -34,7 +35,7 @@ const addonData = [
 
 const Watpage2 = () => {
 
-    const wat_id = '6719a16461c391e42b756b76'
+    const  wat_id  = useParams().id;
     const [watAddress, setWatAddress] = useState([]);
     const [watAddons, setWatAddons] = useState([]);
     const [filteredAddonsCat1, setFilteredAddonsCat1] = useState([]);
@@ -111,7 +112,7 @@ const Watpage2 = () => {
                         />
                         <div className="flex flex-col items-start">
                             <p className="text-[10px] md:text-[12px]">by</p>
-                            <h1 className="text-[14px] md:text-[18px] font-bold">John wat</h1>
+                            <h1 className="text-[14px] md:text-[18px] font-bold">{watData.admin_name}</h1>
                             <p className="text-[14px] md:text-[16px]">For: $ 1000 - $ 5000</p>
                         </div>
                     </div>
