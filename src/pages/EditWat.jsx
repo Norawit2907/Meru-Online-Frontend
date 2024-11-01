@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Addon from "../components/Addon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { Reorder } from "framer-motion";
 
 import {
@@ -136,24 +136,33 @@ const EditWat = () => {
   //   console.log("effect", imagefiles);
   // }, [imagefiles]);
 
-
-  const createAddonfromForm = async (name, image, cost, catalog, description) => {
+  const createAddonfromForm = async (
+    name,
+    image,
+    cost,
+    catalog,
+    description
+  ) => {
     const wat_id = sessionStorage.getItem("wat_id");
     const imagelink = await UploadImage(image);
-    const resdata = await createAddon(wat_id, name, imagelink, cost, catalog, description)
-    if(resdata){
-      console.log("created",resdata);
-      setAddonData([...addonData, resdata])
-    } 
-    
-  }
+    const resdata = await createAddon(
+      wat_id,
+      name,
+      imagelink,
+      cost,
+      catalog,
+      description
+    );
+    if (resdata) {
+      console.log("created", resdata);
+      setAddonData([...addonData, resdata]);
+    }
+  };
 
   const deleteAddonFromForm = async (addon) => {
-    setAddonData(addonData.filter(i => i.id != addon.id))
+    setAddonData(addonData.filter((i) => i.id != addon.id));
     const resdata = await deleteAddon(addon.id);
-  }
-
-  
+  };
 
   const handlesubmit = async (e) => {
     e.preventDefault();
@@ -251,8 +260,8 @@ const EditWat = () => {
       if (addressdata) {
         setAddressForm(addressdata);
       }
-      
-      if(addondata){
+
+      if (addondata) {
         setAddonData(addondata);
       }
       setimagefiles(watdata.picture);
@@ -260,7 +269,6 @@ const EditWat = () => {
 
     getData();
     console.log("watForm", watForm);
-    
   }, []);
 
   return (
@@ -612,72 +620,127 @@ const EditWat = () => {
           </div>
           <div>
             <h1 className="text-white text-[30px] pb-10">5.ค่าใช้จ่าย</h1>
-            
-            <h1 className="text-white text-[30px] pb-10">สิ่งของที่วัดเตรียมให้ (ลูกค้าต้องจ่าย)</h1>
+
+            <h1 className="text-white text-[30px] pb-10">
+              สิ่งของที่วัดเตรียมให้ (ลูกค้าต้องจ่าย)
+            </h1>
             <div className="flex flex-wrap gap-4 mb-10">
-              <button onClick={()=>{setPopUpState(1); setcatalogselect("watprovide")}}>
+              <button
+                onClick={() => {
+                  setPopUpState(1);
+                  setcatalogselect("watprovide");
+                }}
+              >
                 <div className="flex justify-center items-center h-64 w-64 rounded-lg border-4 border-[#AD957B] border-dashed  p-10">
-                <FontAwesomeIcon icon={faPlus} className="text-3xl text-[#AD957B]"/>
+                  <FontAwesomeIcon
+                    icon={faPlus}
+                    className="text-3xl text-[#AD957B]"
+                  />
                 </div>
               </button>
-              {addonData.filter(addon => addon.catalog === "watprovide")
-              .map((addon) =>
-              <Addon addon={addon} del={deleteAddonFromForm}/>
-              )}
-              
+              <div className="flex gap-4 overflow-x-auto max-w-full p-2 pb-4 addonscroll">
+              {addonData
+                .filter((addon) => addon.catalog === "watprovide")
+                .map((addon) => (
+                  <Addon addon={addon} del={deleteAddonFromForm} />
+                ))}
+              </div>
             </div>
 
             <h1 className="text-white text-[30px] pb-10">ศาลาที่มีให้</h1>
             <div className="flex gap-4 mb-10">
-              <button onClick={()=>{setPopUpState(1); setcatalogselect("sala")}}>
-                <div className="flex justify-center items-center h-64 w-64 rounded-lg border-4 border-[#AD957B] border-dashed  p-10">
-                <FontAwesomeIcon icon={faPlus} className="text-3xl text-[#AD957B]"/>
+              <button
+                onClick={() => {
+                  setPopUpState(1);
+                  setcatalogselect("sala");
+                }}
+              >
+                <div className="flex justify-center items-center h-64 w-64 rounded-lg border-4 border-[#AD957B] border-dashed p-10">
+                  <FontAwesomeIcon
+                    icon={faPlus}
+                    className="text-3xl text-[#AD957B]"
+                  />
                 </div>
               </button>
-              {addonData.filter(addon => addon.catalog === "sala")
-              .map((addon) =>
-              <Addon addon={addon} del={deleteAddonFromForm}/>
-              )}
+
+              {/* Scrollable Addon list */}
+              <div 
+                className="flex gap-4 overflow-x-auto max-w-full p-2 pb-4 addonscroll" 
+              >
+                {addonData
+                  .filter((addon) => addon.catalog === "sala")
+                  .map((addon, index) => (
+                    <Addon
+                      key={index}
+                      addon={addon}
+                      del={deleteAddonFromForm}
+                    />
+                  ))}
+              </div>
             </div>
-            
-            <h1 className="text-white text-[30px] pb-10">บริการระหว่างอภิธรรมศพ</h1>
+
+            <h1 className="text-white text-[30px] pb-10">
+              บริการระหว่างอภิธรรมศพ
+            </h1>
             <div className="flex gap-4 mb-10">
-              <button onClick={()=>{setPopUpState(1); setcatalogselect("food")}}>
+              <button
+                onClick={() => {
+                  setPopUpState(1);
+                  setcatalogselect("food");
+                }}
+              >
                 <div className="flex justify-center items-center h-64 w-64 rounded-lg border-4 border-[#AD957B] border-dashed  p-10">
-                <FontAwesomeIcon icon={faPlus} className="text-3xl text-[#AD957B]"/>
+                  <FontAwesomeIcon
+                    icon={faPlus}
+                    className="text-3xl text-[#AD957B]"
+                  />
                 </div>
               </button>
-              {addonData.filter(addon => addon.catalog === "food")
-              .map((addon) =>
-              <Addon addon={addon} del={deleteAddonFromForm}/>
-              )}
+              <div className="flex gap-4 overflow-x-auto max-w-full p-2 pb-4 addonscroll">
+                {addonData
+                  .filter((addon) => addon.catalog === "food")
+                  .map((addon) => (
+                    <Addon addon={addon} del={deleteAddonFromForm} />
+                  ))}
+              </div>
             </div>
-            
-            <h1 className="text-white text-[30px] pb-10">สินค้าและบริการ (ลูกค้าเลือกจ่าย)</h1>
+
+            <h1 className="text-white text-[30px] pb-10">
+              สินค้าและบริการ (ลูกค้าเลือกจ่าย)
+            </h1>
             <div className="flex gap-4 mb-10">
-              <button onClick={()=>{setPopUpState(1); setcatalogselect("goodandservice")}}>
+              <button
+                onClick={() => {
+                  setPopUpState(1);
+                  setcatalogselect("goodandservice");
+                }}
+              >
                 <div className="flex justify-center items-center h-64 w-64 rounded-lg border-4 border-[#AD957B] border-dashed  p-10">
-                <FontAwesomeIcon icon={faPlus} className="text-3xl text-[#AD957B]"/>
+                  <FontAwesomeIcon
+                    icon={faPlus}
+                    className="text-3xl text-[#AD957B]"
+                  />
                 </div>
               </button>
-              {addonData.filter(addon => addon.catalog === "goodandservice")
-              .map((addon) =>
-              <Addon addon={addon} del={deleteAddonFromForm}/>
-              )}
+              <div className="flex gap-4 overflow-x-auto max-w-full p-2 pb-4 addonscroll">
+              {addonData
+                .filter((addon) => addon.catalog === "goodandservice")
+                .map((addon) => (
+                  <Addon addon={addon} del={deleteAddonFromForm} />
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </div>
-      {popUpState ?
-        <CreateAddonPopup 
+      {popUpState ? (
+        <CreateAddonPopup
           isOpen={popUpState}
           onClose={() => setPopUpState(false)}
           catalog={catalogselect}
-          setAddonData={createAddonfromForm}/>
-          :
-          null
-       }
-      
+          setAddonData={createAddonfromForm}
+        />
+      ) : null}
     </div>
   );
 };
