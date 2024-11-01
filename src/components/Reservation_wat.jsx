@@ -344,12 +344,14 @@ const Reservationwat = () => {
                 )}
               </div>
             </div>
+            </div>
           ))
         ) : (
           <p className="text-white">วัดว่างงาน ก็เหมือนกันการที่หมดใจ</p>
         )}
       </div>
-    </div>
+      </div>
+    
   );
 };
 
