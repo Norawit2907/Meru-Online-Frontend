@@ -51,6 +51,10 @@ const Navbar = () => {
     }
   };
 
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
+
   const handleDelete = async (notificationId) => {
     try {
       const response = await axios.delete(`${backendUrl}/notification/${notificationId}`);
@@ -90,7 +94,6 @@ const Navbar = () => {
   useEffect(() => {
     const token = sessionStorage.getItem("access_token");
     const role = sessionStorage.getItem("role");
-    fetchNotifications();
 
     if (token) {
       setLoginState(true);
@@ -109,7 +112,7 @@ const Navbar = () => {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [notifications]);
 
   return (
     <nav
