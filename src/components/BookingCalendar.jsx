@@ -1,8 +1,51 @@
 //Mock Data for Booking
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { GetReservesDays } from "../services/getReservationDays";
+import { GetCremationsDays } from "../services/getCremationsDays";
+import { useParams } from "react-router-dom";
+import { GetWatData } from "../services/getWatDataById";
 
-const BookingCalendar = ({ reservationData, maxWorkload = 3 }) => {
+const BookingCalendar = () => {
+
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [watData, setWatData] = useState([]);
+  const [reservationDays, setReservationDays] = useState({});
+  const [cremationDays, setCremationDays] = useState({});
+
+  const wat_id = useParams().id;
+
+  useEffect(() => {
+    const fetchWatData = async () => {
+      try {
+        const result = await GetWatData(wat_id);
+        setWatData(result);
+        console.log("Fetched Wat Data Calendar:", result);
+      } catch (error) {
+        console.error("Failed to fetch Wat data:", error);
+      }
+    };
+    const fetchWatReservation = async () => {
+      try {
+        const result = await GetReservesDays(wat_id);
+        setReservationDays(result);
+        // console.log("Fetched Wat Reservation:", result);
+      } catch (error) {
+        // console.error("Failed to fetch Reservation:", error);
+      }
+    };
+    const fetchWatCremations = async () => {
+      try {
+        const result = await GetCremationsDays(wat_id);
+        setCremationDays(result);
+        // console.log("Fetched Wat Cremation:", result);
+      } catch (error) {
+        // console.error("Failed to fetch Cremation:", error);
+      }
+    };
+    fetchWatData();
+    fetchWatCremations();
+    fetchWatReservation();
+  }, [wat_id])
 
   const getDaysInMonth = (month, year) => {
     return new Date(year, month + 1, 0).getDate();
@@ -34,7 +77,7 @@ const BookingCalendar = ({ reservationData, maxWorkload = 3 }) => {
   };
 
   const getDateColor = (works) => {
-    if (works === maxWorkload) {
+    if (works === watData.max_workload) {
       return "bg-[#AD957B]"; // Fully booked
     } else if (works > 0) {
       return "bg-[#6B5B45]"; // Partially booked
@@ -54,21 +97,24 @@ const BookingCalendar = ({ reservationData, maxWorkload = 3 }) => {
     }
 
     for (let day = 1; day <= totalDays; day++) {
-      const formattedDay = day.toString().padStart(2, '0');
-      const formattedMonth = month.toString().padStart(2, '0');
+      const formattedDay = day.toString().padStart(2, "0");
+      const formattedMonth = month.toString().padStart(2, "0");
+      let works = 0;
+
       const formattedDate = `${year}-${formattedMonth}-${formattedDay}`;
-      
-      const works = reservationData[formattedDate] || 0;
+      if (reservationDays && formattedDate in reservationDays) {
+        works = reservationDays[formattedDate];
+      }
       const colorClass = getDateColor(works);
-      
+
       days.push(
-        <div 
-          key={day} 
+        <div
+          key={day}
           className={`${colorClass} p-4 text-center rounded-lg transition-colors duration-200 
-            ${works === maxWorkload ? 'cursor-not-allowed opacity-75' : 'hover:opacity-80 cursor-pointer'}`}
+            ${works === watData.max_workload ? 'cursor-not-allowed opacity-75' : 'hover:opacity-80 cursor-pointer'}`}
         >
           <p className="font-bold">{day}</p>
-          <p>{works}/{maxWorkload}</p>
+          <p>{works}/{watData.max_workload}</p>
         </div>
       );
     }
@@ -78,7 +124,7 @@ const BookingCalendar = ({ reservationData, maxWorkload = 3 }) => {
   return (
     <div className="w-full max-w-[600px] mx-0 text-white font-prompt p-10">
       <div className="text-center mb-5 flex items-center justify-between">
-        <button 
+        <button
           onClick={handlePreviousMonth}
           className="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors duration-200"
         >
@@ -87,7 +133,7 @@ const BookingCalendar = ({ reservationData, maxWorkload = 3 }) => {
         <h2 className="font-bold text-white text-[25px]">
           {currentDate.toLocaleString("default", { month: "long" })} {currentDate.getFullYear()}
         </h2>
-        <button 
+        <button
           onClick={handleNextMonth}
           className="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors duration-200"
         >

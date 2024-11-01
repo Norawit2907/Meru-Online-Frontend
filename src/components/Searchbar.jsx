@@ -37,16 +37,15 @@ const Searchbar = ({ onSearch, initialQuery, initialDate }) => {
       const isEndCalendarClick = endCalendarRef.current?.contains(event.target);
       const isStartButtonClick = startButtonRef.current?.contains(event.target);
       const isEndButtonClick = endButtonRef.current?.contains(event.target);
-  
-      if (!isStartCalendarClick && !isEndCalendarClick && 
-          !isStartButtonClick && !isEndButtonClick) {
+
+      if (!isStartCalendarClick && !isEndCalendarClick && !isStartButtonClick && !isEndButtonClick) {
         setShowCalendar(false);
       }
     };
-  
-    document.addEventListener('mousedown', handleClickOutside);
+
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -71,58 +70,68 @@ const Searchbar = ({ onSearch, initialQuery, initialDate }) => {
     setShowCalendar(false);
   };
 
-  // Calculate calendar position classes based on page
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      const searchQuery = query || "";
+      const startDateParam = startDate ? startDate.toISOString() : "";
+      const endDateParam = endDate ? endDate.toISOString() : "";
+
+      window.location.href = `/Result?query=${searchQuery}&startDate=${startDateParam}&endDate=${endDateParam}`;
+    }
+  };
+
   const getCalendarPositionClasses = () => {
     if (isResultPage) {
-      return "top-[70px]"; // Show below on Result page
+      return "top-[70px]";
     }
-    return "bottom-[70px]"; // Show above on other pages
+    return "bottom-[70px]";
   };
 
   return (
-    <div className="w-[700px] relative">
-      <div 
+    <div className="w-full sm:w-[500px] md:w-[600px] lg:w-[700px] relative">
+      <div
         className={`h-16 bg-[rgba(49,47,50,0.6)] backdrop-blur-md p-2 px-3 rounded-2xl 
-                    flex items-center justify-between gap-8 text-sm ${isResultPage ? 'mb-4' : 'mb-12'} text-[#AD957B] 
-                    font-prompt font-bold transition-all duration-300 ease-in-out
-                    ${isInputFocused ? 'shadow-lg shadow-[#AD957B]/20' : ''}`}
+                flex items-center justify-between gap-4 sm:gap-8 text-xs sm:text-sm ${isResultPage ? "mb-4" : "mb-12"} text-[#AD957B] 
+                font-prompt font-bold transition-all duration-300 ease-in-out
+                ${isInputFocused ? "shadow-lg shadow-[#AD957B]/20" : ""}`}
       >
-        <div className={`flex items-center bg-[rgba(128,128,128,0.5)] rounded-[8px] 
+        <div
+          className={`flex items-center bg-[rgba(128,128,128,0.5)] rounded-[8px] 
                         text-[#AD957B] flex-1 transition-all duration-300 ease-in-out
-                        ${isInputFocused ? 'bg-[rgba(128,128,128,0.7)]' : ''}`}>
+                        ${isInputFocused ? "bg-[rgba(128,128,128,0.7)]" : ""}`}
+        >
           <input
             type="text"
             value={query}
             onChange={handleInputChange}
+            onKeyPress={handleKeyPress}
             onFocus={() => setIsInputFocused(true)}
             onBlur={() => setIsInputFocused(false)}
             placeholder="ค้นหา ชื่อ หรือ ที่ตั้งของวัด"
             className="flex-1 w-full p-1.5 mr-2 border-none outline-none rounded-2xl 
-                     bg-transparent text-white text-base placeholder-[#AD957B]
-                     transition-all duration-300"
+            bg-transparent text-white text-sm sm:text-base placeholder-[#AD957B]
+            transition-all duration-300"
           />
           <Search className="h-6 w-6 mx-2 opacity-50" />
         </div>
 
         <div className="relative flex flex-col justify-center items-center">
-          <p className="mx-3 flex justify-center items-center text-center">
-            วันเริ่มงาน
-          </p>
+          <p className="mx-2 sm:mx-3 flex justify-center items-center text-center text-xs sm:text-sm">วันเริ่มงาน</p>
           <button
             ref={startButtonRef}
             onClick={() => setShowCalendar(showCalendar === "start" ? false : "start")}
-            className="h-8 mx-3 border-none text-white hover:text-gray-400 cursor-pointer 
-                     text-sm flex items-center gap-2 transition-all duration-200"
+            className="h-8 mx-2 sm:mx-3 border-none text-white hover:text-gray-400 cursor-pointer 
+           text-xs sm:text-sm flex items-center gap-1 sm:gap-2 transition-all duration-200"
           >
-            <CalendarIcon className="w-4 h-4" />
+            <CalendarIcon className="w-3 h-3 sm:w-4 sm:h-4" />
             {startDate ? startDate.toLocaleDateString() : "เลือกวันที่"}
           </button>
           {showCalendar === "start" && (
-            <div 
-              ref={startCalendarRef}
-              className={`absolute ${getCalendarPositionClasses()} z-[9999] animate-fadeIn`}>
-              <div className="bg-[#19181A] border border-[rgba(173,149,123,0.3)] 
-                          rounded-2xl shadow-lg p-3 w-[300px]">
+            <div ref={startCalendarRef} className={`absolute ${getCalendarPositionClasses()} z-[9999] animate-fadeIn`}>
+              <div
+                className="bg-[#19181A] border border-[rgba(173,149,123,0.3)] 
+                          rounded-2xl shadow-lg p-3 w-[300px]"
+              >
                 <Calendar
                   calendarType="gregory"
                   onChange={(date) => handleDateChange(date, "start")}
@@ -137,24 +146,22 @@ const Searchbar = ({ onSearch, initialQuery, initialDate }) => {
         <div className="h-8 w-px bg-[rgba(173,149,123,0.3)]"></div>
 
         <div className="relative flex flex-col justify-center items-center">
-          <p className="mx-3 flex justify-center items-center text-center">
-            วันจบงาน
-          </p>
+          <p className="mx-2 sm:mx-3 flex justify-center items-center text-center text-xs sm:text-sm">วันจบงาน</p>
           <button
             ref={endButtonRef}
             onClick={() => setShowCalendar(showCalendar === "end" ? false : "end")}
-            className="h-8 mx-3 border-none text-white hover:text-gray-400 cursor-pointer 
-                     text-sm flex items-center gap-2 transition-all duration-200"
+            className="h-8 mx-2 sm:mx-3 border-none text-white hover:text-gray-400 cursor-pointer 
+           text-xs sm:text-sm flex items-center gap-1 sm:gap-2 transition-all duration-200"
           >
-            <CalendarIcon className="w-4 h-4" />
+            <CalendarIcon className="w-3 h-3 sm:w-4 sm:h-4" />
             {endDate ? endDate.toLocaleDateString() : "เลือกวันที่"}
           </button>
           {showCalendar === "end" && (
-            <div 
-              ref={endCalendarRef}
-              className={`absolute ${getCalendarPositionClasses()} z-[1000] animate-fadeIn`}>
-              <div className="bg-[#19181A] border border-[rgba(173,149,123,0.3)] 
-                          rounded-2xl shadow-lg p-3 w-[300px]">
+            <div ref={endCalendarRef} className={`absolute ${getCalendarPositionClasses()} z-[1000] animate-fadeIn`}>
+              <div
+                className="bg-[#19181A] border border-[rgba(173,149,123,0.3)] 
+                          rounded-2xl shadow-lg p-3 w-[300px]"
+              >
                 <Calendar
                   calendarType="gregory"
                   onChange={(date) => handleDateChange(date, "end")}
@@ -167,15 +174,13 @@ const Searchbar = ({ onSearch, initialQuery, initialDate }) => {
         </div>
 
         <Link
-          to={`/Result?query=${query}&startDate=${
-            startDate ? startDate.toISOString() : ""
-          }&endDate=${endDate ? endDate.toISOString() : ""}`}
-          className="w-11 h-11 rounded-full bg-[#AD957B] hover:bg-[#8C7A63] 
-                   flex items-center justify-center transition-all duration-300 
-                   hover:scale-105 active:scale-95"
+          to={`/Result?query=${query}&startDate=${startDate ? startDate.toISOString() : ""}&endDate=${endDate ? endDate.toISOString() : ""}`}
+          className="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-[#AD957B] hover:bg-[#8C7A63] 
+           flex items-center justify-center transition-all duration-300 
+           hover:scale-105 active:scale-95"
         >
-          <button onClick={handleSearch} className="p-2">
-            <Search className="h-5 w-5 text-white" />
+          <button onClick={handleSearch} className="p-1.5 sm:p-2">
+            <Search className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
           </button>
         </Link>
       </div>
@@ -201,7 +206,7 @@ const Searchbar = ({ onSearch, initialQuery, initialDate }) => {
           width: 100%;
           background-color: rgba(25, 24, 26, 1);
           color: white;
-          font-family: 'Prompt', sans-serif;
+          font-family: "Prompt", sans-serif;
           border: none;
           padding: 8px;
           transition: all 0.3s ease;
@@ -216,7 +221,7 @@ const Searchbar = ({ onSearch, initialQuery, initialDate }) => {
         .custom-calendar .react-calendar__navigation button {
           background: none;
           border: none;
-          color: #AD957B;
+          color: #ad957b;
           font-size: 14px;
           padding: 4px 8px;
           border-radius: 6px;
@@ -242,7 +247,7 @@ const Searchbar = ({ onSearch, initialQuery, initialDate }) => {
         }
 
         .custom-calendar .react-calendar__month-view__weekdays__weekday {
-          color: #AD957B;
+          color: #ad957b;
           padding: 4px;
           text-transform: uppercase;
           font-size: 10px;
@@ -275,7 +280,7 @@ const Searchbar = ({ onSearch, initialQuery, initialDate }) => {
         }
 
         .custom-calendar .react-calendar__tile--active {
-          background: #AD957B !important;
+          background: #ad957b !important;
           color: white;
           transform: scale(1.1);
         }

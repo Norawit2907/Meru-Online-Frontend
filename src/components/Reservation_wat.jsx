@@ -10,8 +10,10 @@ const Reservationwat = () => {
   const [reservations, setReservations] = useState([]);
   const [wats, setWats] = useState({});
   const [watspic, setWatspic] = useState({});
-  const [user, setUser] = useState({});
+  const [firstname, setFirstname] = useState({});
+  const [lastname, setLastname] = useState({});
   const [userpic, setUserpic] = useState({});
+  const [selectedReservation, setSelectedReservation] = useState(null);
   const [ans, setAns] = useState("This is the answer");
   const curresnt_id = sessionStorage.getItem("currentUser_id");
 
@@ -90,18 +92,21 @@ const Reservationwat = () => {
   };
 
   const fetchUsers = async () => {
-    const usernamesMap = {};
+    const userfirstmap = {};
+    const userlastmap = {};
     const userpicmap = {};
     for (const reservation of reservations) {
       const users = await getUserById(reservation.user_id);
       if (users) {
-        usernamesMap[reservation.user_id] = users.firstName;
+        userfirstmap[reservation.user_id] = users.firstName;
+        userlastmap[reservation.user_id] = users.lastName;
         userpicmap[reservation.user_id] = users.profile_img;
       }
       console.log(users);
     }
     setUserpic(userpicmap);
-    setUser(usernamesMap);
+    setFirstname(userfirstmap);
+    setLastname(userlastmap);
   };
 
   useEffect(() => {
@@ -110,7 +115,7 @@ const Reservationwat = () => {
 
   useEffect(() => {
     fetchReservations(wats);
-  }, [wats]);
+  }, [wats, reservations]);
 
   useEffect(() => {
     fetchUsers();
@@ -183,6 +188,10 @@ const Reservationwat = () => {
     }
   };
 
+  const toggleReservation = (reservationId) => {
+    setSelectedReservation(prev => (prev === reservationId ? null : reservationId));
+  };
+
   const filteredReservations = reservations.filter(
     (reservation) =>
       reservation.status ===
@@ -206,7 +215,7 @@ const Reservationwat = () => {
         ))}
       </div>
 
-      <div className="flex flex-col overflow-auto max-h-[500px]">
+      <div className="flex flex-col overflow-auto max-h-[500px] ">
         {filteredReservations.length > 0 ? (
           filteredReservations.map((reservation, index) => (
             <div
@@ -246,18 +255,13 @@ const Reservationwat = () => {
                       </p>
                     </div>
                     <div className="flex gap-1 w-full">
-                      <p className="text-white">วันณาปนกิจ: </p>
-                      <p className="text-[#9A9A9A]">
-                        {formatDate(reservation.cremation_date)}
-                      </p>
+                      <p className="text-white">ราคา :</p>
+                      <p className="text-[#9A9A9A]">{reservation.price}</p>
+                      <p className="text-white">บาท</p>
                     </div>
                   </div>
-                  {/* <div className="flex gap-1 w-full">
-                    <p className="text-white">By:</p>
-                    <p className="text-[#9A9A9A]">{user[reservation.user_id] || "Loading..."}</p>
-                  </div> */}
+
                 </div>
-              </div>
 
               <div className="flex flex-row-reverse w-[30%] items-center mr-4">
                 {reservation.status === "pending" && (

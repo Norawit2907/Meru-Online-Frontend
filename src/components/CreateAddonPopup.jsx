@@ -5,33 +5,36 @@ const CreateAddonPopup = ({ isOpen, onClose, catalog, setAddonData }) => {
   const [slipImage, setSlipImage] = useState(null);
   const [showError, setShowError] = useState(false);
   const [cost, setCost] = useState(0);
+  const [name, setName] = useState(""); // State for name
+  const [description, setDescription] = useState(""); // State for description
+  const [selectedCatalog, setSelectedCatalog] = useState(catalog);
 
   if (!isOpen) return null;
 
-  const handleSubmitPayment = (e) => {
+  const handleSubmitPayment = async (e) => {
     e.preventDefault();
     if (!setAddonData) {
       setShowError(true);
       return;
     }
     console.log("Payment submitted with slip:", slipImage);
+    console.log("src", name, slipImage, cost, selectedCatalog, description);
+    
+    await setAddonData(name, slipImage, cost, selectedCatalog, description)
     onClose();
   };
 
-  // Increment and decrement functions for custom cost controls
   const incrementCost = () => setCost((prev) => Math.max(0, prev + 1));
   const decrementCost = () => setCost((prev) => Math.max(0, prev - 1));
 
   return (
-    <div class="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-black/30 z-[9999] overflow-y-auto ">
-      <div
-        class="bg-zinc-800/95 rounded-2xl p-8 max-w-md w-full mx-4 relative shadow-xl border border-white/10 max-h-[90vh] overflow-y-auto 
+    <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-black/30 z-[9999] overflow-y-auto">
+      <div className="bg-zinc-800/95 rounded-2xl p-8 max-w-md w-full mx-4 relative shadow-xl border border-white/10 max-h-[90vh] overflow-y-auto 
                 [&::-webkit-scrollbar]:w-2
                 [&::-webkit-scrollbar-track]:rounded-full
                 [&::-webkit-scrollbar-track]:bg-black/30 
                 [&::-webkit-scrollbar-thumb]:rounded-full
-                [&::-webkit-scrollbar-thumb]:bg-black"
-      >
+                [&::-webkit-scrollbar-thumb]:bg-black">
         {/* Close button */}
         <button
           onClick={onClose}
@@ -41,18 +44,24 @@ const CreateAddonPopup = ({ isOpen, onClose, catalog, setAddonData }) => {
         </button>
 
         <form onSubmit={handleSubmitPayment}>
-        {/* Content */}
-        <div className="text-center mb-6">
-          <h2 className="text-2xl font-bold text-white mb-4">
-            เพิ่มสินค้าและบริการของคุณ
-          </h2>
-            <select name="catalog" id="catalog">
-                <option value="ศาลาที่มีให้" selected={catalog=="ศาลาที่มีให้" ? "selected": ""} >ศาลาที่มีให้</option>
-                <option value="บริการระหว่างอภิธรรมศพ" selected={catalog=="บริการระหว่างอภิธรรมศพ" ? "selected": ""} >บริการระหว่างอภิธรรมศพ</option>
-                <option value="สิ่งที่วัดเตรียมให้(ลูกค้าต้องจ่าย)" selected={catalog=="สิ่งที่วัดเตรียมให้(ลูกค้าต้องจ่าย)" ? "selected": ""} >สิ่งของที่วัดเตรียมให้</option>
-                <option value="สินค้าและบริการ(ลูกค้าต้องจ่าย)" selected={catalog=="สินค้าและบริการ(ลูกค้าต้องจ่าย)" ? "selected": ""} >สินค้าและบริการ</option>
+          {/* Content */}
+          <div className="text-center mb-6">
+            <h2 className="text-2xl font-bold text-white mb-4">เพิ่มสินค้าและบริการของคุณ</h2>
+            <label htmlFor="catalog" className="text-yellow-300 mb-2 block mt-4">เลือกประเภท</label>
+            <select
+              name="catalog"
+              id="catalog"
+              className="w-3/4 px-4 py-3 rounded-lg bg-zinc-700 text-white border border-zinc-600
+                        focus:border-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-700 focus:shadow-sm focus:shadow-yellow-300 transition-colors"
+              defaultValue={catalog} // Use defaultValue instead of selected
+              onChange={(e)=> setSelectedCatalog(e.target.value)}
+            >
+              <option value="sala">ศาลาที่มีให้</option>
+              <option value="food">บริการระหว่างอภิธรรมศพ</option>
+              <option value="watprovide">สิ่งของที่วัดเตรียมให้</option>
+              <option value="goodandservice">สินค้าและบริการ</option>
             </select>
-        </div>
+          </div>
 
           {/* Slip Preview */}
           {slipImage && (
@@ -81,9 +90,9 @@ const CreateAddonPopup = ({ isOpen, onClose, catalog, setAddonData }) => {
             <label htmlFor="image" className="block w-full cursor-pointer">
               <input
                 type="file"
-                id="image"
+                id="imagefile"
                 accept="image/*"
-                name="image"
+                name="imagefile"
                 onChange={(e) => {
                   setSlipImage(e.target.files[0]);
                   setShowError(false);
@@ -104,6 +113,7 @@ const CreateAddonPopup = ({ isOpen, onClose, catalog, setAddonData }) => {
               type="text"
               id="name"
               name="name"
+              onChange={(e)=>{setName(e.target.value)}}
               required
               className="w-full px-4 py-3 rounded-lg bg-zinc-700 text-white border border-zinc-600
                            focus:border-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-700 transition-colors"
@@ -122,7 +132,7 @@ const CreateAddonPopup = ({ isOpen, onClose, catalog, setAddonData }) => {
                 min="0"
                 value={cost}
                 onChange={(e) => setCost(Math.max(0, e.target.value))}
-                class="w-full px-4 py-3 pr-10 rounded-lg bg-zinc-700 text-white border border-zinc-600
+                className="w-full px-4 py-3 pr-10 rounded-lg bg-zinc-700 text-white border border-zinc-600
                              focus:border-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-700 transition-colors
                              [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" // Removes default arrows in WebKit browsers
               />
@@ -146,16 +156,14 @@ const CreateAddonPopup = ({ isOpen, onClose, catalog, setAddonData }) => {
             </div>
 
             {/* Description Field */}
-            <label
-              htmlFor="description"
-              className="text-gray-300 mb-2 block mt-4"
-            >
+            <label htmlFor="description" className="text-gray-300 mb-2 block mt-4">
               คำอธิบาย
             </label>
             <input
               type="text"
               id="description"
               name="description"
+              onChange={(e) => setDescription(e.target.value)}
               required
               className="w-full px-4 py-3 rounded-lg bg-zinc-700 text-white border border-zinc-600
                            focus:border-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-700 transition-colors"
@@ -175,10 +183,9 @@ const CreateAddonPopup = ({ isOpen, onClose, catalog, setAddonData }) => {
               type="submit"
               disabled={!slipImage || !setAddonData}
               className={`flex-1 px-4 py-3 rounded-xl text-white transition-colors
-                  ${
-                    slipImage && setAddonData
-                      ? "bg-[#AD957B] hover:bg-[#A38463]"
-                      : "bg-zinc-600 cursor-not-allowed"
+                  ${slipImage && setAddonData
+                    ? "bg-[#AD957B] hover:bg-[#A38463]"
+                    : "bg-zinc-600 cursor-not-allowed"
                   }`}
             >
               ยืนยันการชำระเงิน

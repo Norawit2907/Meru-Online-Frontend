@@ -61,15 +61,15 @@ const Watpage1 = () => {
         const result = await GetWatAddons(wat_id);
         setWatAddons(result);
         const filtered = result.filter(
-          (addon) => addon.catalog === "ศาลาที่มีให้"
+          (addon) => addon.catalog === "sala"
         );
         setFilteredAddonsCat1(filtered);
         const filtered_2 = result.filter(
-          (addon) => addon.catalog === "บริการระหว่างอภิธรรมศพ"
+          (addon) => addon.catalog === "food"
         );
         setFilteredAddonsCat1(filtered);
         const filtered_3 = result.filter(
-          (addon) => addon.catalog === "สินค้าและบริการ (ลูกค้าเลือกจ่าย)"
+          (addon) => addon.catalog !== "salas" && addon.catalog !== "food"
         );
         setFilteredAddonsCat1(filtered);
         setFilteredAddonsCat2(filtered_2);
@@ -123,19 +123,17 @@ const Watpage1 = () => {
                         <p className="text-white text-[16px] md:text-[18px] py-4 indent-6 md:indent-12">
                             {watData.description}
                         </p>
-                        <ul className="text-white text-[16px] md:text-[18px] list-disc list-inside">
+                        {/* <ul className="text-white text-[16px] md:text-[18px] list-disc list-inside">
                             <li>4 ศาลา</li>
                             <li>2 ศาลาร้อน</li>
                             <li>2 ศาลาเย็น</li>
-                        </ul>
+                        </ul> */}
                     </div>
 
                     {/* wat-calendar-section */}
-                    <div className="w-[675px] h-[696.25px] bg-[#1C1C1C] rounded-[10px] mb-10 flex flex-col items-start">
+                    <div className="w-[675px] h-[696.25px] bg-[#1C1C1C] rounded-[10px] mb-10 flex flex-col items-center justify-center">
                         <Calendar />
                     </div>
-
-                                    {/* wat-location-section */}
                                     <div className="w-[835px] mb-10 flex flex-col items-center gap-4">
                     <div>
                             <iframe
@@ -163,8 +161,8 @@ const Watpage1 = () => {
                 </div>
 
                     <div className="right w-full lg:w-1/5 flex flex-col items-center gap-4">         
-                        <div className="w-full h-[220px] md:h-[200px] bg-[#292725] rounded-[10px] flex flex-col justify-between py-4 px-6 md:px-8 lg:ml-5">
-                            <div className="flex flex-col text-white gap-4 md:gap-5">
+                        <div className="w-full  bg-[#292725] rounded-[10px] flex flex-col justify-between py-4 px-6 md:px-8 lg:ml-5">
+                            <div className="flex flex-col text-white h-auto gap-4 md:gap-5">
                                 <p className="text-[16px] md:text-[18px] font-bold">CONTACT INFO</p>
                                 <p className="text-[14px] md:text-[15px]">Phone: {watData.phoneNumber}</p>
                                 <p className="text-[14px] md:text-[15px]">Facebook: {watData.Facebook}</p>

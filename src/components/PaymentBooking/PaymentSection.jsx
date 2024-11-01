@@ -6,7 +6,7 @@ import ErrorMessage from "./ErrorMessage";
 import TotalAmount from "./TotalAmount";
 import PaymentButton from "./PaymentButton";
 
-const PaymentSection = ({ totalCost, bookingData }) => {
+const PaymentSection = ({ totalCost, bookingData, paymentPayload }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
   const [showError, setShowError] = useState("");
@@ -64,6 +64,7 @@ const PaymentSection = ({ totalCost, bookingData }) => {
           onClose={() => setIsPopupOpen(false)}
           totalCost={totalCost}
           selectedPaymentMethod={selectedPaymentMethod}
+          paymentPayload={paymentPayload}
         />
       )}
     </>

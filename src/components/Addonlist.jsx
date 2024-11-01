@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 const AddonList = ({ title, addonList }) => {
+    console.log("Addon:", addonList);
     return (
         <div className="mb-10 flex flex-col gap-6 px-4 lg:px-0">
             <h1 className="text-white text-[24px] sm:text-[28px] lg:text-[32px]">{title}</h1>
@@ -18,11 +19,11 @@ const AddonList = ({ title, addonList }) => {
                 {addonList.map((addon, index) => (
                     <div
                         key={index}
-                        className="w-full sm:w-[300px] lg:w-[358px] h-[200px] sm:h-[300px] lg:h-[342px] bg-[#484848] rounded-[8px]"
+                        className="w-full sm:w-[300px] lg:w-[358px] h-[200px] sm:h-[300px] lg:h-[342px] bg-[#292725] rounded-[8px]"
                     >
                         <div
                             className="h-[100px] sm:h-[180px] lg:h-[200px] bg-cover bg-no-repeat rounded-t-[8px] lg:rounded-t-[25px]"
-                            style={{ backgroundImage: `url(./addon.png)` }}
+                            style={{ backgroundImage: `url(${addon.image})` }}
                         ></div>
                         <div className="mx-[12px] sm:mx-[15px] lg:mx-[20px] mt-2 h-[100px] sm:h-[100px] lg:h-[110px] lg:pb-4">
                             <h1 className="text-white text-[16px] sm:text-[18px] lg:text-[20px] font-semibold">
