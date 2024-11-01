@@ -19,6 +19,25 @@
   text-align: left;
 }
 
+.addonscroll::-webkit-scrollbar{
+  scrollbar-width: thin;
+  
+}
+.addonscroll::-webkit-scrollbar-track{
+  background: #484848 ;
+  border-radius: 10px;
+  
+  
+}
+.addonscroll::-webkit-scrollbar-thumb{
+  background:#AD957B ;
+  border-radius: 10px;
+  
+}
+.addonscroll::-webkit-scrollbar-thumb:hover{
+  background:#c2bb9b ;
+  
+}
 
 .title {
   font-size: calc(20px + 8vmin);

@@ -161,8 +161,8 @@ const Watpage1 = () => {
                 </div>
 
                     <div className="right w-full lg:w-1/5 flex flex-col items-center gap-4">         
-                        <div className="w-full h-[220px] md:h-[200px] bg-[#292725] rounded-[10px] flex flex-col justify-between py-4 px-6 md:px-8 lg:ml-5">
-                            <div className="flex flex-col text-white gap-4 md:gap-5">
+                        <div className="w-full  bg-[#292725] rounded-[10px] flex flex-col justify-between py-4 px-6 md:px-8 lg:ml-5">
+                            <div className="flex flex-col text-white h-auto gap-4 md:gap-5">
                                 <p className="text-[16px] md:text-[18px] font-bold">CONTACT INFO</p>
                                 <p className="text-[14px] md:text-[15px]">Phone: {watData.phoneNumber}</p>
                                 <p className="text-[14px] md:text-[15px]">Facebook: {watData.Facebook}</p>
