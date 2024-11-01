@@ -12,32 +12,20 @@ const Addon = ({ addon, index, del }) => {
       <FontAwesomeIcon icon={faXmark} className="text-3xl text-red-500"/>
       </button>
       <div
-        className="h-[140px] sm:h-[160px] md:h-[180px] bg-cover bg-center bg-no-repeat rounded-t-lg 
-          transform transition-all duration-300"
+        className="w-[260px] h-[160px] bg-cover bg-no-repeat rounded-t-[8px] lg:rounded-md"
         style={{ backgroundImage: `url(${addon.image})` }}
-      />
-
-      {/* Content Container */}
-      <div className="p-3 sm:p-4 md:p-5 space-y-2 md:space-y-3">
-        <h1 className="text-white text-[14px] sm:text-[16px] md:text-[18px] lg:text-[20px] 
-          font-semibold line-clamp-2">
+      ></div>
+      <div className="mx-[16px] mt-1 h-[80px] sm:h-[90px] lg:h-[100px] pb-2">
+        <h1 className="text-white text-[14px] sm:text-[16px] lg:text-[18px] font-semibold">
           {addon.name}
         </h1>
-        
-        <p className="text-[10px] sm:text-[12px] md:text-[13px] lg:text-[14px] 
-          text-[#AD957B] line-clamp-3">
+        <p className="text-[10px] sm:text-[12px] lg:text-[14px] text-[#AD957B] py-1">
           {addon.description}
         </p>
-        
-        <p className="text-[16px] sm:text-[18px] md:text-[22px] lg:text-[25px] 
-          font-[500] text-white">
+        <p className="text-[16px] sm:text-[18px] lg:text-[20px] font-[500] text-white">
           {addon.cost} .-/ชุด
         </p>
       </div>
-
-      {/* Hover Effect Line */}
-      <div className="absolute bottom-0 left-0 w-full h-[2px] bg-[#AD957B] 
-        transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
     </div>
   );
 };

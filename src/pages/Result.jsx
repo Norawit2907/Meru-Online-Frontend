@@ -55,7 +55,7 @@ const Result = () => {
                         <Watcard 
                             key={wat.id}
                             id={wat.id} 
-                            image={wat.picture[0]} 
+                            image={wat.picture[0].url} 
                             title={wat.name} 
                             minprice={wat.min_cost} 
                             maxprice={wat.max_cost} 

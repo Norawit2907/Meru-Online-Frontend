@@ -3,6 +3,7 @@ import Addon from "../components/Addon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { Reorder } from "framer-motion";
+import "../styles/Home.css"
 
 import {
   getAddonByWatId,
@@ -172,11 +173,11 @@ const EditWat = () => {
       imagefiles.map(async (item) => {
         if (item.file != null) {
           const link = await UploadImage(item.file);
-          // return {
-          //   name: item.name,
-          //   url: link,
-          // };
-          return link;
+          return {
+            name: item.name,
+            url: link,
+          };
+          // return link;
         } else {
           return {
             name: item.name,
