@@ -9,8 +9,10 @@ const Reservationwat = () => {
   const [reservations, setReservations] = useState([]);
   const [wats, setWats] = useState({});
   const [watspic, setWatspic] = useState({});
-  const [user, setUser] = useState({});
+  const [firstname, setFirstname] = useState({});
+  const [lastname, setLastname] = useState({});
   const [userpic, setUserpic] = useState({});
+  const [selectedReservation, setSelectedReservation] = useState(null);
   const curresnt_id = sessionStorage.getItem("currentUser_id")
   // console.log(curresnt_id)
 
@@ -53,18 +55,21 @@ const Reservationwat = () => {
   };
 
   const fetchUsers = async () => {
-    const usernamesMap = {};
+    const userfirstmap = {};
+    const userlastmap = {};
     const userpicmap = {};
     for (const reservation of reservations) {
       const users = await getUserById(reservation.user_id);
       if (users) {
-        usernamesMap[reservation.user_id] = users.firstName;
+        userfirstmap[reservation.user_id] = users.firstName;
+        userlastmap[reservation.user_id] = users.lastName;
         userpicmap[reservation.user_id] = users.profile_img;
       }
       console.log(users)
     }
     setUserpic(userpicmap);
-    setUser(usernamesMap);
+    setFirstname(userfirstmap);
+    setLastname(userlastmap);
   };
   
   
@@ -73,8 +78,8 @@ const Reservationwat = () => {
   }, []);
 
   useEffect(() => {
-    fetchReservations(wats)
-  }, [wats]);
+    fetchReservations(wats);
+  }, [wats, reservations]);
 
   useEffect(() => {
     fetchUsers();
@@ -140,6 +145,10 @@ const Reservationwat = () => {
     }
   };
 
+  const toggleReservation = (reservationId) => {
+    setSelectedReservation(prev => (prev === reservationId ? null : reservationId));
+  };
+
   const filteredReservations = reservations.filter(
     reservation => reservation.status === segments.find(segment => segment.id === activeSegment)?.status
   );
@@ -161,71 +170,85 @@ const Reservationwat = () => {
         ))}
       </div>
 
-      <div className="flex flex-col overflow-auto max-h-[500px]">
+      <div className="flex flex-col overflow-auto max-h-[500px] ">
         {filteredReservations.length > 0 ? (
           filteredReservations.map((reservation, index) => (
-            <div key={reservation.id} className="p-2 my-2 shadow-md flex w-[100%] gap-5 rounded-lg">
-              <img src={watspic} alt="wat_pic" width={100} height={100} className="rounded-lg object-cover"/>
-              <div className="flex flex-col w-full justify-center gap-3 ">
-                <div className="flex gap-2">
-                  <img src={watspic} alt="wat_pic" width={100} height={100} className="rounded-lg object-cover"/>
-                  {/* <p className="font-bold text-xl text-[#AD957B]">{user[reservation.user_id]}</p> */}
-                </div>
-                <div className="flex flex-col">
-                  <div className="flex">
-                    <div className="flex gap-1 w-full">
-                      <p className="text-white">วันเริ่มงาน: </p>
-                      <p className="text-[#9A9A9A]">{formatDate(reservation.reservation_date)}</p>
+            <div key={reservation.id}  className="flex flex-col shadow-md p-2 my-2 rounded-lg w-[100%] ">
+              <div   onClick={() => toggleReservation(reservation.id)} className={`flex gap-5 `}>
+                
+                <img src={watspic} alt="wat_pic" width={100} height={100} className="rounded-lg w-[100px] h-[100px] object-cover"/>
+                <div className="flex flex-col w-full  gap-3 ">
+                  <div className="flex gap-2">
+                    <img src={userpic[reservation.user_id]} alt="user_pic" width={60} height={60} className="rounded-lg h-[60px] w-[60px] object-cover"/>
+                    <p className="font-bold text-xl text-[#AD957B]">{firstname[reservation.user_id]} {lastname[reservation.user_id]}</p>
+                  </div>
+                  <div className="flex flex-col">
+                    <div className="flex">
+                      <div className="flex gap-1 w-full">
+                        <p className="text-white">วันเริ่มงาน : </p>
+                        <p className="text-[#9A9A9A]">{formatDate(reservation.reservation_date)}</p>
+                      </div>
+                      <div className="flex gap-1 w-full">
+                        <p className="text-white">ระยะเวลา : </p>
+                        <p className="text-[#9A9A9A]">{reservation.duration} วัน</p>
+                      </div>
+                      <div className="flex gap-1 w-full">
+                        <p className="text-white">วันณาปนกิจ : </p>
+                        <p className="text-[#9A9A9A]">{formatDate(reservation.cremation_date)}</p>
+                      </div>
                     </div>
                     <div className="flex gap-1 w-full">
-                      <p className="text-white">ระยะเวลา: </p>
-                      <p className="text-[#9A9A9A]">{reservation.duration} วัน</p>
-                    </div>
-                    <div className="flex gap-1 w-full">
-                      <p className="text-white">วันณาปนกิจ: </p>
-                      <p className="text-[#9A9A9A]">{formatDate(reservation.cremation_date)}</p>
+                      <p className="text-white">ราคา :</p>
+                      <p className="text-[#9A9A9A]">{reservation.price}</p>
+                      <p className="text-white">บาท</p>
                     </div>
                   </div>
-                  {/* <div className="flex gap-1 w-full">
-                    <p className="text-white">By:</p>
-                    <p className="text-[#9A9A9A]">{user[reservation.user_id] || "Loading..."}</p>
-                  </div> */}
-                </div>
-              </div>
 
-              <div className="flex flex-row-reverse w-[30%] items-center mr-4">
-                {reservation.status === 'pending' && (
-                  <>
-                  <button 
-                    className="w-1/2 h-9 bg-[#312F32] rounded-2xl text-sm text-white "
-                    onClick={() => handleCancel(reservation)}
-                  >
-                    ปฏิเสธ
-                  </button>
-                  <button 
-                    className="w-1/2 h-9 bg-[#AD957B] rounded-2xl text-sm mr-2"
-                    onClick={() => handleSubmit(reservation)}
-                  >
-                    ยอมรับ
-                  </button>
-                  </>
-                )}{reservation.status === 'accept' && (
-                  <>
+                </div>
+
+                <div className="flex flex-row-reverse w-[30%] mr-4">
+                  {reservation.status === 'pending' && (
+                    <>
                     <button 
-                      className="w-1/2 h-9 bg-[#AD957B] rounded-2xl text-sm"
+                      className="w-1/2 h-9 bg-[#312F32] rounded-2xl text-sm text-white "
                       onClick={() => handleCancel(reservation)}
                     >
-                      Cancel
+                      ปฏิเสธ
                     </button>
                     <button 
-                      className="w-1/3 h-9 bg-[#4CAF50] rounded-2xl text-sm text-white mr-2"
-                      onClick={() => handleSkip(reservation)}
+                      className="w-1/2 h-9 bg-[#AD957B] rounded-2xl text-sm mr-2"
+                      onClick={() => handleSubmit(reservation)}
                     >
-                      skip
+                      ยอมรับ
                     </button>
-                  </>
-                )}
+                    </>
+                  )}{reservation.status === 'accept' && (
+                    <>
+                      <button 
+                        className="w-1/2 h-9 bg-[#AD957B] rounded-2xl text-sm"
+                        onClick={() => handleCancel(reservation)}
+                      >
+                        Cancel
+                      </button>
+                      <button 
+                        className="w-1/3 h-9 bg-[#4CAF50] rounded-2xl text-sm text-white mr-2"
+                        onClick={() => handleSkip(reservation)}
+                      >
+                        skip
+                      </button>
+                    </>
+                  )}
+                </div>
+
               </div>
+              {/* <div className="flex justify-center">
+                <img src={require('../Assets/down.png')} alt='more' width={50} height={50} className='w-[25px] h-[25px] rounded-full justify-center'/>
+              </div> */}
+              {/* {selectedReservation === reservation.id && (
+                <div className="flex justify-center h-[150px] mt-2">
+                </div>
+              )} */}
+
               
             </div>
           ))
