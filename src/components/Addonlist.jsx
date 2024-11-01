@@ -19,7 +19,7 @@ const AddonList = ({ title, addonList }) => {
                 {addonList.map((addon, index) => (
                     <div
                         key={index}
-                        className="w-full sm:w-[300px] lg:w-[358px] h-[200px] sm:h-[300px] lg:h-[342px] bg-[#484848] rounded-[8px]"
+                        className="w-full sm:w-[300px] lg:w-[358px] h-[200px] sm:h-[300px] lg:h-[342px] bg-[#292725] rounded-[8px]"
                     >
                         <div
                             className="h-[100px] sm:h-[180px] lg:h-[200px] bg-cover bg-no-repeat rounded-t-[8px] lg:rounded-t-[25px]"
