@@ -14,7 +14,6 @@ const Reservationwat = () => {
   const [userpic, setUserpic] = useState({});
   const [ans, setAns] = useState("This is the answer");
   const curresnt_id = sessionStorage.getItem("currentUser_id");
-  // console.log(curresnt_id)
 
   const segments = [
     { id: 1, label: "ตอนนี้", status: "pending" },
@@ -25,20 +24,20 @@ const Reservationwat = () => {
 
   const toggleConfirmation = (answer) => {
     setShowConfirmation(!showConfirmation);
-    console.log("มา")
+    console.log("มา");
     setAns(answer);
   };
 
-  const confirmation = (answer,reservation) => {
-    if (answer == "ปฏิเสธ"){
+  const confirmation = (answer, reservation) => {
+    if (answer == "ปฏิเสธ") {
       handleCancel(reservation);
-      toggleConfirmation()
-      fetchReservations(wats)
+      toggleConfirmation();
+      fetchReservations(wats);
     }
-    if (answer== "ยอมรับ"){
-      handleSubmit(reservation)
-      toggleConfirmation()
-      fetchReservations(wats)
+    if (answer == "ยอมรับ") {
+      handleSubmit(reservation);
+      toggleConfirmation();
+      fetchReservations(wats);
     }
   };
 
@@ -264,7 +263,7 @@ const Reservationwat = () => {
                 {reservation.status === "pending" && (
                   <>
                     <button
-                      className="w-1/2 h-9 bg-[#312F32] rounded-2xl text-sm text-white "
+                      className="w-1/2 h-9 bg-[#312F32] rounded-2xl text-sm text-white hover:bg-white-500 "
                       onClick={() => toggleConfirmation("ปฏิเสธ")}
                       // onClick={() => handleCancel(reservation)}
                     >
@@ -280,34 +279,46 @@ const Reservationwat = () => {
                 )}
                 {showConfirmation && (
                   <>
-                    <div className="fixed inset-0 bg-black opacity-50 z-[9999] pointer-events-auto"></div>
-                    <div className="fixed top-1/2 left-1/2 transform rounded -translate-x-1/2 -translate-y-1/2 w-[30vw] h-[40vh] bg-[#1C1C1C] rounded-lg shadow-xl z-[10000]">
-                      <div className="flex items-center justify-center text-[7vh] text-[#AD957B] mt-[2vh]">
-                        Are you sure?
-                      </div>
-                      <div className="flex items-center justify-center text-[20px] sm:text-[16px] text-[#ffffff] p-4 font-bold">
-                        คุณต้องการที่จะ
-                        <div className="text-[#AD957B] text-[30px]">
-                          &nbsp;{ans}&nbsp;
+                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-[70]">
+                      <div className="flex flex-col bg-[#1c1c1c] p-7 rounded-lg w-[500px] shadow-xl items-center">
+                        <p className="text-4xl font-bold mb-2 text-[white] text-center">
+                          {ans}การจอง
+                        </p>
+                        <p className="text-xl text-center text-[white] mb-6">
+                          คุณแน่ใจใช่ไหม แน่ใจจริงๆเหรอ?
+                        </p>
+                        <div className="flex flex-col h-24 w-full bg-[#312F32] border-l-8 border-[#E9C649] px-3 py-2 gap-1">
+                          <div className="flex flex-row">
+                            <img
+                              src={require("../Assets/warning.png")}
+                              alt="profile"
+                              width={50}
+                              height={50}
+                              className="w-[30px] h-[26px] mr-2 my-auto"
+                            />
+                            <p className="text-xl text-[#E9C649]">Warning</p>
+                          </div>
+                          <p className="text-lg text-[white]">
+                            กรุณาตรวจสอบให้ดึก่อน{ans}การจอง
+                          </p>
                         </div>
-                        การจองหรือไม่?
-                      </div>
-                      <div className="flex gap-[20vb] ml-[2vb] mr-[2vb]">
-                        <button
-                          className="w-1/2 h-9 bg-[#312F32] rounded-2xl text-sm text-white "
-                          onClick={() => toggleConfirmation(ans)}
-                          // onClick={() => handleCancel(reservation)}
-                        >
-                          กลับ
-                        </button>
-                        <button
-                          className="w-1/2 h-9 bg-[#AD957B] rounded-2xl text-sm mr-2"
-                          onClick={() => confirmation(ans,reservation)}
-                        >
-                          {ans}
-                        </button>
+                        <div className="flex flex-row w-full place-content-between m-3">
+                          <button
+                            className="w-1/3 h-10 bg-[#181914] text-[white] rounded-xl text-sm"
+                            onClick={() => toggleConfirmation(ans)}
+                          >
+                            ไม่, ย้อนกลับ
+                          </button>
+                          <button
+                            className="w-1/3 h-10 bg-[#AD957B]  rounded-xl text-sm"
+                            onClick={() =>confirmation(ans,reservation)}
+                          >
+                            ใช่, {ans}
+                          </button>
+                        </div>
                       </div>
                     </div>
+                    
                   </>
                 )}
 
