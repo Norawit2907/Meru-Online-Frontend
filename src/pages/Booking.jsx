@@ -12,6 +12,11 @@ import PaymentSection from "../components/PaymentBooking/PaymentSection";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { GetWatData } from "../services/getWatDataById";
+import { useParams } from "react-router-dom";
+import { GetWatAddons } from "../services/getWatAddons";
+import { GetReservesDays } from "../services/getReservationDays";
+import { GetSalaDays } from "../services/getSalaDays";
 
 const costData = [
   { head: "สิ่งที่วัดเตรียมให้", title: "รถแห่เสียงดังๆเผื่อศพตื่นมาเต้น", price: 5000 },
@@ -45,42 +50,109 @@ const addonData = [
   },
 ];
 
+
 const Booking = () => {
   const [bookingData, setBookingData] = useState({
     startDate: null,
     daysCount: null,
     cremationDate: null,
   });
+  const wat_id = useParams().id;
+  const current_id = sessionStorage.getItem("currentUser_id");
 
- // Mock reservation data
- const mockReservationData = {
-  // October 2024
-  "2024-10-15": 3,
-  "2024-10-16": 3,
-  "2024-10-17": 3,
-  "2024-10-10": 2,
-  "2024-10-11": 1,
-  "2024-10-20": 2,
-  "2024-10-21": 2,
-  "2024-10-25": 1,
-  "2024-10-28": 2,
-  "2024-10-29": 3,
-  "2024-10-30": 3,
-  // November 2024
-  "2024-11-05": 3,
-  "2024-11-06": 3,
-  "2024-11-07": 2,
-  "2024-11-12": 1,
-  "2024-11-15": 3,
-  "2024-11-16": 2,
-  "2024-11-20": 3,
-  "2024-11-25": 1,
-  "2024-11-28": 3,
-};
+  const [watData, setWatData] = useState([]);
+  const [pavilionData, setPavilionData] = useState([]);
+  const [onSelectPavilion, setonSelectPavilion] = useState(null);
+  const [onSelectByDate, setonSelectByDate] = useState([]);
+  const [onSelectService, setonSelectService] = useState([]);
+  const [reservationDays, setReservationDays] = useState({});
+  
 
-const MAX_WORKLOAD = 3;
-   // State SelectDate
-   const handleDateSelect = (data) => {
+  const [allAddons, setAllAddons] = useState([]);
+  const filteredSelectByDate = onSelectByDate.filter(item => item !== null);
+  // Get pavilion cost safely, default to 0 if undefined or NaN
+  const pavilionCost = isNaN(onSelectPavilion?.cost) ? 0 : onSelectPavilion.cost || 0;
+
+  // Calculate total service cost from filteredSelectByDate
+  const ByDateCost = filteredSelectByDate
+    .map(item => item.service?.cost || 0) // Safely access cost, default to 0
+    .reduce((sum, item) => sum + (isNaN(item) ? 0 : item), 0); // Replace NaN with 0 during sum
+
+  // Calculate total service cost from onSelectService
+  const ByServiceCost = onSelectService
+    .map(item => item.cost || 0) // Safely access cost, default to 0
+    .reduce((sum, cost) => sum + (isNaN(cost) ? 0 : cost), 0); // Replace NaN with 0 during sum
+
+  const totalCost = pavilionCost + ByDateCost + ByServiceCost;
+  console.log("onSelectPavilion", onSelectPavilion);
+  console.log("onSelectByDate", onSelectByDate.filter(item => item !== null));
+  console.log("onSelectService", onSelectService);
+
+
+  console.log("pavilionCost", pavilionCost);
+  console.log("ByDateCost", ByDateCost);
+  console.log("ByServiceCost", ByServiceCost);
+
+  const paymentPayload = {
+    wat_id: wat_id,
+    user_id: current_id,
+    sender: "user",
+    reservation_date: bookingData.startDate,
+    cremation_date: bookingData.cremationDate,
+    duration: bookingData.daysCount,
+    status: "pending",
+    price: totalCost,
+    addons: allAddons,
+    pictures: ""
+  }
+
+  useEffect(() => {
+    // Combine the selected values into allAddons
+    const combinedAddons = [onSelectPavilion, ...onSelectService, ...onSelectByDate];
+    setAllAddons(combinedAddons);
+  }, [onSelectPavilion, onSelectService, onSelectByDate]); // Run effect when these values change
+  
+  console.log("allAddons", allAddons);
+
+  useEffect(() => {
+    const fetchWatData = async () => {
+      try {
+        const result = await GetWatData(wat_id);
+        setWatData(result);
+        console.log("Fetched Wat Data:", result);
+      } catch (error) {
+        console.error("Failed to fetch Wat data:", error);
+      }
+    };
+    const fetchWatAddons = async () => {
+      try {
+        const result = await GetWatAddons(wat_id);
+        const filteredPavilion = result.filter(
+          (addon) => addon.catalog === "sala"
+        );
+        setPavilionData(filteredPavilion);
+        console.log("Fetched Wat addons:", result);
+      } catch (error) {
+        console.error("Failed to fetch Wat addons:", error);
+      }
+    };
+    const fetchWatReservation = async () => {
+      try {
+        const result = await GetReservesDays(wat_id);
+        setReservationDays(result);
+        // console.log("Fetched Wat Reservation:", result);
+      } catch (error) {
+        // console.error("Failed to fetch Reservation:", error);
+      }
+    };
+    
+    fetchWatReservation();
+    fetchWatData();
+    fetchWatAddons();
+  }, [wat_id]);
+
+  // State SelectDate
+  const handleDateSelect = (data) => {
     if (data.type === "startDate") {
       setBookingData((prev) => ({
         ...prev,
@@ -102,8 +174,6 @@ const MAX_WORKLOAD = 3;
     }
   };
 
-
-
   // ฟังก์ชันคำนวณราคารวม
   const calculateTotalCost = () => {
     let total = costData.reduce((sum, item) => sum + item.price, 0);
@@ -112,42 +182,129 @@ const MAX_WORKLOAD = 3;
 
   return (
     <div className="booking-container my-16 mx-16 mb-16">
-      <h1 className="font-prompt font-bold text-white text-4xl mb-10">วัดดูยูมีน</h1>
+      <h1 className="font-prompt font-bold text-white text-4xl mb-10">{watData.name}</h1>
 
       <div className="flex justify-center mb-10">
-        <BookingCalendar 
-          reservationData={mockReservationData}
-          maxWorkload={MAX_WORKLOAD}
-        />
+        <BookingCalendar />
       </div>
 
-      <div className="all-section grid grid-cols-3 gap-8">
-        <LeftSection 
-          bookingData={bookingData} 
-          onDateSelect={handleDateSelect} 
-          reservationData={mockReservationData}
-          maxWorkload={MAX_WORKLOAD}
+      <div className="all-section grid grid-cols-1 xl:grid-cols-3 lg:grid-cols-1 gap-8">
+        <LeftSection
+          bookingData={bookingData}
+          onDateSelect={handleDateSelect}
+          reservationData={reservationDays}
+          maxWorkload={watData.max_workload}
+          onSelectPavilion={setonSelectPavilion}
+          onSelectByDate={setonSelectByDate}
+          onSelectService={setonSelectService}
         />
-        <RightSection 
-          totalCost={calculateTotalCost()} 
-          bookingData={bookingData} 
+        <RightSection
+          totalCost={totalCost}
+          bookingData={bookingData}
+          pavilionCost={onSelectPavilion}
+          dateCost={filteredSelectByDate}
+          serviceCost={onSelectService}
+          paymentPayload={paymentPayload}
         />
       </div>
     </div>
   );
 };
 
-const LeftSection = ({ 
-  bookingData, 
-  onDateSelect, 
+const LeftSection = ({
+  bookingData,
+  onDateSelect,
   reservationData,
-  maxWorkload 
+  maxWorkload,
+  onSelectPavilion,
+  onSelectByDate,
+  onSelectService
 }) => {
+  const wat_id = useParams().id;
+  const [pavilionData, setPavilionData] = useState([]);
+  const [showpavilionData, setshowPavilionData] = useState([]);
+  const [test, settest] = useState([]);
+  const [addonsData, setAddonsData] = useState([]);
+  const [addonsService, setAddonsService] = useState([]);
+  const [salaDays, setSalaDays] = useState({});
+  console.log("pav", pavilionData)
+  // console.log(salaDays)
+  let TilelineData = [];
+  if (bookingData.startDate && bookingData.daysCount) {
+    const startDate = new Date(bookingData.startDate);
+
+    for (let i = 0; i < bookingData.daysCount; i++) {
+      const currentDate = new Date(startDate);
+      currentDate.setDate(startDate.getDate() + i);
+      const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
+      const formattedDate2 = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')}`;
+      // console.log(formattedDate2,pavilionData.find((pavilion) => pavilion.name !== salaDays[formattedDate2]));
+      // setPavilionData(pavilionData.find((pavilion) => pavilion.name !== salaDays[formattedDate2]));
+      // const selectedPavilion = pavilionData.filter(
+      //   (pavilion) => pavilion.name !== salaDays[formattedDate2]
+      // );
+      // setPavilionData(selectedPavilion);
+      TilelineData.push(
+        {
+          date: formattedDate,
+          services: addonsData
+        }
+      )
+    }
+  }
+  useEffect(() => {
+    if (bookingData.startDate && bookingData.daysCount) {
+      const startDate = new Date(bookingData.startDate);
+      const formattedDate2 = `${startDate.getFullYear()}-${(startDate.getMonth() + 1).toString().padStart(2, '0')}-${(startDate.getDate()).toString().padStart(2, '0')}`;
+      
+      const filteredPavilionData = pavilionData.filter(
+        (pavilion) => pavilion.name !== salaDays[formattedDate2]
+      );
+
+      setshowPavilionData(filteredPavilionData);
+    }
+  }, [bookingData, salaDays]);
+  useEffect(() => {
+    const fetchWatAddons = async () => {
+      try {
+        const result = await GetWatAddons(wat_id);
+        const filteredPavilion = result.filter(
+          (addon) => addon.catalog === "sala"
+        );
+        const filteredAddons = result.filter(
+          (addon) => addon.catalog === "food"
+        );
+        const filteredServices = result.filter(
+          (addon) => addon.catalog !== "sala" && addon.catalog !== "food"
+        );
+        setAddonsData(filteredAddons);
+        setPavilionData(filteredPavilion);
+        setAddonsService(filteredServices);
+
+        console.log("Fetched Wat Addons:", result);
+        console.log("Fetched Wat FilteredAddons:", filteredAddons);
+      } catch (error) {
+        console.error("Failed to fetch Wat addons:", error);
+      }
+    };
+    const fetchWatSalaDays = async () => {
+      try {
+        const result = await GetSalaDays(wat_id);
+        setSalaDays(result);
+        // console.log("Fetched Wat Reservation:", result);
+      } catch (error) {
+        // console.error("Failed to fetch Reservation:", error);
+      }
+    };
+    fetchWatSalaDays();
+    fetchWatAddons();
+  }, [wat_id]);
+
   return (
-    <div className="section1 col-span-2">
-      <SelectDate 
-        label="วันเริ่มจัดงาน" 
-        onSelect={onDateSelect} 
+    <div className="section1 col-span-1 xl:col-span-2">
+      <SelectDate
+        label="วันเริ่มจัดงาน"
+        onSelect={onDateSelect}
         startDate={bookingData.startDate}
         reservationData={reservationData}
         maxWorkload={maxWorkload}
@@ -174,21 +331,21 @@ const LeftSection = ({
 
       {/* ส่วนเลือกศาลา */}
       <h2 className="mb-5 font-bold text-[32px] text-white">ศาลา</h2>
-      <SlickSaLa />
+      <SlickSaLa pavilion={showpavilionData} onSelect={onSelectPavilion} />
 
       {/* ส่วนกำหนดการ */}
       <h3 className="text-white mt-10 ml-[20px] text-[32px] font-bold">กำหนดการสวดอภิธรรมศพ</h3>
-      <Timeline />
+      <Timeline timelineData={TilelineData} setonSelectByDate={onSelectByDate} />
 
       {/* ส่วน Addon */}
       <div className="mx-5">
-        <AddonWat title={"บริการระหว่างอภิธรรมศพ"} addonList={addonData} />
+        <AddonWat title={"สินค้าและบริการ"} addonList={addonsService} setonSelectService={onSelectService} />
       </div>
     </div>
   );
 };
 
-const RightSection = ({ totalCost, bookingData }) => {
+const RightSection = ({ totalCost, bookingData, pavilionCost, dateCost, serviceCost, paymentPayload }) => {
   // รวมราคาทั้งหมด
   const getUpdatedCostData = () => {
     let updatedCosts = [...costData];
@@ -198,19 +355,20 @@ const RightSection = ({ totalCost, bookingData }) => {
 
   return (
     <div className="section2 col-span-1">
-      <CostDetails costData={getUpdatedCostData()} />
-      <PaymentSection totalCost={totalCost} bookingData={bookingData} />
+      <CostDetails costData={getUpdatedCostData()} pavilionCost={pavilionCost} dateCost={dateCost} serviceCost={serviceCost} />
+      <PaymentSection totalCost={totalCost} bookingData={bookingData} paymentPayload={paymentPayload}/>
     </div>
   );
 };
 
-const CostDetails = ({ costData }) => {
+const CostDetails = ({ costData, pavilionCost, dateCost, serviceCost }) => {
+  console.log("dateCostDetails", dateCost);
   return (
     <Section title="ค่าใช้จ่ายทั้งหมด">
-      <CostItem label="สิ่งที่วัดเตรียมให้" items={costData.slice(0, 1)} />
-      <CostItem label="สินค้าและบริการ" items={costData.slice(1, 4)} />
-      <CostItem label="ศาลา" items={costData.slice(4, 5)} />
-      <CostItem label="กำหนดการสวดอภิธรรม" items={costData.slice(5)} />
+      {/* <CostItem label="สิ่งที่วัดเตรียมให้" items={costData.slice(0, 1)} /> */}
+      <CostPavilion label="ศาลา" items={pavilionCost} />
+      <CostByDate label="กำหนดการสวดอภิธรรม" items={dateCost} />
+      <CostItem label="สินค้าและบริการ" items={serviceCost} />
     </Section>
   );
 };
@@ -218,13 +376,49 @@ const CostDetails = ({ costData }) => {
 const CostItem = ({ label, items }) => {
   return (
     <>
+      <div className="font-bold text-white mt-5 text-lg md:text-xl lg:text-2xl overflow-hidden text-ellipsis whitespace-nowrap">{label}</div>
+      {items.map((item, index) => (
+        <><div key={index} className="grid grid-cols-2 text-white py-2">
+          <div className="flex ml-3 text-xs sm:text-sm md:text-base lg:text-lg overflow-hidden text-ellipsis whitespace-nowrap h-10 md:h-12 lg:h-14 items-center">-{item.name}</div>
+          <div className="flex justify-end text-xs sm:text-sm md:text-base lg:text-lg overflow-hidden text-ellipsis whitespace-nowrap h-10 md:h-12 lg:h-14 items-center">{item.cost} บาท</div>
+        </div>
+        </>
+        ))}
+
+    </>
+  );
+};
+
+const CostByDate = ({ label, items }) => {
+  return (
+    <>
       <div className="font-bold text-white mt-5">{label}</div>
       {items.map((item, index) => (
         <div key={index} className="grid grid-cols-2 text-white py-2">
-          <div className="flex ml-3">-{item.title}</div>
-          <div className="flex justify-end">{item.price.toLocaleString()} บาท</div>
+          <div className="flex ml-3">-{item.date}</div>
+          <div className="flex justify-end">{item.service?.cost} บาท</div>
         </div>
       ))}
+    </>
+  );
+};
+
+
+const CostPavilion = ({ label, items }) => {
+  console.log("CostPavilion", items);
+  return (
+    <>
+      {items ? (
+        <>
+          <div className="font-bold text-white mt-5">{label}</div>
+          <div className="grid grid-cols-2 text-white py-2">
+            <div className="flex ml-3">-{items.name}</div>
+            <div className="flex justify-end">{items.cost} บาท</div>
+          </div>
+        </>
+      ) : (
+        <div className="font-bold text-white mt-5">{label}</div>
+      )}
     </>
   );
 };

@@ -13,6 +13,7 @@ import Userregister from "./pages/Userregister.jsx";
 import Watregister from "./pages/Watregister.jsx";
 import Booking from "./pages/Booking.jsx";
 import Footer from "./components/Footer.jsx";
+import Reservationwat from "./components/Reservation_wat.jsx";
 
 
 const App = () => {
@@ -33,6 +34,7 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/userregister" element={<Userregister />} />
             <Route path="/watregister" element={<Watregister />} />
+            <Route path="/Reservation" element={<Reservationwat/>} />
             <Route path="/booking/:id" element={<Booking/>} />
 
           </Routes>

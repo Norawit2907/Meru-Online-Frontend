@@ -87,43 +87,45 @@ html {
 
 .slidercontroller {
   position: relative;
-  bottom: 2rem;
+  bottom: 1rem; /* Adjust this value as needed */
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 1rem; /* Adds space between arrows and pagination */
+}
+
+.slidercontroller .swiper-button-prev,
+.slidercontroller .swiper-button-next {
+  font-size: 1.5rem; /* Change this to adjust size */
+  width: 3rem; /* Increased width for easier clicking */
+  height: 3rem; /* Increased height for easier clicking */
+  color: #AD957B; /* Arrow color */
+  cursor: pointer; /* Make it clear that these are clickable */
+  display: flex; /* To allow flex properties for centering icon */
+  align-items: center; /* Center the icon vertically */
+  justify-content: center; /* Center the icon horizontally */
+}
+
+.slidercontroller .swiper-button-prev {
+  margin-right: 0.5rem; /* Space between left arrow and pagination */
 }
 
 .slidercontroller .swiper-button-next {
-  left: 58% !important;
-  transform: translateX(-58%) !important;
+  margin-left: 0.5rem; /* Space between right arrow and pagination */
 }
-
-
-.slidercontroller .slider-arrow {
-  color: #AD957B;
-  background-color: #f9f9f9;
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 50%;
-  left: 42%;
-  transform: translateX(-42%);
-  filter: drop-shadow(0px 8px 24px rgba(0, 0, 0, 0.1));
-}
-
-.slidercontroller .slider-arrow ion-icon {
-  font-size: 2rem;
-  color: #AD957B;
-}
-
 
 .swiper-pagination {
+  display: flex; /* Align pagination items horizontally */
+  justify-content: center;
+  gap: 0.5rem; /* Space between pagination bullets */
   position: relative;
-  width: 15rem !important;
-  bottom: 1rem;
+  bottom: 0; /* Align pagination with arrows */
 }
 
 .swiper-pagination .swiper-pagination-bullet {
   filter: drop-shadow(0px 8px 24px #AD957B);
+  width: 1rem; /* Bullet width */
+  height: 1rem; /* Bullet height */
 }
 
 .swiper-pagination .swiper-pagination-bullet-active {

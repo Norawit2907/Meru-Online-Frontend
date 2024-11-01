@@ -172,10 +172,11 @@ const EditWat = () => {
       imagefiles.map(async (item) => {
         if (item.file != null) {
           const link = await UploadImage(item.file);
-          return {
-            name: item.name,
-            url: link,
-          };
+          // return {
+          //   name: item.name,
+          //   url: link,
+          // };
+          return link;
         } else {
           return {
             name: item.name,
