@@ -1,0 +1,133 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style-type: none;
+}
+
+:root {
+  --primary: #AD957B;
+  --white: #AD957B;
+  --bg: #AD957B;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  width: 1.3rem;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 1rem;
+  background: #797979;
+  transition: all 0.5s ease-in-out;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #222224;
+}
+
+::-webkit-scrollbar-track {
+  background: #f9f9f9;
+}
+
+.container {
+  max-width: 124rem;
+  padding: 4rem 1rem;
+  margin: 0 auto;
+}
+
+.heading {
+  padding: 1rem 0;
+  font-size: 3.5rem;
+  text-align: center;
+}
+
+.swiper_container {
+  height: 52rem;
+  padding: 2rem 0;
+  position: center;
+}
+
+.swiper-slide {
+  width: 37rem;
+  height: 42rem;
+  position: relative;
+}
+
+@media (max-width: 500px) {
+  .swiper_container {
+    height: 47rem;
+  }
+  .swiper-slide {
+    width: 28rem !important;
+    height: 36rem !important;
+  }
+  .swiper-slide img {
+    width: 28rem !important;
+    height: 36rem !important;
+  }
+}
+
+/* .swiper-slide img {
+  width: 37rem;
+  height: 42rem;
+  border-radius: 2rem;
+  object-fit: cover;
+} */
+
+.swiper-slide-shadow-left,
+.swiper-slide-shadow-right {
+  display: none;
+}
+
+.slidercontroller {
+  position: relative;
+  bottom: 1rem; /* Adjust this value as needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem; /* Adds space between arrows and pagination */
+}
+
+.slidercontroller .swiper-button-prev,
+.slidercontroller .swiper-button-next {
+  font-size: 1.5rem; /* Change this to adjust size */
+  width: 3rem; /* Increased width for easier clicking */
+  height: 3rem; /* Increased height for easier clicking */
+  color: #AD957B; /* Arrow color */
+  cursor: pointer; /* Make it clear that these are clickable */
+  display: flex; /* To allow flex properties for centering icon */
+  align-items: center; /* Center the icon vertically */
+  justify-content: center; /* Center the icon horizontally */
+}
+
+.slidercontroller .swiper-button-prev {
+  margin-right: 0.5rem; /* Space between left arrow and pagination */
+}
+
+.slidercontroller .swiper-button-next {
+  margin-left: 0.5rem; /* Space between right arrow and pagination */
+}
+
+.swiper-pagination {
+  display: flex; /* Align pagination items horizontally */
+  justify-content: center;
+  gap: 0.5rem; /* Space between pagination bullets */
+  position: relative;
+  bottom: 0; /* Align pagination with arrows */
+}
+
+.swiper-pagination .swiper-pagination-bullet {
+  filter: drop-shadow(0px 8px 24px #AD957B);
+  width: 1rem; /* Bullet width */
+  height: 1rem; /* Bullet height */
+}
+
+.swiper-pagination .swiper-pagination-bullet-active {
+  background: #AD957B;
+}
