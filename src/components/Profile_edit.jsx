@@ -50,8 +50,7 @@ const EditProfile = ({ isOpen, onClose }) => {
 
   const save_profile = async () => {
     console.log(firstname, lastname, phone, email, password);
-    const profile_link = null;
-    if (profileImg instanceof File || profileImg instanceof Blob) {
+    let profile_link = null;
       try {
         profile_link = await UploadImage(profileImg);
         console.log("Image uploaded successfully:", profile_link);
@@ -60,7 +59,6 @@ const EditProfile = ({ isOpen, onClose }) => {
         console.error("Image upload failed:", err);
         return;
       }
-    }
 
     const updatedData = {
       firstname: firstname,
@@ -68,7 +66,7 @@ const EditProfile = ({ isOpen, onClose }) => {
       phoneNumber: phone,
       email: email,
       password: password,
-      profile_img: profileImg
+      profile_img: profile_link
     };
 
     try {
@@ -78,7 +76,7 @@ const EditProfile = ({ isOpen, onClose }) => {
       window.location.reload();
       onClose();
     } catch (err) {
-      console.error("Error updating profile:", err);
+      console.error("Error updating profile:", err.response.data.message);
     }
     
   };
@@ -87,7 +85,7 @@ const EditProfile = ({ isOpen, onClose }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-[70]">
       <div className="bg-[#1c1c1c] p-6 rounded-lg w-[400px] shadow-xl">
-        <h2 className="text-xl font-bold mb-4">
+        <h2 className="text-xl text-white font-bold mb-4">
           {showEmailPasswordForm ? 'Edit Email & Password' : 'Edit Profile'}
         </h2>
         

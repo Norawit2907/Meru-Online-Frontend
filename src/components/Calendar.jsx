@@ -60,6 +60,14 @@ const Calendar = () => {
   };
 
   // console.log(currentDate.getMonth(), currentDate.getFullYear())
+  const getDateColor = (works) => {
+    if (works === watData.max_workload) {
+      return "bg-[#AD957B]"; // Fully booked
+    } else if (works > 0) {
+      return "bg-[#6B5B45]"; // Partially booked
+    }
+    return "bg-gray-700"; // Available
+  };
 
   const renderDays = () => {
     const days = [];
@@ -81,8 +89,11 @@ const Calendar = () => {
       if (reservationDays && formattedDate in reservationDays) {
         works = reservationDays[formattedDate];
       }
+
+      const colorClass = getDateColor(works);
       days.push(
-        <div key={day} className={`${works == watData.max_workload ? "bg-[#AD957B]" : "bg-gray-700"} p-4 text-center rounded-lg`}>
+        <div key={day} className={`${colorClass} p-4 text-center rounded-lg transition-colors duration-200 
+            ${works === watData.max_workload ? 'cursor-not-allowed opacity-75' : 'hover:opacity-80 cursor-pointer'}`}>
           <p className="font-bold">{day}</p>
           <p>
             {works}/{watData.max_workload}

@@ -104,6 +104,7 @@ const Reservationwat = () => {
       });
       // console.log(response)
       fetchReservations();
+      window.location.reload();
     } catch (err) {
       console.error(err);
     }
@@ -123,6 +124,7 @@ const Reservationwat = () => {
       });
       // console.log(response)
       fetchReservations();
+      window.location.reload();
     } catch (err) {
       console.error(err);
     }
@@ -140,6 +142,7 @@ const Reservationwat = () => {
       });
       fetchReservations();
       alert('คุณได้ทำการ Skip เวลางานนี้แล้ว');
+      window.location.reload();
     } catch (err) {
       console.error(err);
     }

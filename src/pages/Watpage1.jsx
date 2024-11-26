@@ -153,10 +153,18 @@ const Watpage1 = () => {
 
 
                     {/* wat-add-on-section */}
-                    <div className="flex flex-col items-start">
+                    <div className="flex flex-col items-start overflow-x-auto max-w-full addonscroll">
+                        <div className="flex flex-col items-start overflow-x-auto max-w-full addonscroll">
                         <Addon title={"ศาลาที่มีให้"} addonList={filteredAddonsCat1} />
+                        </div>
+
+                        <div className="flex flex-col items-start overflow-x-auto max-w-full addonscroll">
                         <Addon title={"บริการระหว่างอภิธรรมศพ"} addonList={filteredAddonsCat2} />
+                        </div>
+
+                        <div className="flex flex-col items-start overflow-x-auto max-w-full addonscroll">
                         <Addon title={"สินค้าและบริการ (ลูกค้าเลือกจ่าย)"} addonList={filteredAddonsCat3} />
+                        </div>
                     </div>
                 </div>
 

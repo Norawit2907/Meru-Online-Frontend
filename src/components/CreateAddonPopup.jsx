@@ -188,7 +188,7 @@ const CreateAddonPopup = ({ isOpen, onClose, catalog, setAddonData }) => {
                     : "bg-zinc-600 cursor-not-allowed"
                   }`}
             >
-              ยืนยันการชำระเงิน
+              บันทึก
             </button>
           </div>
         </form>

@@ -6,7 +6,7 @@ const Addon = ({ addon, index, del }) => {
   return (
     <div
       key={index}
-      className="w-fit relative bg-[#484848] rounded-[8px]"
+      className="w-fit relative bg-[#484848] rounded-[8px] overflow-x-auto"
     >
       <button onClick={()=>{del(addon)}} className="absolute -top-2 -right-2 h-fit w-fit p-1 px-2 bg-white rounded-full">
       <FontAwesomeIcon icon={faXmark} className="text-3xl text-red-500"/>

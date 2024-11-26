@@ -92,6 +92,7 @@ const Booking = () => {
   console.log("pavilionCost", pavilionCost);
   console.log("ByDateCost", ByDateCost);
   console.log("ByServiceCost", ByServiceCost);
+  console.log("start",bookingData.startDate)
 
   const paymentPayload = {
     wat_id: wat_id,
@@ -223,7 +224,6 @@ const LeftSection = ({
   const wat_id = useParams().id;
   const [pavilionData, setPavilionData] = useState([]);
   const [showpavilionData, setshowPavilionData] = useState([]);
-  const [test, settest] = useState([]);
   const [addonsData, setAddonsData] = useState([]);
   const [addonsService, setAddonsService] = useState([]);
   const [salaDays, setSalaDays] = useState({});
@@ -237,7 +237,7 @@ const LeftSection = ({
       const currentDate = new Date(startDate);
       currentDate.setDate(startDate.getDate() + i);
       const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
-      const formattedDate2 = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')}`;
+      // const formattedDate2 = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')}`;
       // console.log(formattedDate2,pavilionData.find((pavilion) => pavilion.name !== salaDays[formattedDate2]));
       // setPavilionData(pavilionData.find((pavilion) => pavilion.name !== salaDays[formattedDate2]));
       // const selectedPavilion = pavilionData.filter(
@@ -255,12 +255,11 @@ const LeftSection = ({
   useEffect(() => {
     if (bookingData.startDate && bookingData.daysCount) {
       const startDate = new Date(bookingData.startDate);
+      console.log(startDate)
       const formattedDate2 = `${startDate.getFullYear()}-${(startDate.getMonth() + 1).toString().padStart(2, '0')}-${(startDate.getDate()).toString().padStart(2, '0')}`;
-      
-      const filteredPavilionData = pavilionData.filter(
-        (pavilion) => pavilion.name !== salaDays[formattedDate2]
-      );
-
+      const filteredPavilionData = pavilionData.filter((pavilion) => {
+        return pavilion.name !== salaDays?.[formattedDate2];
+      });
       setshowPavilionData(filteredPavilionData);
     }
   }, [bookingData, salaDays]);
